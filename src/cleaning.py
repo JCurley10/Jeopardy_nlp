@@ -19,7 +19,7 @@ class Cleaning(object):
     def __init__(self):
         pass
 
-    def stringify(df, col):
+    def stringify(self, df, col):
         """[summary]
 
         Args:
@@ -31,11 +31,11 @@ class Cleaning(object):
         """        
         return ' '.join(df[col])
 
-    def lowercase(df, col):
+    def lowercase(self, df, col):
         return ' '.join(df[col]).lower()
 
     #TODO: make the remove_punc function 
-    def remove_punc(df, col):
+    def remove_punc(self, df, col):
         """[summary]
 
         Args:
@@ -71,7 +71,6 @@ class Cleaning(object):
         Returns:
             [type]: [description]
         """
-        #TODO: set doc
         docs = df[col].values
         text = Cleaning.stringify(df, col)
         if col == 'notes':
