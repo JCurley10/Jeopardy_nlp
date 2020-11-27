@@ -141,9 +141,9 @@ def build_text_vectorizer(text):
     the a list of strings that are the words that appear in the text
     """       
     pass 
-    # count_vect = CountVectorizer(ngram_range = (1, 2),  use_tfidf=True, lowercase=True, use_stemmer=False, tokenizer=None, stop_words='english',  max_features=None)
-    # count_vect.fit_transform(text)
-    # return count_vect.vocabulary_.keys()
+    count_vect = CountVectorizer(ngram_range = (1, 2),  use_tfidf=True, lowercase=True, use_stemmer=False, tokenizer=None, stop_words='english',  max_features=None)
+    count_vect.fit_transform(text)
+    return count_vect.vocabulary_.keys()
 
 
 def make_word_cloud(df, col, color, save = False):
@@ -172,25 +172,25 @@ def make_word_cloud(df, col, color, save = False):
     plt.tight_layout(pad = 0) 
 
     if save:
-        plt.savefig(f'../data/{col}_wordcloud.png')
+        plt.savefig(f'../images/{col}_wordcloud.png')
     else:
         plt.show()
 
 
 if __name__ == "__main__":
     jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
-    train_set  = jeopardy.sample(frac = .8, axis = 0, random_state = 123)
-    test_set = jeopardy.drop(train_set.index) 
-    sub_train = train_set.sample(frac = .01, axis = 0, random_state = 123)
+    train_set_all  = jeopardy.sample(frac = .8, axis = 0, random_state = 123)
+    test_set = jeopardy.drop(train_set_all.index) 
+    sub_train_all = train_set_all.sample(frac = .01, axis = 0, random_state = 123)
     
-    train_reg = train_set[train_set['notes']=='-'] #just the questions from a regular episode
+    train_reg = train_set_all[train_set_all['notes']=='-'] #just the questions from a regular episode
     sub_reg = train_reg.sample(frac = 0.1, axis = 0, random_state = 123) #a subsample from the training set of regular episodes
-    train_spec = train_set.drop(train_reg.index) #questions from a special episodes/tournaments 
+    train_spec = train_set_all.drop(train_reg.index) #questions from a special episodes/tournaments 
     sub_train = train_spec.sample(frac = 0.2, axis = 0, random_state = 123) #a subsample from the training set of special espisodes/tournaments
 
     category_string = stringify(sub_train, 'category')
     category_string = clean_columns(sub_train, 'category')
 
-    # make_word_cloud(sub_train, 'category', 'plasma_r', save = True)
+    make_word_cloud(jeopardy, 'category', 'plasma', save = False)
     # make_word_cloud(sub_train, 'question', 'Blues_r', save = True)
     # make_word_cloud(sub_train, 'answer', 'cividis_r', save = True)
