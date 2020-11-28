@@ -10,125 +10,181 @@ from nltk.stem.snowball import SnowballStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.decomposition import NMF as NMF_sklearn
 import string
+s
 
-class Cleaning(object):
-    
-    def __init__(self):
-        pass
+def get_sub_df(df, testsize = .2, sub_fraction = 0.01, state = 123):
+    """
+    split the dataframe into training and testing sets
+    and get a smaller subset of the training dataframe
 
-    def stringify(self, df, col):
-        """[summary]
+    Args:
+        df (Pandas dataFrame): The dataframe in use
+        training_fraction (float, optional): the fraction of the dataframe 
+            to be included in the training set. Defaults to 0.8.
+        sub_fraction (float, optional): the fraction of the dataframe
+            to be included in the subset to run methods and function on.
+             Defaults to 0.01.
+        state (int, optional): random state to use. Defaults to 123.
 
-        Args:
-            df ([type]): [description]
-            col ([type]): [description]
+    Returns:
+        tuple of dataframes: training: training dataframe
+                            testing: testing dataframe
+                            sub_training: subset of the training dataframe
+    """    
+    training, testing = train_test_split(df, test_size = testsize, random_state = state)
+    sub_training = training.sample(frac = sub_fraction, axis = 0, random_state = state)
+    return training, testing, sub_training
 
-        Returns:
-            [type]: [description]
-        """        
-        return ' '.join(df[col])
 
-    def lowercase(self, df, col):
-        return ' '.join(df[col]).lower()
 
-    #TODO: make the remove_punc function 
-    def remove_punc(self, df, col):
-        """[summary]
+def stringify(df, col):
+    """
+    Turns the column (col) into one string, 
+    to be able to make a wordcloud 
 
-        Args:
-            df ([type]): [description]
-            col ([type]): [description]
+    Args:
+        df (Pandas dataFrame): The dataframe in use
+        col (str): the column name to turn into a string
 
-        Returns:
-            [type]: [description]
-        """        
-        return None
+    Returns:
+        a string
+    """        
+    return ' '.join(df[col])
 
-    def tokenize(self, df, col):
-        """[summary]
+def lowercase(df, col):
+    """
+    turns the column (col) into one string, 
+    whose letters are all lowercase
+    to be able to make a wordcloud
 
-        Args:
-            df ([type]): [description]
-            col ([type]): [description]
+    Args:
+        df (Pandas dataFrame): The dataframe in use
+        col (str): the column name to turn into a string
 
-        Returns:
-            [type]: [description]
-        """        
-        text = self.stringify(df, col)
-        tokenize = [word_tokenize(content) for content in text]
-        return tokenize
+    Returns:
+        a string of lowercase letters 
+    """    
+    return ' '.join(df[col]).lower()
 
-    def remove_stopwords(self, df, col):
-        """[summary]
+#TODO: make the remove_punc function 
+def remove_punc(df, col):
+    """
+    removes punctuation from a column of text
+    Args:
+        df (Pandas dataFrame): The dataframe in use
+        col (str): the column name to turn into a string
+    Returns:
+        [type]: [description]
+    """
+    pass         
 
-        Args:
-            df ([type]): [description]
-            col ([type]): [description]
+def tokenize(df, col):
+    """
+    Tokenizes all the words in a stringified column
+    Args:
+        df (Pandas dataFrame): The dataframe in use
+        col (str): the column name to turn into a string
+    Returns:
+        a string
+    """        
+    text = df[col]
+    tokenize = [word_tokenize(content) for content in text]
+    return tokenize
 
-        Returns:
-            [type]: [description]
-        """
-        docs = df[col].values
-        text = Cleaning.stringify(df, col)
-        if col == 'notes':
-            #TODO: add another set of stopwords for the notes
-            remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
-            stopwords_set = (set(stopwords.words('english'))).union(remove_words)
-        else:
-            stopwords_set = set(stopwords.words('english')) 
-        return [[word for word in text if word not in stopwords_set] for word in docs]
+#TODO: clean up this function
+def remove_stopwords(df, col):
+    """[summary]
+    Args:
+        df ([type]): [description]
+        col ([type]): [description]
+    Returns:
+        [type]: [description]
+    """
+    docs = df[col].values
+    text = stringify(df, col)
+    if col == 'notes':
+        #TODO: add more to set of stopwords for the notes
+        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
+        stopwords_set = (set(stopwords.words('english'))).union(remove_words)
+    else:
+        stopwords_set = set(stopwords.words('english')) 
+    return [[word for word in text if word not in stopwords_set] for word in docs]
 
-    def clean_columns(self, df, col):
-        """ 
+##TODO: fix up the stem and lemmatizer since they seem to be mucking up the words
+
+def clean_columns(df, col, stem = None):
+    """
         cleans the columns by converting to a string, 
-        lowercasing, removing stopwords, and tokenizing all in one 
+    lowercasing, removing stopwords, and tokenizing all in one 
 
-        Args:
-            df (pandas DataFrame): the DataFrame whose columns 
-                                    will be turned to one string
-            col (string): The column name in question
+    Args:
+        df (pandas DataFrame): the DataFrame whose columns 
+                will be turned to one string
+        col (string): The column name in question
+        stem (string), (optional):
+                "snowball" for snowball stemmer
+                "porter" for porter stemmer. 
+                Defaults to None.
 
-        Returns:
-            list: a list of words
-        """
+    Returns:
+        list: a list of words as strings
+    """
+    text = stringify(df, col)
+    tokens = word_tokenize(text)
+    # convert to lower case
+    tokens = [w.lower() for w in tokens]
+    # remove punctuation from each word
+    table = str.maketrans('', '', string.punctuation)
+    stripped = [w.translate(table) for w in tokens]
+    
+    # lemmatize the words 
+    wordnet = WordNetLemmatizer()
+    lemmatized = [wordnet.lemmatize(word) for word in stripped]
+    
+    #stem words, depending on the stemmer chosen as a parameter
+    if stem == 'snowball':
+        snowball = SnowballStemmer('english')
+        stemmed = [snowball.stem(word) for word in lemmatized]
+        # remove remaining tokens that are not alphabetic from stemmed
+        words = [word for word in stemmed if word.isalpha()]
+    elif stem == 'porter':
+        porter = PorterStemmer()
+        stemmed = [porter.stem(word) for word in lemmatized]
+        # remove remaining tokens that are not alphabetic from stemmed
+        words = [word for word in stemmed if word.isalpha()]
+    elif stem == None:
+        pass
+        #skip stemming
+        # remove remaining tokens that are not alphabetic from lemmatized
+    else:
+        words = [word for word in lemmatized if word.isalpha()]
+    
+    # filter out stop words
+    if col == 'notes':
+        #TODO: add another set of stopwords for the notes
+        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate', 'night', 'jeopardy', 'night', 'games'}
+        stopwords_set = (set(stopwords.words('english'))).union(remove_words)
+    else:
+        stopwords_set = set(stopwords.words('english'))
+    words = [w for w in words if not w in stopwords_set]
+    return words
 
-        text = Cleaning.stringify(df, col)
-        tokens = word_tokenize(text)
-        # convert to lower case
-        tokens = [w.lower() for w in tokens]
-        # remove punctuation from each word
-        table = str.maketrans('', '', string.punctuation)
-        stripped = [w.translate(table) for w in tokens]
-        # remove remaining tokens that are not alphabetic
-        words = [word for word in stripped if word.isalpha()]
-        # filter out sls
-        #s top words
-        stop_words = set(stopwords.words('english'))
-        words = [w for w in words if not w in stop_words]
-        return words
-
-    def build_text_vectorizer(self, contents, use_tfidf=True, use_stemmer=False, max_features=None):
-        """[summary]
-
-        Args:
-            contents ([type]): [description]
-            use_tfidf (bool, optional): [description]. Defaults to True.
-            use_stemmer (bool, optional): [description]. Defaults to False.
-            max_features ([type], optional): [description]. Defaults to None.
-        """        
-    pass
 
 
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
-    train_set  = jeopardy.sample(frac = .8, axis = 0, random_state = 123)
-    test_set = jeopardy.drop(train_set.index)
-    sub_train = train_set.sample(frac = .1, axis = 0, random_state = 123)
+    regular_tournament = jeopardy[jeopardy['notes']=='-']
+    special_tournament = jeopardy.drop(regular_tournament.index)
 
-    print (Cleaning.remove_stopwords(sub_train, 'category'))
-    # vectorizer = CountVectorizer()
-    # X = vectorizer.fit_transform(corpus)
-    # print(vectorizer.get_feature_names())
+    jeopardy_train, jeopardy_test, jeopardy_subtrain = get_sub_df(jeopardy)
+    regular_train, regular_test, regular_subtrain = get_sub_df(regular_tournament)
+    special_train, special_test, special_subtrain = get_sub_df(special_tournament)
+
+    clean_category = clean_columns(regular_subtrain, 'category')
+    clean_category_str = ' '.join(clean_category)

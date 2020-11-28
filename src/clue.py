@@ -62,6 +62,7 @@ if __name__ == "__main__":
     #train special
     #test special 
     #sub train regular 
+
     #TODO: fix up these training and testing sets 
     jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
     regular_tournament = jeopardy[jeopardy['notes']=='-']
@@ -79,14 +80,17 @@ if __name__ == "__main__":
     test_spec = special_tournament.drop(train_spec.index)
     train_spec_sub = train_spec.sample(frac = 0.01, axis = 0, random_state = 123) #a subsample from the training set of special espisodes/tournaments
 
-    #TODO: clean this up so I can get all the info per row
+    #TODO: clean this up so I can get all the info per row to do a bag of words
     df = train_reg_sub
     clues = []
-    for index, row in df.iterrows():
+    for index, rows in df.iterrows():
         clues.append(Clue(df['round'], 
         df['value'], df['daily_double'], 
         df['category'], df['comments'],
         df['answer'], df['question'], 
         df['air_date'], df['notes']))
-    
-    
+
+    #TODO: make a new row that combines answer and question 
+
+    # what categories go together ?
+    #replace the indices with the jep.category and see which jep.categories are clustered together 
