@@ -16,6 +16,18 @@ from sklearn.decomposition import NMF as NMF_sklearn
 import string
 
 
+def read_tsv(filepath):
+    """Reads in a tsv file
+
+    Args:
+        filepath (string): filepath and file name of the 
+            tsv file to be read into as a pandas dataframe
+    Returns:
+        Pandas DataFrame
+    """    
+    return pd.read_csv(filepath, sep = "\t")
+
+
 def stringify(df, col):
     """
     Turns the column (col) into one string, 
@@ -89,16 +101,15 @@ def remove_stopwords(df, col):
         stopwords_set = set(stopwords.words('english')) 
     return [[word for word in text if word not in stopwords_set] for word in docs]
 
-
-##TODO: fix up the stem and lemmatizer since they seem to be mucking up the words
-def clean_columns(df, col):
+# This function doesn't need anything from the above
+def clean_text(df, col):
     '''
     using a pre-made function 
     returns a list of the tokenized and stripped of stopwords 
     '''
     text = ' '.join(df[col])
     tokens = word_tokenize(text)
-    # convert to lower case
+    # converts the tokens to lower case
     tokens = [w.lower() for w in tokens]
     # remove punctuation from each word
     table = str.maketrans('', '', string.punctuation)
@@ -116,17 +127,11 @@ def clean_columns(df, col):
     words = [w for w in words if not w in stopwords_set]
     return words
 
-
+def clean_columns(df, col):
+    pass
 
 
 if __name__ == "__main__":
     jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
     regular_tournament = jeopardy[jeopardy['notes']=='-']
     special_tournament = jeopardy.drop(regular_tournament.index)
-
-    jeopardy_train, jeopardy_test, jeopardy_subtrain = get_sub_df(jeopardy)
-    regular_train, regular_test, regular_subtrain = get_sub_df(regular_tournament)
-    special_train, special_test, special_subtrain = get_sub_df(special_tournament)
-
-    clean_category = clean_columns(regular_subtrain, 'category')
-    clean_category_str = ' '.join(clean_category)
