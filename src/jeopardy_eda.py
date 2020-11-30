@@ -13,12 +13,13 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
-from cleaning import get_sub_df, clean_columns
+from cleaning import clean_columns
+from build_features import get_sub_df
 
 #TODO: fix up what is happening with the stemming of words in the answers df
     # the Jupyter Notebook has both options 
-    
-def make_word_cloud(df, col, color, stem = None, save = False):
+
+def make_word_cloud(df, col, color, save = False):
     """makes a word cloud of the words per column
 
     Args:
@@ -30,8 +31,10 @@ def make_word_cloud(df, col, color, stem = None, save = False):
                 will save the figure as a .png, False will show the figure
                 Defaults to False.
     """    
+def make_word_cloud(df, col, color, save = False):
+
     #generate word list
-    word_lst = clean_columns(df, col, stem = None) # can also get the words from the text vectorizer above
+    word_lst = clean_columns(df, col)
     words = ' '.join(word_lst)
     wordcloud = WordCloud(width = 800, height = 800, 
                 background_color =None, mode = 'RGBA', 
@@ -46,9 +49,10 @@ def make_word_cloud(df, col, color, stem = None, save = False):
     plt.tight_layout(pad = 0) 
 
     if save:
-        plt.savefig(f'../images/{col}_wordcloud.png')
+        plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
     else:
         plt.show()
+
 
 
 if __name__ == "__main__":
@@ -60,7 +64,7 @@ if __name__ == "__main__":
     regular_train, regular_test, regular_subtrain = get_sub_df(regular_tournament)
     special_train, special_test, special_subtrain = get_sub_df(special_tournament)
 
-    # make_word_cloud(jeopardy, 'category', stem = None, color = 'plasma', save = True)
-    # make_word_cloud(jeopardy, 'question', stem = None, color = 'Blues_r', save = True)
-    # make_word_cloud(jeopardy_subtrain, 'answer', stem = None, color = 'cividis_r', save = True)
+    make_word_cloud(jeopardy, 'category',  color = 'plasma', save = True)
+    make_word_cloud(jeopardy, 'question',  color = 'plasma', save = True)
+    make_word_cloud(jeopardy_subtrain, 'answer',  color = 'plasma', save = True)
 

@@ -13,7 +13,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
-from cleaning import get_sub_df, clean_columns
+from cleaning import clean_columns
+from build_features import * 
 
 
 #TODO: deal with this text vectorizer and the goal of it. 
@@ -32,6 +33,6 @@ def build_text_vectorizer(text):
     the a list of strings that are the words that appear in the text
     """       
     pass 
-    count_vect = CountVectorizer(ngram_range = (1, 2),  use_tfidf=True, lowercase=True, use_stemmer=False, tokenizer=None, stop_words='english',  max_features=None)
+    count_vect = CountVectorizer(ngram_range = (1, 2), use_tfidf=True, lowercase=True, use_stemmer=False, tokenizer=None, stop_words='english',  max_features=None)
     count_vect.fit_transform(text)
-    return count_vect.vocabulary_.
+    return count_vect.vocabulary_
