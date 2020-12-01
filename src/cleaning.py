@@ -115,7 +115,7 @@ def clean_text(df, col):
     table = str.maketrans('', '', string.punctuation)
     stripped = [w.translate(table) for w in tokens]
 
-    words = [word for word in stripped if word.isalpha()]
+    words = [word for word in stripped if word.isalnum()]
     
     # filter out stop words
     if col == 'notes':
