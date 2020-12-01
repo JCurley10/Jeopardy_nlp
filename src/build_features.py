@@ -18,6 +18,7 @@ def make_q_and_a_col(df):
     df['question_and_answer'] = df["question"] + df['answer']
     return df
 
+#TODO: make another condition using "view assummptions" 
 def make_q_difficulty_col(df):
     conditions = [((df['value']<=600) & (df['daily_double']=='no')), #easy
                 ((df['daily_double']=='no') & ((df['value']==800) | (df['value']==1200))), #average
@@ -25,6 +26,7 @@ def make_q_difficulty_col(df):
                 ((df['daily_double']=='no') & ((df['value']==1000) | (df['value']>=1600))), #hard
                 ((df['daily_double']== 'yes') & (df['round'] == 2)), #hard
                 (df['round'] == 3)] # final jeopardy, hard 
+
 
     difficulties = ['easy', 'average', 'average', 'hard', 'hard', 'hard']
 

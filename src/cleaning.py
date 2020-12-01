@@ -115,7 +115,7 @@ def clean_text(df, col):
     table = str.maketrans('', '', string.punctuation)
     stripped = [w.translate(table) for w in tokens]
 
-    words = [word for word in stripped if word.isalnum()]
+    words = [word for word in stripped if word.isal()]
     
     # filter out stop words
     if col == 'notes':
@@ -132,6 +132,6 @@ def clean_columns(df, col):
 
 
 if __name__ == "__main__":
-    jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
+    jeopardy = read_tsv('../data/master_season1-35.tsv')
     regular_tournament = jeopardy[jeopardy['notes']=='-']
     special_tournament = jeopardy.drop(regular_tournament.index)
