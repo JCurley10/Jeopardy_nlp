@@ -107,7 +107,7 @@ if __name__ == "__main__":
     n_topics = 10
     n_top_words = 20
 
-    nm_factorize(regular_episodes_reindexed, 'question_and_answer', n_features, n_topics, n_top_words)
-
+    practice = nm_factorize(regular_episodes_sub_reindexed, 'question_and_answer', n_features, n_topics, n_top_words)
+    full_set = nm_factorize(regular_episodes_reindexed, 'question_and_answer', n_features, n_topics, n_top_words)
 
 

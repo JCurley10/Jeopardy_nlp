@@ -19,7 +19,7 @@ from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
     # the Jupyter Notebook has both options 
 
     
-def make_word_cloud(df, col, color, save = False):
+def make_word_cloud(df, col, color, save = False, eda = False):
 
     #generate word list
     word_lst = clean_text(df, col)
@@ -40,7 +40,7 @@ def make_word_cloud(df, col, color, save = False):
         plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
     else:
         plt.show()
-    
+        
 
 def get_wrd_cts(df):
     """[summary]

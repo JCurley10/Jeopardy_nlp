@@ -28,7 +28,6 @@ def read_tsv(filepath):
     """    
     return pd.read_csv(filepath, sep = "\t")
 
-
 def stringify(df, col):
     """
     Turns the column (col) into one string, 
@@ -43,7 +42,7 @@ def stringify(df, col):
     """        
     return ' '.join(df[col])
 
-def lowercase(df, col):
+def lowercase(df, cols):
     """
     turns the column (col) into one string, 
     whose letters are all lowercase
@@ -55,22 +54,29 @@ def lowercase(df, col):
 
     Returns:
         a string of lowercase letters 
-    """    
-    return ' '.join(df[col]).lower()
+    """   
+    for col in cols: 
+        df[col] = df[col].str.lower()
+    return df
 
-#TODO: make the remove_punc function 
-def remove_punc(df, col):
-    """
-    removes punctuation from a column of text
+
+def remove_punc(df, cols):
+    """[summary]
+
     Args:
-        df (Pandas dataFrame): The dataframe in use
-        col (str): the column name to turn into a string
-    Returns:
-        [type]: [description]
-    """
-    pass         
+        df ([type]): [description]
+        cols (list of str): list of columns to be cleaned, as strings
 
-def tokenize(df, col):
+    Returns:
+        Pandas DataFrame: with removed punctuation
+    """    
+    for col in cols:
+        p = re.compile(r'[^\w\s]+')
+        df[col] = [p.sub(' ', x) for x in df[col].tolist()]
+    return df
+
+
+def tokenize(df, cols):
     """
     Tokenizes all the words in a stringified column
     Args:
@@ -79,11 +85,21 @@ def tokenize(df, col):
     Returns:
         a string
     """        
-    text = df[col]
-    tokenize = [word_tokenize(content) for content in text]
-    return tokenize
+    for col in cols:
+        df[col] = df[col].apply(word_tokenize)
+    return df
 
-#TODO: clean up this function
+def make_stopwords(col):
+
+    if col == 'notes':
+        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
+        stopwords_set = (set(stopwords.words('english'))).union(remove_words)
+    else:
+        remove_words = {'man', 'men', 'woman', 'person', 'he', 'she', 'they', 'people', 'with'}
+        stopwords_set = (set(stopwords.words('english'))).union(remove_words)
+    return list(stopwords_set)
+
+#TODO: clean up this function - it's not working properly
 def remove_stopwords(df, col):
     """[summary]
     Args:
@@ -92,21 +108,24 @@ def remove_stopwords(df, col):
     Returns:
         [type]: [description]
     """
-    docs = df[col].values
-    text = stringify(df, col)
-    if col == 'notes':
-        #TODO: add more to set of stopwords for the notes
-        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
-        stopwords_set = (set(stopwords.words('english'))).union(remove_words)
-    else:
-        stopwords_set = set(stopwords.words('english')) 
-    return [[word for word in text if word not in stopwords_set] for word in docs]
+    
+    df[col] = df[col].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords_set)]))
+    return df
+
 
 # This function doesn't need anything from the above
 def clean_text(df, col):
     '''
-    using a pre-made function 
-    returns a list of the tokenized and stripped of stopwords 
+    """    
+    taking in a column from a dataframe,
+    return a list of tokenized words, stripped of stopwords 
+    Args
+            df (Pandas DataFrame)
+            cols (list of str): list of columns to be cleaned, as strings
+    Returns:
+        [list of str]: a list of strings
+            to be used for an EDA wordcloud from a given column
+    """
     '''
     text = ' '.join(df[col])
     tokens = word_tokenize(text)
@@ -128,21 +147,10 @@ def clean_text(df, col):
     words = [w for w in words if not w in stopwords_set]
     return words
 
-def clean_columns(df, cols):
-    """[summary]
 
-    Args:
-        df ([type]): [description]
-        cols (list of str): list of columns to be cleaned, as strings
 
-    Returns:
-        Pandas DataFrame: with removed punctuation
-    """    
-    for col in cols:
-        p = re.compile(r'[^\w\s]+')
-        df[col] = [p.sub(' ', x) for x in df[col].tolist()]
-        df[col] = df[col].str.lower()
-    return df
+
+
 
 def make_q_and_a_col(df):
     """
@@ -217,10 +225,11 @@ def make_sub_df(df, fraction = .05, state = 123):
 
 if __name__ == "__main__":
     jeopardy_df = read_tsv('../data/master_season1-35.tsv')
-    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    # jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
     jeopardy_df = update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
     
     regular_episodes_sub = make_sub_df(regular_episodes)
 
+    no_punc = remove_punc(regular_episodes_sub, ['category', 'question_and_answer'])
