@@ -149,9 +149,6 @@ def clean_text(df, col):
 
 
 
-
-
-
 def make_q_and_a_col(df):
     """
     Makes a column that concatenates the strings
@@ -233,3 +230,4 @@ if __name__ == "__main__":
     regular_episodes_sub = make_sub_df(regular_episodes)
 
     no_punc = remove_punc(regular_episodes_sub, ['category', 'question_and_answer'])
+    print (make_stopwords(None))

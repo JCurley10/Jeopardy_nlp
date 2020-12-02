@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
-from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
+import preprocessing 
 
 
 #TODO: fix up what is happening with the stemming of words in the answers df
