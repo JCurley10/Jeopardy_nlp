@@ -67,7 +67,7 @@ if __name__ == "__main__":
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
 
     x_cols = 'question_and_answer'
-    y_col = 'question_difficulty'
+    y_col = 'clue_difficulty'
     X_train, X_test, y_train, y_test = make_train_test_sets(regular_episodes, x_cols, y_col, test_size = .25, random_state = 123)
     X_train_sample = X_train.sample(frac = .1, axis = 0, random_state = 123)
 

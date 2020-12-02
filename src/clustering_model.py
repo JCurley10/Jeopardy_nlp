@@ -8,23 +8,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 from sklearn.cluster import KMeans
-from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
+from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns, make_sub_df
 
 
-#TODO: write docstring
-def make_sub_df(df, fraction = .05, state = 123):
-    """[summary]
 
-    Args:s
-        df ([type]): [description]
-        fraction (float, optional): [description]. Defaults to .05.
-        state (int, optional): [description]. Defaults to 123.
-
-    Returns:
-        [type]: [description]
-    """
-    return df.sample(frac = fraction, axis = 0, random_state = state)
-"make"
 #TODO: hyperparameter tuning with the Count Vectorizer 
 #TODO: write docstring
 

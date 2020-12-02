@@ -158,18 +158,31 @@ def make_q_and_a_col(df):
     return df
 
 #TODO: make another condition using "view assummptions" 
-def make_q_difficulty_col(df):
-    conditions = [((df['value']<=600) & (df['daily_double']=='no')), #easy
+def make_clue_difficulty_col(df, viewer_assumptions = False):
+    if viewer_assumptions:
+        conditions = [((df['daily_double']=='no') & (df['value']<= 800)), #easy
+                    ((df['daily_double']=='no') & (df['round']== 1) & (df['value'] >= 800)), #average
+                    ((df['daily_double']=='no') & (df['value'] == 1200)) #average
+                    ((df['daily_double']=='no') & (df['round']== 2) & (df['value'] >= 1600)), #hard
+                    ((df['daily_double']== 'yes') & (df['round'] == 1)), #average
+                    ((df['daily_double']== 'yes') & (df['round'] == 2)), #hard
+                    (df['round'] == 3)] # final jeopardy, hard 
+
+        difficulties = ['easy', 'average', 'average', 'hard', 'average', 'hard', 'hard']
+        
+    else:
+        conditions = [((df['value']<=600) & (df['daily_double']=='no')), #easy
                 ((df['daily_double']=='no') & ((df['value']==800) | (df['value']==1200))), #average
                 ((df['daily_double']== 'yes') & (df['round'] == 1)), #average
                 ((df['daily_double']=='no') & ((df['value']==1000) | (df['value']>=1600))), #hard
                 ((df['daily_double']== 'yes') & (df['round'] == 2)), #hard
                 (df['round'] == 3)] # final jeopardy, hard 
+    
 
 
-    difficulties = ['easy', 'average', 'average', 'hard', 'hard', 'hard']
+        difficulties = ['easy', 'average', 'average', 'hard', 'hard', 'hard']
 
-    df['question_difficulty'] = np.select(conditions, difficulties)
+    df['clue_difficulty'] = np.select(conditions, difficulties)
     return df
 
 #TODO: write docstring
@@ -183,8 +196,23 @@ def update_df_columns(df):
         [type]: [description]
     """    
     df_new = make_q_and_a_col(df)
-    df_new = make_q_difficulty_col(df_new)
+    df_new = make_clue_difficulty_col(df_new)
     return df_new
+
+
+#TODO: write docstring
+def make_sub_df(df, fraction = .05, state = 123):
+    """[summary]
+
+    Args:s
+        df ([type]): [description]
+        fraction (float, optional): [description]. Defaults to .05.
+        state (int, optional): [description]. Defaults to 123.
+
+    Returns:
+        [type]: [description]
+    """
+    return df.sample(frac = fraction, axis = 0, random_state = state)
 
 
 if __name__ == "__main__":
@@ -193,4 +221,6 @@ if __name__ == "__main__":
     jeopardy_df = update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
+    
+    regular_episodes_sub = make_sub_df(regular_episodes)
 
