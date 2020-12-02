@@ -47,9 +47,5 @@ def update_df_columns(df):
     df_new = make_q_difficulty_col(df_new)
     return df_new
 
- 
 if __name__ == "__main__":
-    jeopardy = read_tsv('../data/master_season1-35.tsv')
-    jeopardy_df = update_df_columns(jeopardy)
 
-    

@@ -14,6 +14,8 @@ from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
 from cleaning import clean_text
+from cleaning import read_tsv
+from build_features import update_df_columns
 
 
 #TODO: fix up what is happening with the stemming of words in the answers df
@@ -43,17 +45,18 @@ def make_word_cloud(df, col, color, save = False):
         plt.show()
 
 
-
 if __name__ == "__main__":
-    jeopardy = pd.read_csv('../data/master_season1-35.tsv', sep = "\t")
-    regular_episode = jeopardy[jeopardy['notes']=='-']
-    special_tournament = jeopardy.drop(regular_episode.index)
+    jeopardy_df = read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = update_df_columns(jeopardy_df)
+    regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
+    special_tournaments = jeopardy_df.drop(regular_episodes.index)
 
-    jeopardy_train, jeopardy_test, jeopardy_subtrain = get_sub_df(jeopardy)
-    regular_train, regular_test, regular_subtrain = get_sub_df(regular_episode)
-    special_train, special_test, special_subtrain = get_sub_df(special_tournament)
 
-    # make_word_cloud(jeopardy, 'category',  color = 'plasma', save = False )
-    # make_word_cloud(jeopardy, 'question',  color = 'plasma', save = False)
-    # make_word_cloud(jeopardy, 'answer',  color = 'plasma', save = False)
+    # make_word_cloud(jeopardy_df, 'category',  color = 'plasma', save = False )
+    # make_word_cloud(jeopardy_df, 'question',  color = 'plasma', save = False)
+    # make_word_cloud(jeopardy_df, 'answer',  color = 'plasma', save = False)
+    make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )
+
+
+
 

@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.decomposition import NMF as NMF_sklearn
 import string
+import re
 
 
 def read_tsv(filepath):
@@ -115,7 +116,7 @@ def clean_text(df, col):
     table = str.maketrans('', '', string.punctuation)
     stripped = [w.translate(table) for w in tokens]
 
-    words = [word for word in stripped if word.isal()]
+    words = [word for word in stripped if word.isalnum()]
     
     # filter out stop words
     if col == 'notes':
@@ -127,11 +128,69 @@ def clean_text(df, col):
     words = [w for w in words if not w in stopwords_set]
     return words
 
-def clean_columns(df, col):
-    pass
+def clean_columns(df, cols):
+    """[summary]
+
+    Args:
+        df ([type]): [description]
+        cols (list of str): list of columns to be cleaned, as strings
+
+    Returns:
+        Pandas DataFrame: with removed punctuation
+    """    
+    for col in cols:
+        p = re.compile(r'[^\w\s]+')
+        df[col] = [p.sub(' ', x) for x in df[col].tolist()]
+        df[col] = df[col].str.lower()
+    return df
+
+def make_q_and_a_col(df):
+    """
+    Makes a column that concatenates the strings
+    from the question and answer columns
+
+    Args:
+        df (Pandas DataFrame): 
+    Returns:
+        Pandas DataFrame with an additional column
+    """    
+    df['question_and_answer'] = df["question"] + ' ' + df['answer']
+    return df
+
+#TODO: make another condition using "view assummptions" 
+def make_q_difficulty_col(df):
+    conditions = [((df['value']<=600) & (df['daily_double']=='no')), #easy
+                ((df['daily_double']=='no') & ((df['value']==800) | (df['value']==1200))), #average
+                ((df['daily_double']== 'yes') & (df['round'] == 1)), #average
+                ((df['daily_double']=='no') & ((df['value']==1000) | (df['value']>=1600))), #hard
+                ((df['daily_double']== 'yes') & (df['round'] == 2)), #hard
+                (df['round'] == 3)] # final jeopardy, hard 
+
+
+    difficulties = ['easy', 'average', 'average', 'hard', 'hard', 'hard']
+
+    df['question_difficulty'] = np.select(conditions, difficulties)
+    return df
+
+#TODO: write docstring
+def update_df_columns(df):
+    """[summary]
+
+    Args:
+        df ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
+    df_new = make_q_and_a_col(df)
+    df_new = make_q_difficulty_col(df_new)
+    return df_new
 
 
 if __name__ == "__main__":
-    jeopardy = read_tsv('../data/master_season1-35.tsv')
-    regular_tournament = jeopardy[jeopardy['notes']=='-']
-    special_tournament = jeopardy.drop(regular_tournament.index)
+    jeopardy_df = read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = update_df_columns(jeopardy_df)
+    regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
+    special_tournaments = jeopardy_df.drop(regular_episodes.index)
+
