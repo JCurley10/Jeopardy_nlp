@@ -12,8 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 from sklearn import svm
-from build_features import jeopardy_df, regular_episodes, special_tournaments
-from cleaning import read_tsv
+from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
 
 #TODO: make sure this is appriparaite for the use
 def make_train_test_sets(df, x_cols, y_col, test_size = .25, random_state = 123):
@@ -61,12 +60,17 @@ def build_text_vectorizer(X_train):
 
 
 if __name__ == "__main__":
-    
+    jeopardy_df = read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = update_df_columns(jeopardy_df)
+    regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
+    special_tournaments = jeopardy_df.drop(regular_episodes.index)
+
     x_cols = 'question_and_answer'
     y_col = 'question_difficulty'
     X_train, X_test, y_train, y_test = make_train_test_sets(regular_episodes, x_cols, y_col, test_size = .25, random_state = 123)
     X_train_sample = X_train.sample(frac = .1, axis = 0, random_state = 123)
 
-    print (build_text_vectorizer(X_train_sample).toarray())
+    print (build_text_vectorizer(X_train_sample))
   
     

@@ -13,9 +13,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
-from cleaning import clean_text
-from cleaning import read_tsv
-from build_features import update_df_columns
+from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
 
 
 #TODO: fix up what is happening with the stemming of words in the answers df
@@ -43,10 +41,13 @@ def make_word_cloud(df, col, color, save = False):
         plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
     else:
         plt.show()
+    
+    
 
 
 if __name__ == "__main__":
     jeopardy_df = read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
     jeopardy_df = update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
@@ -55,7 +56,7 @@ if __name__ == "__main__":
     # make_word_cloud(jeopardy_df, 'category',  color = 'plasma', save = False )
     # make_word_cloud(jeopardy_df, 'question',  color = 'plasma', save = False)
     # make_word_cloud(jeopardy_df, 'answer',  color = 'plasma', save = False)
-    make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )
+    # make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )
 
 
 

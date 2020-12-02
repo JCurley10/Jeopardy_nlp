@@ -2,18 +2,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
-import string
-from build_features import update_df_columns
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.decomposition import NMF
+from sklearn.decomposition import NMF, LatentDirichletAllocation
 from sklearn.cluster import KMeans
-from cleaning import read_tsv
-from build_features import update_df_columns
+from preprocessing import read_tsv, update_df_columns, clean_text, clean_columns
 
 
 #TODO: write docstring
@@ -57,6 +52,8 @@ def kmeans_cluster(df, col, n):
 
     name_arr = np.array(names)
     return f'n = {n}', name_arr[top_n]
+
+
 
 
 #TODO: change the hyperparameters in the tfidf vectorizer or have the option
@@ -109,6 +106,7 @@ def nm_factorize(df, col, n_features, n_topics, n_top_words):
 if __name__ == "__main__":
 
     jeopardy_df = read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
     jeopardy_df = update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
