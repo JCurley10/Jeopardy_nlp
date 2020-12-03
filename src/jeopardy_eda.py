@@ -19,7 +19,7 @@ import preprocessing
 def make_word_cloud(df, col, color, save = False, eda = False):
 
     #generate word list
-    word_lst = preprocessing.clean_text(df, col)
+    word_lst = preprocessing.clean_text(df, col) # a category was eliminated by removing punctuation 
     words = ' '.join(word_lst)
     wordcloud = WordCloud(width = 800, height = 800, 
                 background_color =None, mode = 'RGBA', 
@@ -45,10 +45,10 @@ def get_wrd_cts(df):
     Args:
         df (Pandas DataFrame): must have the columns "clue_difficulty", "answer", "question"
     """    
-    total_wrds_questions = [len(x.split()) for x in df['question'].tolist()]
-    total_wrds_answers = [len(x.split()) for x in df['answer'].tolist()]
+    total_wrds_questions = [len(x.split()) for x in df['Question'].tolist()]
+    total_wrds_answers = [len(x.split()) for x in df['Answer'].tolist()]
 
-    data = {'Clue Difficulty': list(df['clue_difficulty']), 
+    data = {'Clue Difficulty': list(df['Clue Difficulty']), 
         'Answer Word Count': total_wrds_answers, 
         'Question Word Count': total_wrds_questions}
 
@@ -98,9 +98,9 @@ def top_categories(df, n):
     Returns:
         [type]: [description]
     """    
-    common_topics = df['category'].value_counts()[:n]
+    common_topics = df['J-Category'].value_counts()[:n]
     common_topics
-    common_cats = pd.DataFrame(common_topics).reset_index().rename(columns = {"index":"J-Category", "category":"Counts"})
+    common_cats = pd.DataFrame(common_topics).reset_index().rename(columns = {"index":"J-Category", "J-Category":"Counts"})
     counts = common_cats['Counts'].apply(lambda x: x / 5)
     pd.Series(counts)
     common_cats['Counts'] = pd.Series(counts)
@@ -128,30 +128,23 @@ def graph_top_categories(df, color, save = False):
         plt.show()
 
 if __name__ == "__main__":
-    jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
-    # jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
-    jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
-    jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
-    regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
-    special_tournaments = jeopardy_df.drop(regular_episodes.index)
-    
+    regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
+    make_word_cloud(regular_episodes, 'J-Category',  color = 'ocean', save = True ) #handle how removing punctution affected this 
+    # make_word_cloud(regular_episodes, 'Question',  color = 'plasma', save = False)
+    # make_word_cloud(regular_episodes, 'Answer',  color = 'plasma', save = False)
+    make_word_cloud(regular_episodes, 'Question and Answer', color = 'plasma', save = True )
 
-    # make_word_cloud(jeopardy_df, 'category',  color = 'ocean', save = True )
-    # make_word_cloud(jeopardy_df, 'question',  color = 'plasma', save = False)
-    # make_word_cloud(jeopardy_df, 'answer',  color = 'plasma', save = False)
-    # make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )
-
-    df = get_wrd_cts(special_tournaments)
+    df = get_wrd_cts(regular_episodes)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     maxes = df.groupby('Clue Difficulty').max().sort_values('Answer Word Count').round(2)
-    # graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
-    # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
+    graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
+    graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
 
     # top_categories(jeopardy_df, 10)
-    common_cats = top_categories(jeopardy_df, 10)
+    common_cats = top_categories(regular_episodes, 10)
     # print(common_cats)
-    graph_top_categories(common_cats, color = "steelblue", save = True)
+    #graph_top_categories(common_cats, color = "steelblue", save = True)
     
 

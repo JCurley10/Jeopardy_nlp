@@ -168,18 +168,9 @@ def show_impt_words(n_top_words, n_topics, save = False):
 
 if __name__ == "__main__":
 
-    jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
-    jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
-    jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
-    jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
-    regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
-    special_tournaments = jeopardy_df.drop(regular_episodes.index)
+    regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     
-    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes))
-    df = regular_episodes_sub
-    col = 'question_and_answer'
-
-    n = 2
+    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
 
 
