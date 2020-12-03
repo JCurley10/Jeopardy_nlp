@@ -92,7 +92,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 <p>
 <p align="center">
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="600" height="600">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="500" height="500">
 </p>
 
 <p align="center">
@@ -109,7 +109,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 ### Most Common Words in Combined Question and Answer
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="600" height="600">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="500" height="500">
 </p>
 <p>
 
@@ -118,7 +118,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 ### Number of Words per Answer, By Difficulty<sup>1</sup>
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="800" height="600">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="600" height="400">
 </p>
 <p>
 

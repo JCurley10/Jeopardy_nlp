@@ -67,7 +67,7 @@ def graph_wrd_cts(df, col, color, save = False):
         df (Pandas DataFrame): must be a dataframe with wordcounts
             can be made from get_wrd_cts
     """    
-    fig, ax = plt.subplots(1, 1, dpi = 150)
+    fig, ax = plt.subplots(1, 1,figsize = (6, 4), dpi = 150)
 
     rects1 = ax.bar(df.index, df[col], color = color)
     ax.set_title(f'{col} vs. Clue Difficulty')
@@ -91,7 +91,7 @@ def graph_wrd_cts(df, col, color, save = False):
     if save:
         plt.savefig(f'../images/eda_images/{col}_counts_bar.png')
 
-def top_categories(df)
+def top_categories(df):
     n = 10
     common_topics = df['category'].value_counts()[:n]
     common_topics
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     df = get_wrd_cts(special_tournaments)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     maxes = df.groupby('Clue Difficulty').max().sort_values('Answer Word Count').round(2)
-    # graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = False)
+    graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
     # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
 
     # top_categories(jeopardy_df)
