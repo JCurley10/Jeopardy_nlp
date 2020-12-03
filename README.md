@@ -89,7 +89,9 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 <p>
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="400" height="400">
 <p>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="400" height="400">
 most common categories 
+
 ### Notes 
 
 <sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a question easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided An average success under 50% was classified as "hard", between 50% and 50% "average", and over 60% "hard". The the following types of clues were classified as such:
