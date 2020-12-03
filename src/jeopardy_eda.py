@@ -5,9 +5,6 @@ from wordcloud import WordCloud, STOPWORDS
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk.stem.porter import PorterStemmer
-from nltk.stem.snowball import SnowballStemmer
-from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
@@ -91,8 +88,16 @@ def graph_wrd_cts(df, col, color, save = False):
     if save:
         plt.savefig(f'../images/eda_images/{col}_counts_bar.png')
 
-def top_categories(df):
-    n = 10
+def top_categories(df, n):
+    """[summary]
+
+    Args:
+        df ([type]): [description]
+        n ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     common_topics = df['category'].value_counts()[:n]
     common_topics
     common_cats = pd.DataFrame(common_topics).reset_index().rename(columns = {"index":"J-Category", "category":"Counts"})
@@ -100,8 +105,17 @@ def top_categories(df):
     pd.Series(counts)
     common_cats['Counts'] = pd.Series(counts)
     common_cats = common_cats.set_index('J-Category')
+    return common_cats
+
+def graph_top_categories(df, color, save = False):
+    """[summary]
+
+    Args:
+        df ([type]): [description]
+        save (bool, optional): [description]. Defaults to False.
+    """    
     fig, ax = plt.subplots(1, 1, figsize = (6, 4), dpi = 140)
-    ax.bar(common_cats.index, common_cats['Counts'], color = 'darkblue')
+    ax.bar(common_cats.index, common_cats['Counts'], color = color)
     ax.set_ylabel("Number of Episodes J-Category Occurs", fontsize = 14)
     ax.set_title("Top 10 J-Categories", fontsize = 14)
     ax.set_xlabel("J-Categories", fontsize = 16)
@@ -124,7 +138,7 @@ if __name__ == "__main__":
     regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
 
-    make_word_cloud(jeopardy_df, 'category',  color = 'ocean', save = True )
+    # make_word_cloud(jeopardy_df, 'category',  color = 'ocean', save = True )
     # make_word_cloud(jeopardy_df, 'question',  color = 'plasma', save = False)
     # make_word_cloud(jeopardy_df, 'answer',  color = 'plasma', save = False)
     # make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )
@@ -132,9 +146,11 @@ if __name__ == "__main__":
     df = get_wrd_cts(special_tournaments)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     maxes = df.groupby('Clue Difficulty').max().sort_values('Answer Word Count').round(2)
-    graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
+    # graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
     # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
 
-    # top_categories(jeopardy_df)
+    # top_categories(jeopardy_df, 10)
+    common_cats = top_categories(jeopardy_df, 10)
+    graph_top_categories(common_cats, color = "steelblue", save = True)
     
 

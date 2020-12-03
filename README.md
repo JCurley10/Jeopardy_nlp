@@ -102,6 +102,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 <p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400">
 </p>
+American History, History, World History all appear! 
 </p>
 
 <p align="center">

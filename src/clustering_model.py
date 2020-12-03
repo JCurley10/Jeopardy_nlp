@@ -129,7 +129,6 @@ def viz_top_words(words, weights, color, save = False):
     else:
         plt.show()
 
-
     
 
 if __name__ == "__main__":
