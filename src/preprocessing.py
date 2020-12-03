@@ -89,9 +89,17 @@ def tokenize_by_col(df, cols):
 		df[col] = df[col].apply(word_tokenize)
 	return df
 
+
+
 def tokenize(text):
-	lemmatizer = W
-	tokens = lemmatizer(text)
+	lemmatizer = WordNetLemmatizer()
+	# stemmer = SnowballStemmer('english')
+	word_list = word_tokenize(text)
+
+	lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
+	# stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
+	return lemmatized_wrds
+
 
 def make_stopwords(col):
 
@@ -103,7 +111,10 @@ def make_stopwords(col):
 						'also', '000', 'girl', 'boy', 'know', 'mean', 'name', 'word', 'use', 
 						'big', 'small', 'one', 'iii', 'two', 'three', 'i', 'ii', 'said', 'say',
 						'know', 'known', 'name', 'say', 'good', 'bad', 'group', 'sometime',
-						'always', 'never'}
+						'always', 'never', 'd', 's', 'abov', 'alway', 'ani', 'becaus', 'befor', 
+						'could', 'doe', 'dure', 'ha', 'might', 'must', "n't", 'need', 'onc', 'onli', 
+						'ourselv', 'peopl', 'sha', 'sometim', 'themselv', 'veri', 'wa', 'whi', 'wo', 'would', 'yourselv' 
+						}
 		stopwords_set = (set(stopwords.words('english'))).union(remove_words)
 	return list(stopwords_set)
 
@@ -154,7 +165,6 @@ def clean_text(df, col):
 		stopwords_set = set(stopwords.words('english'))
 	words = [w for w in words if not w in stopwords_set]
 	return words
-
 
 
 def make_q_and_a_col(df):

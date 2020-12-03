@@ -52,10 +52,9 @@ An overarching topic that can describe each clue's context. For example, the J-C
 
 
 ## The Goal
-**The goal of this project is to help interactive *Jeopardy!* home viewers and aspiring contestants study the most common subjects that appear in Jeopardy.**
+**The goal of this analysis is to help *Jeopardy!* home viewers and aspiring contestants study the most common or important subjects that appear in Jeopardy.**
 
-It is very straightforward to identify the most common words or J-Categories that have appeared in the show, but that does not help with focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar J-Categories, and within these groupings, idenfity which words are most important in order for a contestant to focus their study. 
-
+It is straightforward to identify the most common words or J-Categories that have appeared in the show, but that is not enough informatino for focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar J-Categories, and within these groupings, idenfity which words are most important in order for a contestant to focus their study. 
 
 *Jeopardy!*
 ## The Data
@@ -73,13 +72,14 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 #### The Updated Dataset
 - We're looking at regular episodes (not a special tournament or championship), so the 'notes' column was removed
 - The column for "comments" is removed, which were additional hints that the host gave to contestants after reading a category
-- The 'question' and 'answer' columns combined in a 'Question and Answer' column for analysis
-- A new column called "question_difficulty"  defines a question as easy, average, or hard<sup>1</sup>
-- Punctuation has been removed
+- The "category" column was renamed to "J-Category"
+- The 'Question' and 'Answer' columns combined in a 'Question and Answer' column for analysis
+- A new column called "Question Difficulty"  defines a question as easy, average, or hard<sup>1</sup>
+- Punctuation has been removed from the "J-Category", "Question", "Answer", "Question and Answer" columns
 - I left the capitalization as-is for all columns so I could adjust this setting in my model
 - each row can be considered a *clue* instance
 
-|    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | clue_difficulty   |
+|    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
 |  0 |       1 |     100 | no             | LAKES  RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
 |  1 |       1 |     200 | no             | LAKES  RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
@@ -123,7 +123,24 @@ American History, History, World History all appear!
 </p>
 <p>
 
+- Describe why i am not going with this 
+
 ## Analysis 
+
+- I used NMF because ...
+- define stopwords
+- I chose these stopwords.. (connect to the wordclouds above)
+- I combined question and answer because...
+- I chose n clusters / categories /latent topics
+- I chose top 10 words
+
+## Conclusion and Further Analysis
+- What this tells me about the topics to study
+- What featurizations do I need to adjust (n-grams, capitalization, n-topics)
+- 
+
+- next - classify by difficulty or high-value 
+
 
 
 
@@ -141,7 +158,7 @@ This varied slightly than my own assumptions, which are:
 - hard clues: over $1200 in round 2, a daily double in round 2, or final jeopardy
 
 **Thanks**<p>
-A special thank you to Galvanize instructors and residents Kayla, Chris Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon
+A special thank you to Galvanize instructors and residents Kayla, Chris, Rosie, Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon
 
 This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons and my friend Laura whose love of Jeopardy inspired this investigation. 
 

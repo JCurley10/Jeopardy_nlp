@@ -191,9 +191,9 @@ if __name__ == "__main__":
     tot_features = 1000
 
     #Adjust the vectorizer and nmf model hyperparameters 
-    vectorizer = TfidfVectorizer(min_df=1, max_df=5,
-                    ngram_range=(1,2), tokenizer = preprocessing.tokenize, 
-                    lowercase = False, 
+    vectorizer = TfidfVectorizer(min_df=1, max_df=1.0,
+                    ngram_range=(1,2), 
+                    lowercase = True, 
                     analyzer = 'word', stop_words=stopwords,
                     max_features = tot_features)
 
