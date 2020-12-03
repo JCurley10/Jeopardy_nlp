@@ -83,13 +83,14 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 
 ## Exploring the Data
 
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="400" height="400">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="600" height="600">
 <p>
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="400" height="400">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="600" height="600">
 <p>
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="400" height="400">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="600" height="400">
 <p>
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="400" height="400">
+
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400">
 most common categories 
 
 ### Notes 
