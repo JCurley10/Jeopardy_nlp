@@ -14,6 +14,9 @@
 ## Background and Motivation
 *Jeopardy!* is a gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other (and the clock) by responding to trivia clues. A unique feature of *Jeopardy!* is that the host will pose an **answer** and the contestant buzzes in and responds with a **question** in the form of "What is" or "Who is", etc.
 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="400" height="400"> <p>
+<sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
+
 There are three rounds in each episode with the following details:
 
 - Round 1: Jeopardy!
@@ -29,19 +32,20 @@ There are three rounds in each episode with the following details:
 
 With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, their entire winnings so far (known as a "True Daily Double"), or the most expensive clue that round ($1000 or $2000).
 
-The J-Categories in each episode include themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many unique categories! 
+The J-Categories in each episode fall under greater themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many truly unique topics! 
  
-Previous contestants and avid fans like myself have intuitions about which topics you should study up if you want to wow your friends while watching anepisode, or actually compete on the show. For example many *Jeopardy!* fans will say that you need to know the US presidents, world geography, state capitals, and names of celebrities. 
+Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to wow your friends while watching an episode, or actually compete on the show. For example many *Jeopardy!* fans will say that you need to know the US presidents, world geography, state capitals, and names of celebrities. 
 
 ## The Goal
-The goal of my project is to help *Jeopardy!* viewers and aspiring contestants study the most important topics. I'll do this by identifing the most common words that appear in *Jeopardy!* clues (both the questions and answers).
+**The goal of this project is to help *Jeopardy!* viewers and aspiring contestants study the most important topics. I'll do this by identifing the most common words that appear in *Jeopardy!* clues (both the questions and answers).**
 
 It is very straightforward to identify the most common words in Jeopardy, but it isn't so simple to identify the words within each J-Category or even to quantify the different *meta-categories* that describe similar J-Categories. 
 
 ## Key Terms
-
+#### Clue
+What I will be calling a category-question-answer combination, which is one instance or observation.
 #### J-Category: 
-The *Jeopardy!* defined category. In the image below, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
+The *Jeopardy!* defined category. In the image above, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
 #### Answer: 
 The clue read by the host, and shown on the screen
 #### Question:
@@ -69,6 +73,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 - A new column called "question_difficulty"  defines a question as easy, average, or hard<sup>1</sup>
 - Punctuation has been removed
 - I left the capitalization as-is for all columns so I could adjust this setting in my model
+- each row can be considered a *clue* instance
 
 |        |   Round |   Value | Daily Double   | Category              | Answer                                                                                                                                                               | Question            | Air Date   | Question and Answer                                                                                                                                                            | Clue Difficulty   |
 |-------:|--------:|--------:|:---------------|:----------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------|:-----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
@@ -78,12 +83,13 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 
 ## Exploring the Data
 
-<img src= https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png alt = 'category', width="400" height=400">
-
-<img src= https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png alt = 'q_and_a', width="400" height=400">
-
-<img src= https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png alt = 'q_and_a', width="400" height=400">
-
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="400" height="400">
+<p>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="400" height="400">
+<p>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="400" height="400">
+<p>
+most common categories 
 ### Notes 
 
 <sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a question easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided An average success under 50% was classified as "hard", between 50% and 50% "average", and over 60% "hard". The the following types of clues were classified as such:
