@@ -91,7 +91,27 @@ def graph_wrd_cts(df, col, color, save = False):
     if save:
         plt.savefig(f'../images/eda_images/{col}_counts_bar.png')
 
+def top_categories(df)
+    n = 10
+    common_topics = df['category'].value_counts()[:n]
+    common_topics
+    common_cats = pd.DataFrame(common_topics).reset_index().rename(columns = {"index":"J-Category", "category":"Counts"})
+    counts = common_cats['Counts'].apply(lambda x: x / 5)
+    pd.Series(counts)
+    common_cats['Counts'] = pd.Series(counts)
+    common_cats = common_cats.set_index('J-Category')
+    fig, ax = plt.subplots(1, 1, figsize = (6, 4), dpi = 140)
+    ax.bar(common_cats.index, common_cats['Counts'], color = 'darkblue')
+    ax.set_ylabel("Number of Episodes J-Category Occurs", fontsize = 14)
+    ax.set_title("Top 10 J-Categories", fontsize = 14)
+    ax.set_xlabel("J-Categories", fontsize = 16)
+    plt.xticks(rotation=70, ha = 'center', fontstretch = 'semi-condensed', fontsize = 8)
+    plt.tight_layout()
 
+    if save:
+        plt.savefig('../images/eda_images/top_10_categories.png')
+    else:
+        plt.show()
 
 if __name__ == "__main__":
     jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
@@ -115,6 +135,6 @@ if __name__ == "__main__":
     # graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = False)
     # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
 
-
+    # top_categories(jeopardy_df)
     
 
