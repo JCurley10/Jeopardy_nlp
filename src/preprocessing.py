@@ -95,12 +95,12 @@ def make_stopwords(col):
         remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
         stopwords_set = (set(stopwords.words('english'))).union(remove_words)
     else:
-        remove_words = {'man', 'men', 'woman', 'person', 'he', 'she', 'they', 'people', 'with'}
+        remove_words = {'man', 'men', 'woman', 'person', 'he', 'she', 'they', 'people', 'with', 'also', '000', 'girl', 'boy', 'know', 'mean', 'name', 'word', 'use', 'big', 'small'}
         stopwords_set = (set(stopwords.words('english'))).union(remove_words)
     return list(stopwords_set)
 
 #TODO: clean up this function - it's not working properly
-def remove_stopwords(df, col):
+def remove_stopwords(df, col, stopwords):
     """[summary]
     Args:
         df ([type]): [description]
@@ -109,7 +109,7 @@ def remove_stopwords(df, col):
         [type]: [description]
     """
     
-    df[col] = df[col].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords_set)]))
+    df[col] = df[col].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords)]))
     return df
 
 
@@ -140,7 +140,7 @@ def clean_text(df, col):
     # filter out stop words
     if col == 'notes':
         #TODO: add another set of stopwords for the notes
-        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate', 'night', 'jeopardy', 'night', 'games'}
+        remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'He', 'She', 'They', 'This' 'tournament', 'week', 'reunion', 'ultimate', 'night', 'jeopardy', 'night', 'games'}
         stopwords_set = (set(stopwords.words('english'))).union(remove_words)
     else:
         stopwords_set = set(stopwords.words('english'))

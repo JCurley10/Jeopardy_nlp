@@ -22,7 +22,7 @@ import preprocessing
 def make_word_cloud(df, col, color, save = False, eda = False):
 
     #generate word list
-    word_lst = clean_text(df, col)
+    word_lst = preprocessing.clean_text(df, col)
     words = ' '.join(word_lst)
     wordcloud = WordCloud(width = 800, height = 800, 
                 background_color =None, mode = 'RGBA', 
@@ -94,9 +94,9 @@ def graph_wrd_cts(df, col, color, save = False):
 
 
 if __name__ == "__main__":
-    jeopardy_df = read_tsv('../data/master_season1-35.tsv')
-    jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
-    jeopardy_df = update_df_columns(jeopardy_df)
+    jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
+    # jeopardy_df = preprocessing.clean_text(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
 

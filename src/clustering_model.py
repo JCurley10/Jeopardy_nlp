@@ -15,7 +15,7 @@ from preprocessing import read_tsv, update_df_columns, clean_text, make_sub_df, 
 #TODO: hyperparameter tuning with the Count Vectorizer 
 #TODO: write docstring
 
-def kmeans_cluster(df, col, n):
+def kmeans_cluster(df, col, n, stopwords):
     """[summary]
 
     Args:
@@ -25,7 +25,6 @@ def kmeans_cluster(df, col, n):
     Returns:
         [type]: [description]
     """
-    stopwords = make_stopwords(None)    
     count_vect = CountVectorizer(ngram_range = (1, 1), 
                             lowercase=True,  tokenizer=None, 
                             stop_words= stopwords, analyzer='word',  
@@ -46,92 +45,55 @@ def kmeans_cluster(df, col, n):
 
 #TODO: change the hyperparameters in the tfidf vectorizer or have the option
 #TODO: write the docstring
-def nm_factorize(df, col, n_features, n_topics, n_top_words):
+
+def get_names_weights(df, col, vectorizer, n_topics, nmf):
     """[summary]
 
     Args:
         df ([type]): [description]
         col ([type]): [description]
-        n_features ([type]): [description]
-        n_topics ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """ 
-    stopwords = make_stopwords(None) 
-    vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=n_features,
-                             stop_words=stopwords) #adjust stopwords
-                             
-    tfidf = vectorizer.fit_transform(df[col])
-
-    nmf = NMF(n_components=n_topics, random_state=123)
-    nmf.fit(tfidf)
-
-    W = nmf.transform(tfidf)
-    H = nmf.components_
-    feature_names = vectorizer.get_feature_names()
-    weights = nmf.components_
-
-    topics = ['latent_topic_{}'.format(i) for i in range(n_topics)]
-    idx = df.index
-    col = vectorizer.vocabulary_.keys()
-
-    W = pd.DataFrame(W, index = idx, columns = topics)
-    H = pd.DataFrame(H, index = topics, columns = col)
-
-    W,H = (np.around(x, 2) for x in (W, H))
-
-    for topic_idx, topic in enumerate(nmf.components_):
-        print("Topic #%d:" % topic_idx)
-        print(" ".join([feature_names[i]
-                    for i in topic.argsort()[:-n_top_words - 1:-1]]))
-        print()
-    print (f'RECONSTRUCTION: {nmf.reconstruction_err_}')
-    # print ()
-    # print (W.head(30), '\n\n', H.head(n_topics))
-
-    return None
-
-"""----------------"""
-
-
-def nm_factorizer(df, col, n_features, total_topics, ):
-    """[summary]
-
-    Args:
-        df ([type]): [description]
-        col ([type]): [description]
-        n_features (int): number of components or feature
-        n_topics ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """ 
-    stopwords = make_stopwords(None) 
-    vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, max_features=n_features,
-                             stop_words=stopwords) #adjust stopwords
-                             
-    tfidf = vectorizer.fit_transform(df[col])
-
-    nmf = NMF(n_components=total_topics, random_state=123)
-    nmf.fit(tfidf)
-
-    feature_names = vectorizer.get_feature_names()
-    weights = nmf.components_
-    return weights, feature_names
-
-
-def get_term_weights(weights, feature_names):
-    """
-    returns the topics with the terms and weights
-
-    Args:
-        weights ([type]): [description]
-        feature_names ([type]): [description]
+        vectorizer ([type]): [description]
+        components (int): number of topics to seaprate it into
 
     Returns:
         [type]: [description]
     """    
+    tfidf = vectorizer.fit_transform(df[col])
+
+    W = nmf.fit_transform(tfidf) # W matrix 
+    nmf_feature_names = vectorizer.get_feature_names()  #Feature names 
+    nmf_weights = nmf.components_ #H
+    return nmf_feature_names, nmf_weights
+
+
+def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf):
+    """[summary]
+
+    Args:
+        feature_names ([type]): [description]
+        weights ([type]): [description]
+        n_topics ([type]): [description]
+        n_top_words ([type]): [description]
+        vectorizer ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
+    reconstruction_error =  nmf.reconstruction_err_
+    words = []
+    topic_indices = []
+    for topic_idx, topic in enumerate(weights):
+        words.append(list(feature_names[i]
+                    for i in topic.argsort()[:-n_top_words - 1:-1]))
+        # names.append(" ".join([feature_names[i]
+        #             for i in topic.argsort()[:-n_top_words - 1:-1]]))
+        topic_indices.append(topic_idx)
+    
+    return words, topic_indices, reconstruction_error
+
+
+# get topics with their terms and weights
+def get_topics_terms_weights(feature_names, weights):
     feature_names = np.array(feature_names)
     sorted_indices = np.array([list(row[::-1]) for row in np.argsort(np.abs(weights))])
     sorted_weights = np.array([list(wt[index]) for wt, index in zip(weights, sorted_indices)])
@@ -141,91 +103,34 @@ def get_term_weights(weights, feature_names):
 
     return topics
 
-def print_topic_terms(topics, total_topics=1,
-                     weight_threshold=0.0001,
-                     display_weights=False,
-                     num_terms=None):
-    """
-    prints the components of topics 
-    returned from get_term_weights
 
-    Args:
-        topics ([type]): [description]
-        total_topics (int, optional): [description]. Defaults to 1.
-        weight_threshold (float, optional): [description]. Defaults to 0.0001.
-        display_weights (bool, optional): [description]. Defaults to False.
-        num_terms ([type], optional): [description]. Defaults to None.
-    """                     
+def viz_top_words(words, weights, color, save = False):
+    # word_weight = None
+    # d = dict()
+    # scalar = 
 
-    for index in range(total_topics):
-        topic = topics[index]
-        topic = [(term, float(wt))
-                 for term, wt in topic]
-        #print(topic)
-        topic = [(word, round(wt,2))
-                 for word, wt in topic
-                 if abs(wt) >= weight_threshold]
+    # # make a dictionary with d = {word: loadings*n}...
+    # for word in words:
+    #     d[word] = word_weight * scalar
+    wordcloud = WordCloud(width=800,height=800, 
+                        max_words=20,relative_scaling=1,normalize_plurals=True,
+                        background_color =None, mode = 'RGBA', 
+                        colormap = color, collocations=False, 
+                        min_font_size = 10).generate_from_frequencies(d)
 
-        if display_weights:
-            print('Topic #'+str(index+1)+' with weights')
-            print(topic[:num_terms]) if num_terms else topic
-        else:
-            print('Topic #'+str(index+1)+' without weights')
-            tw = [term for term, wt in topic]
-            print(tw[:num_terms]) if num_terms else tw
+    # plot the WordCloud image                        
+    plt.figure(figsize = (8, 8), facecolor = None) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+
+    if save:
+        plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
+    else:
+        plt.show()
 
 
-def return_topic_terms(topics, total_topics=1,
-                     weight_threshold=0.0001,
-                     num_terms=None):
-    """
-    returns a list of terms from the topics 
-    obtained from get_term_weights
-
-    Args:
-        topics ([type]): [description]
-        total_topics (int, optional): [description]. Defaults to 1.
-        weight_threshold (float, optional): [description]. Defaults to 0.0001.
-        num_terms ([type], optional): [description]. Defaults to None.
-
-    Returns:
-        [type]: [description]
-    """                     
-
-    topic_terms = []
-
-    for index in range(total_topics):
-        topic = topics[index]
-        topic = [(term, float(wt))
-                 for term, wt in topic]
-        #print(topic)
-        topic = [(word, round(wt,2))
-                 for word, wt in topic
-                 if abs(wt) >= weight_threshold]
-
-        topic_terms.append(topic[:num_terms] if num_terms else topic)
-
-    return topic_terms
-
-def get_terms_sizes(topic_display_list_item):
-    """
-    Returns the list of terms and sizes 
-
-    Args:
-        topic_display_list_item (list): topic_terms
-            output from the return_topic_terms function 
-
-    Returns:
-        [tuple of lists]: terms and sizes lists, 
-            that come from the topic_terms list
-
-    """    
-    terms = []
-    sizes = []
-    for term, size in topic_display_list_item:
-        terms.append(term)
-        sizes.append(size)
-    return terms, sizes
+    
 
 if __name__ == "__main__":
 
@@ -239,19 +144,37 @@ if __name__ == "__main__":
     regular_episode_sub_reindexed = regular_episode_sub.set_index('category')
     regular_episodes_reindexed = regular_episodes.set_index('category')
 
-  
+    # Use the model 
+    stopwords = make_stopwords(None) #need to adjust
+    df = regular_episode_sub_reindexed
+    col = 'question_and_answer'
+
+    n_topics = 10
+    n_top_words = 10
+    tot_features = 1000
+
+    vectorizer = TfidfVectorizer(min_df=1, max_df=0.95,
+                     ngram_range=(1,2), lowercase = True, 
+                     analyzer = 'word', stop_words=stopwords,
+                    max_features = tot_features)
+    nmf = NMF(n_components=n_topics, random_state=43,  
+                    alpha=0.1, l1_ratio=0.5)
 
 
+    feature_names, weights =  get_names_weights(df, col, vectorizer, n_topics, nmf)
+    topics = get_topics_terms_weights(feature_names, weights)
 
-    total_topics = None
-
-    weights, feature_names = nm_factorizer(regular_episode_sub_reindexed, 'question_and_answer', n_features, n_topics, n_top_words)
-    topics = get_term_weights(weights, feature_names)
-    print_topic_terms(topics, total_topics= 5, num_terms = 20, display_weights= True)
-
-
+    words, topic_indices, recon_err = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
     
     
-    # full_set = nm_factorizer(regular_episodes_reindexed, 'question_and_answer', n_features, n_topics, n_top_words)
+    # vocab_lst = []
+    # loadings_lst = []
+    # for i in range(len(topics[:][:10])):
+    #     vocab = topics[i][0]
+    #     loadings = topics[i][0]
 
-
+    for i in range(n_topics):
+        print (f'Topic {i+1}')
+        for l in topics[i][:10]:
+            print (l)
+        print ('\n')
