@@ -129,7 +129,7 @@ def graph_top_categories(df, color, save = False):
 
 if __name__ == "__main__":
     jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
-    jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
+    # jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
     jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
     jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
@@ -151,6 +151,7 @@ if __name__ == "__main__":
 
     # top_categories(jeopardy_df, 10)
     common_cats = top_categories(jeopardy_df, 10)
+    # print(common_cats)
     graph_top_categories(common_cats, color = "steelblue", save = True)
     
 
