@@ -9,12 +9,13 @@
 - [EDA](#Exploring-the-Data)
 - [Analysis](#Analysis)
 - [Conclusion and Futher Analysis](#Conclusion-and-Further-Analysis)
-- [Sources and Thanks](#Sources-and-Thanks)
+- [Notes, Sources, and Thanks](#Notes,-Sources,-and-Thanks)
 
 ## Background and Motivation
-*Jeopardy!* is a gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other (and the clock) by responding to trivia clues. A unique feature of *Jeopardy!* is that the host will pose an **answer** and the contestant buzzes in and responds with a **question** in the form of "What is" or "Who is", etc.
-
+*Jeopardy!* is a gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to trivia clues with different values. A unique feature of *Jeopardy!* is that the host poses an **answer** and the contestant who buzzes in first responds in the form of a **question**, always starting their response with "What is" or "Who is", etc.
+<p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> 
+</p>
 <p>
 <sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
 
@@ -35,12 +36,7 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 
 The J-Categories in each episode fall under greater themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many truly unique topics! 
  
-Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to wow your friends while watching an episode, or actually compete on the show. For example many *Jeopardy!* fans will say that you need to know the US presidents, world geography, state capitals, and names of celebrities. 
-
-## The Goal
-**The goal of this project is to help *Jeopardy!* viewers and aspiring contestants study the most important topics. I'll do this by identifing the most common words that appear in *Jeopardy!* clues (both the questions and answers).**
-
-It is very straightforward to identify the most common words in Jeopardy, but it isn't so simple to identify the words within each J-Category or even to quantify the different *meta-categories* that describe similar J-Categories. 
+Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to participate at home, or to be a real contestant on the show. For example many *Jeopardy!* fans will say that you need to know the US presidents, world geography, state capitals, and names of celebrities. 
 
 ## Key Terms
 #### Clue
@@ -52,7 +48,14 @@ The clue read by the host, and shown on the screen
 #### Question:
 The response to the clue, and it must be in the form of a question like "What is..."
 #### meta-category
-An overarching topic that can describe each clue's context. For example, the J-Category "EDIBLE RHYME TIME" might belong to a metacategory "Literature" or "Food". In data-science, we can also think of a meta-category as a *latent topic*
+An overarching topic that can describe each clue's context. For example, the J-Category "EDIBLE RHYME TIME" seen above might belong to a metacategory "Literature" or "Food". In data-science, we can also think of a meta-category as a *latent topic*
+
+
+## The Goal
+**The goal of this project is to help interactive *Jeopardy!* home viewers and aspiring contestants study the most common subjects that appear in Jeopardy.**
+
+It is very straightforward to identify the most common words or J-Categories that have appeared in the show, but that does not help with focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar J-Categories, and within these groupings, idenfity which words are most important in order for a contestant to focus their study. 
+
 
 *Jeopardy!*
 ## The Data
@@ -76,27 +79,56 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 - I left the capitalization as-is for all columns so I could adjust this setting in my model
 - each row can be considered a *clue* instance
 
-|        |   round |   value | daily_double   | category              | answer                                                                                                                                                          | question           | air_date   | question_and_answer                                                                                                                                                       | clue_difficulty   |
-|-------:|--------:|--------:|:---------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------|:-----------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
-| 120126 |       2 |     800 | no             | whats wrong with you  | Underactivity of this butterflyshaped gland slows the metabolism                                                                                                | Thyroid gland      | 2001-02-23 | Thyroid gland Underactivity of this butterflyshaped gland slows the metabolism                                                                                            | average           |
-| 151920 |       2 |    2000 | no             | geometry              | Cheryl of the Clue Crew in front of a blackboard with 2 circles drawn on it Also used to describe people in the world of circles its the opposite of concentric | eccentric          | 2003-10-03 | eccentric Cheryl of the Clue Crew in front of a blackboard with 2 circles drawn on it Also used to describe people in the world of circles its the opposite of concentric | hard              |
-| 149746 |       1 |     400 | no             | bible people magazine | Star Tracks says that scholars believe these startracking fellows were astrologers from Persia                                                                  | Magithree wise men | 2003-06-24 | Magithree wise men Star Tracks says that scholars believe these startracking fellows were astrologers from Persia                                                         | easy              |
+|    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | clue_difficulty   |
+|---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
+|  0 |       1 |     100 | no             | LAKES  RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
+|  1 |       1 |     200 | no             | LAKES  RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
+|  2 |       1 |     400 | no             | LAKES  RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy   
 
 ## Exploring the Data
+<p align="center">
 
+### Most Common Words in all J-Categories
+<p>
+<p align="center">
+<p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/category_wordcloud.png" alt="categories" width="600" height="600">
-<p>
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="600" height="600">
-<p>
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="800" height="600">
-<p>
+</p>
 
+<p align="center">
+
+### Top 10 Most Common J-Categories 
+</p>
+<p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400">
-most common categories 
+</p>
+</p>
 
-### Notes 
+<p align="center">
 
-<sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a question easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided An average success under 50% was classified as "hard", between 50% and 50% "average", and over 60% "hard". The the following types of clues were classified as such:
+### Most Common Words in Combined Question and Answer
+<p>
+<p align="center">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/question_and_answer_wordcloud.png" alt="categories" width="600" height="600">
+</p>
+<p>
+
+<p align="center">
+
+### Number of Words per Answer, By Difficulty<sup>1</sup>
+<p>
+<p align="center">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Answer%20Word%20Count_counts_bar.png" alt="length_of_answers" width="800" height="600">
+</p>
+<p>
+
+## Analysis 
+
+
+
+### Notes, Sources and Thanks
+
+<sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a question easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided An average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "hard". The the following types of clues were classified as such:
 
 - easy clues: value less than or equal to 600, and not a daily double, in either category 1 or 2
 - average clues: a daily double in category 1, or a value equal to 800 in either category
@@ -106,3 +138,10 @@ This varied slightly than my own assumptions, which are:
 - easy clues: Less than $800 in either round, and not a dailty double
 - average clues: over $800 in round 1, $1200 in round 2, or a daily double in round 1
 - hard clues: over $1200 in round 2, a daily double in round 2, or final jeopardy
+
+**Thanks**<p>
+A special thank you to Galvanize instructors and residents Kayla, Chris Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon
+
+This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons and my friend Laura whose love of Jeopardy inspired this investigation. 
+
+
