@@ -14,7 +14,8 @@
 ## Background and Motivation
 *Jeopardy!* is a gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other (and the clock) by responding to trivia clues. A unique feature of *Jeopardy!* is that the host will pose an **answer** and the contestant buzzes in and responds with a **question** in the form of "What is" or "Who is", etc.
 
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="400" height="400"> <p>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> 
+<p>
 <sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
 
 There are three rounds in each episode with the following details:
@@ -75,7 +76,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 - I left the capitalization as-is for all columns so I could adjust this setting in my model
 - each row can be considered a *clue* instance
 
-|        |   Round |   Value | Daily Double   | Category            Answer                                                                                                                                                               | Question            | Air Date   | Question and Answer                                                                                                                                                            | Clue Difficulty   |
+|        |   round |   value | daily_double   | category              | answer                                                                                                                                                          | question           | air_date   | question_and_answer                                                                                                                                                       | clue_difficulty   |
 |-------:|--------:|--------:|:---------------|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------|:-----------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
 | 120126 |       2 |     800 | no             | whats wrong with you  | Underactivity of this butterflyshaped gland slows the metabolism                                                                                                | Thyroid gland      | 2001-02-23 | Thyroid gland Underactivity of this butterflyshaped gland slows the metabolism                                                                                            | average           |
 | 151920 |       2 |    2000 | no             | geometry              | Cheryl of the Clue Crew in front of a blackboard with 2 circles drawn on it Also used to describe people in the world of circles its the opposite of concentric | eccentric          | 2003-10-03 | eccentric Cheryl of the Clue Crew in front of a blackboard with 2 circles drawn on it Also used to describe people in the world of circles its the opposite of concentric | hard              |
