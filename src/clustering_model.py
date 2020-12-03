@@ -134,13 +134,16 @@ def viz_top_words(words, weights, color, save = False):
 
 if __name__ == "__main__":
 
-    jeopardy_df = read_tsv('../data/master_season1-35.tsv')
-    # jeopardy_df = clean_text(jeopardy_df, ['category', 'comments', 'answer', 'question'])
-    jeopardy_df = update_df_columns(jeopardy_df)
+    jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
+    jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
+    jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
+    jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
+    
+    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
-    regular_episode_sub = make_sub_df(regular_episodes)
+
     regular_episode_sub_reindexed = regular_episode_sub.set_index('category')
     regular_episodes_reindexed = regular_episodes.set_index('category')
 
@@ -157,6 +160,7 @@ if __name__ == "__main__":
                      ngram_range=(1,2), lowercase = True, 
                      analyzer = 'word', stop_words=stopwords,
                     max_features = tot_features)
+
     nmf = NMF(n_components=n_topics, random_state=43,  
                     alpha=0.1, l1_ratio=0.5)
 

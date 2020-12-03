@@ -72,7 +72,7 @@ def remove_punc(df, cols):
     """    
     for col in cols:
         p = re.compile(r'[^\w\s]+')
-        df[col] = [p.sub(' ', x) for x in df[col].tolist()]
+        df[col] = [p.sub('', x) for x in df[col].tolist()]
     return df
 
 
@@ -223,11 +223,10 @@ def make_sub_df(df, fraction = .05, state = 123):
 if __name__ == "__main__":
     jeopardy_df = read_tsv('../data/master_season1-35.tsv')
     # jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = lowercase(jeopardy_df, ['category'])
+    jeopardy_df = remove_punc(jeopardy_df, ['category', 'question', 'answer'])
     jeopardy_df = update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
     
     regular_episodes_sub = make_sub_df(regular_episodes)
-
-    no_punc = remove_punc(regular_episodes_sub, ['category', 'question_and_answer'])
-    print (make_stopwords(None))

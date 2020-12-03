@@ -95,13 +95,16 @@ def graph_wrd_cts(df, col, color, save = False):
 
 if __name__ == "__main__":
     jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
-    # jeopardy_df = preprocessing.clean_text(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
+    jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
     jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
+    
+    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
 
-    # make_word_cloud(jeopardy_df, 'category',  color = 'plasma', save = False )
+    make_word_cloud(jeopardy_df, 'category',  color = 'ocean', save = True )
     # make_word_cloud(jeopardy_df, 'question',  color = 'plasma', save = False)
     # make_word_cloud(jeopardy_df, 'answer',  color = 'plasma', save = False)
     # make_word_cloud(jeopardy_df, 'question_and_answer', color = 'plasma', save = True )

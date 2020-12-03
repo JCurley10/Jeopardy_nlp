@@ -169,18 +169,19 @@ def show_impt_words(n_top_words, n_topics, save = False):
 if __name__ == "__main__":
 
     jeopardy_df = preprocessing.read_tsv('../data/master_season1-35.tsv')
-    # jeopardy_df = clean_columns(jeopardy_df, ['category', 'comments', 'answer', 'question'])
+    jeopardy_df = preprocessing.lowercase(jeopardy_df, ['category'])
+    jeopardy_df = preprocessing.remove_punc(jeopardy_df, ['category', 'question', 'answer'])
     jeopardy_df = preprocessing.update_df_columns(jeopardy_df)
     regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
     special_tournaments = jeopardy_df.drop(regular_episodes.index)
-
-    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
+    
+    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes))
     df = regular_episodes_sub
     col = 'question_and_answer'
 
     n = 2
 
-    
+
 
     # tfidf_vectorizer = TfidfVectorizer(min_df=10, 
     #                     max_df=0.95, ngram_range=(1,1),
