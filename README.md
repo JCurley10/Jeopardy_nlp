@@ -174,7 +174,7 @@ As I expected, Geography, Literature, and Pop Culture are very important. Busine
 
 ### Notes, Sources and Thanks
 
-<sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a question easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided An average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "hard". The the following types of clues were classified as such:
+<sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a clue easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided an average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "easy". The following types of clues were classified as such:
 
 - easy clues: value less than or equal to 600, and not a daily double, in either category 1 or 2
 - average clues: a daily double in category 1, or a value equal to 800 in either category
