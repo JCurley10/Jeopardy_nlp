@@ -148,6 +148,7 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 |Books, Movies, Theater|
 |-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
+
 <sub>figure5</sub>
 
 #### Model Selection
