@@ -125,10 +125,12 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 
 
 ## Analysis 
-I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw text from the questions and answers into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. NMF is a *soft clustering* model, which in this context means that any clue could belong to multiple clusters. This is advantageous because it better informs the studier of the most important speficic topics to study. That is, if a word from a single docment appears in multiple clusters, you get more "bang for your buck" by studying information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. 
+
+### Model Selection 
+I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw text from the questions and answers into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. NMF is a *soft clustering* model, which in this context means that any clue could belong to multiple clusters. This is advantageous because it better informs the studier of the most important speficic topics to study. That is, if a word from a single docment appears in multiple clusters, you get more "bang for your buck" by studying information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. Another benefit of using NMF for the topic modeling is that the loading or weights of each word in a cluster is positive, so their importance is more easily interpreted. 
 Then, within each cluster, I chose the top 10 words to define the meta-category. Let's see what we have!
 
-#### Visual
+### Visual
 | Misc. Words | Grammar | Geography |
 |-|-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
@@ -148,10 +150,11 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 |Books, Movies, Theater|
 |-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
+
 <sub>figure5</sub>
 
-#### Model Selection
-- **Deciding on the Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. 
+### Hyperparameter Decisions
+- **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. 
 - **Top Words per *meta-category***: I chose top 10 words per category because is a manageable start for someone planning on studying for *Jeopardy!*
 - **Handling Stopwords, Tokenization and N-grams** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
     - Common stopwords are "the", "or", "and", which were already in my original stopwords set taken from NLTK. I added more stopwords including "one", "word", and "name", 'war', 'film', john', 'state', 'country', 'us', 'new' because they appeared so often and are not specific enough to help someone study specific words.
