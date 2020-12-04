@@ -52,14 +52,14 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
     """[summary]
 
     Args:
-        df ([type]): [description]
-        col ([type]): [description]
-        vectorizer ([type]): [description]
-        n_topics ([type]): [description]
-        nmf ([type]): [description]
+        df (Pandas DataFrame): DataFrame with the top categories 
+        col (str): column name to get the clusters 
+        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
+        n_topics (int): total number of topics to get clusters of 
+        nmf (type sklearn NMF decomposer): initialized NMF instance
 
     Returns:
-        [type]: [description]
+        tuple: feature names, weights, and reconstruction error of the nmf model
     """    
     tfidf = vectorizer.fit_transform(df[col])
 
@@ -69,7 +69,23 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
     recon_err = nmf.reconstruction_err_
     return nmf_feature_names, nmf_weights, recon_err
 
+#TODO: get this function to work on large df without it timing out. 
+#TODO: use a different function to get recon_err since it has to unpack the get_names_weights and doens't use two variables. 
 def plot_ks(df, col, vectorizer, n_topics, nmf):
+    """
+    plot the number of topics vs the reconstruction error
+    to look at the elbow and decide on which number
+    of topics is best
+
+    Args:
+        df (Pandas DataFrame): DataFrame with the top categories 
+        col (str): column name to get the clusters 
+        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
+        n_topics (int): total number of topics to get clusters of 
+        nmf (type sklearn NMF decomposer): initialized NMF instance
+    Returns:
+        None: 
+    """    
     errs = []
     for k in range(n_topics):
         nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
@@ -78,7 +94,7 @@ def plot_ks(df, col, vectorizer, n_topics, nmf):
     plt.xlabel('k')
     plt.ylabel('Reconstruction Error')
     plt.show();
-    return errs
+
 
 def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf):
     """
@@ -87,14 +103,16 @@ def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, 
     and the reconstruction error of the nmf model 
     
     Args:
-        feature_names ([type]): [description]
-        weights ([type]): [description]
-        n_topics ([type]): [description]
-        n_top_words ([type]): [description]
-        vectorizer ([type]): [description]
+        feature_names (Series of str): the feature_names (words),
+             the result[0] from the get_names_weights function
+        weights (Series of floats): the weights of each feature (word)
+            from feature_names. THe result[1] from the get_names_weights function
+        n_topics (int): total number of topics to get clusters of 
+        n_top_words (int): number of words per cluster
+        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
 
     Returns:
-        [type]: [description]
+        a tuple of lists of top words and indices
     """    
     
     words = []
@@ -155,6 +173,14 @@ def make_weights_dict(topics, nth_topic, n_top_words):
 
     
 def viz_top_words(dictionary, color, n, save = False): 
+    """[summary]
+
+    Args:
+        dictionary ([type]): [description]
+        color ([type]): [description]
+        n ([type]): [description]
+        save (bool, optional): [description]. Defaults to False.
+    """    
     wordcloud = WordCloud(width=800,height=800, 
                         relative_scaling=.5, normalize_plurals=True,
                         background_color =None, mode = 'RGBA', 
@@ -197,7 +223,6 @@ if __name__ == "__main__":
     regular_episode_sub_reindexed = regular_episodes_sub.set_index('J-Category')
     regular_episodes_reindexed = regular_episodes.set_index('J-Category')
 
-    # Use the model 
     stopwords = preprocessing.make_stopwords(None) #
     df = regular_episodes_reindexed
     col = 'Question and Answer'
@@ -208,7 +233,6 @@ if __name__ == "__main__":
     tot_features = 1000
 
     #Adjust the vectorizer and nmf model hyperparameters 
-
     nmf = NMF(n_components=n_topics, random_state=43,  
                     alpha=0.1, l1_ratio=0.5)
 
