@@ -23,7 +23,7 @@ It is straightforward to identify the most common words or categories that have 
 ## Background 
 *Jeopardy!* is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique feature of *Jeopardy!* is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is" or "Who is", etc.
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
 </p>
 <p>
 <sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
@@ -71,6 +71,7 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 |  0 |       1 |     100 | no             | LAKES & RIVERS | -          | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | -       | the Jordan River mentioned most often in the Bible                     | easy              |
 |  1 |       1 |     200 | no             | LAKES & RIVERS | -          | Scottish word for lake                                    | loch         | 1984-09-10 | -       | loch Scottish word for lake                                            | easy              |
 |  2 |       1 |     400 | no             | LAKES & RIVERS | -          | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | -       | the Missouri American river only 33 miles shorter than the Mississippi | easy              |
+<sub>table1</sub>
 
 #### The Updated Dataset
 
@@ -78,7 +79,8 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
 |  0 |       1 |     100 | no             | LAKES & RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
 |  1 |       1 |     200 | no             | LAKES & RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
-|  2 |       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy   
+|  2 |       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  
+<sub>table2</sub> 
 
 In the above dataset:
 - Each row can be considered a *clue* instance
@@ -97,7 +99,7 @@ In the above dataset:
 <p>
 <p align="center">
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500"><sub>figure2</sub>
 </p>
 I only removed basic stopwords from NLTK's stopwords set for this visual. Even after that, these words don't look very helpful for focused studying...
 <p align="center">
@@ -105,7 +107,7 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400"> <sub>figure3</sub>
 </p>
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my *Jeopardy!* skills...
 </p>
@@ -115,7 +117,7 @@ Look at all that History! But I wish I knew specifically what History I should s
 ### Most Common Words in Questions and Answers
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500"><sub>figure4</sub>
 </p>
 <p>
 Taking a deeper dive into the words within each clue, (questions and answers combined). Even after removing NLTK's basic stopwords, these words also don't look super helpful for targeted study either... 
@@ -146,7 +148,7 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 |Books, Movies, Theater|
 |-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
-
+<sub>figure5</sub>
 
 #### Model Selection
 - **Deciding on the Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. 
@@ -166,7 +168,7 @@ The 13 categories aren't super distinct, but they capture about 10 *meta-categor
 | **Specific Words/Topics**| slang words, synonyms, medical terms, and sounds | Famous kings and queens, specifically in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David | Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries | years, and specifically when someone died (This one might not be very informative, but it is well clustered) | Paris, cuisine, the French Revolution | Islands!! and oceans, coastlines, and places with Central in their name.. And Carolina! | hit songs, rock songs, band names, musicals, and theme songs | car and oil companies, the brand, when the companies were founded and what products they have | French, Latin, Greek, and Roman | specifically Shakespeare, plays, characters names, which actor plays in which character role |
 
 As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of tf-idf vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
-
+<sub>table3</sub>
 
 ## Next Steps
 - Continue to adjust the hyperparameters of my model such as stopwords and n-grams, and address parts of speech tagging
