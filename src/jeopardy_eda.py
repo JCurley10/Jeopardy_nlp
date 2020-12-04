@@ -70,7 +70,7 @@ def graph_wrd_cts(df, col, color, save = False):
     ax.set_title(f'{col} vs. Clue Difficulty')
     ax.set_ylabel(f'{col}', fontsize = 14)
     ax.set_xlabel('Clue Difficulty', fontsize = 14)
-    ax.set_title(f'Clue Difficulty vs. {col}', fontsize = 16)
+    ax.set_title(f'Clue Difficulty vs.  {col}', fontsize = 16)
     plt.ylim(0, 16)
 
     def autolabel(rects):
@@ -116,7 +116,7 @@ def graph_top_categories(df, color, save = False):
     """    
     fig, ax = plt.subplots(1, 1, figsize = (6, 4), dpi = 140)
     ax.bar(common_cats.index, common_cats['Counts'], color = color)
-    ax.set_ylabel("Number of Episodes J-Category Occurs", fontsize = 14)
+    ax.set_ylabel("Number of Episodes", fontsize = 14)
     ax.set_title("Top 10 J-Categories", fontsize = 14)
     ax.set_xlabel("J-Categories", fontsize = 16)
     plt.xticks(rotation=70, ha = 'center', fontstretch = 'semi-condensed', fontsize = 8)
@@ -139,12 +139,12 @@ if __name__ == "__main__":
     df = get_wrd_cts(regular_episodes)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     maxes = df.groupby('Clue Difficulty').max().sort_values('Answer Word Count').round(2)
-    graph_wrd_cts(avgs, 'Answer Word Count', color = 'indigo', save = True)
-    graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
+    # graph_wrd_cts(avgs, 'Answer Word Count', color = 'purple', save = False)
+    # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
 
     # top_categories(jeopardy_df, 10)
     common_cats = top_categories(regular_episodes, 10)
     # print(common_cats)
-    #graph_top_categories(common_cats, color = "steelblue", save = True)
+    graph_top_categories(common_cats, color = "steelblue", save = True)
     
 

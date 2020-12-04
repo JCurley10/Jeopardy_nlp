@@ -46,6 +46,7 @@ def kmeans_cluster(df, col, n, stopwords):
 #TODO: change the hyperparameters in the tfidf vectorizer or have the option
 #TODO: write the docstring
 
+
 def get_names_weights(df, col, vectorizer, n_topics, nmf):
     """
     words and weight from the get_names_weights function
@@ -62,11 +63,22 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
     """    
     tfidf = vectorizer.fit_transform(df[col])
 
-    W = nmf.fit_transform(tfidf) # W matrix 
+    nmf.fit_transform(tfidf) # W matrix 
     nmf_feature_names = vectorizer.get_feature_names()  #Feature names 
     nmf_weights = nmf.components_ #H
-    return nmf_feature_names, nmf_weights
+    recon_err = nmf.reconstruction_err_
+    return nmf_feature_names, nmf_weights, recon_err
 
+def plot_ks(df, col, vectorizer, n_topics, nmf):
+    errs = []
+    for k in range(n_topics):
+        nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
+        errs.append(recon_err)
+    plt.plot(range(1,n_topics), errs)
+    plt.xlabel('k')
+    plt.ylabel('Reconstruction Error')
+    plt.show();
+    return errs
 
 def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf):
     """
@@ -84,7 +96,7 @@ def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, 
     Returns:
         [type]: [description]
     """    
-    reconstruction_error =  nmf.reconstruction_err_
+    
     words = []
     topic_indices = []
     for topic_idx, topic in enumerate(weights):
@@ -94,7 +106,7 @@ def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, 
         #             for i in topic.argsort()[:-n_top_words - 1:-1]]))
         topic_indices.append(topic_idx)
     
-    return words, topic_indices, reconstruction_error
+    return words, topic_indices
 
 
 
@@ -117,7 +129,7 @@ def get_topics_terms_weights(feature_names, weights):
     topics = [np.vstack((terms.T, term_weights.T)).T for terms, term_weights in zip(sorted_terms, sorted_weights)]
     return topics, sorted_weights
 
-def make_weights_lst(topics, nth_topic, n_top_words):
+def make_weights_dict(topics, nth_topic, n_top_words):
     """[summary]
 
     Args:
@@ -128,31 +140,23 @@ def make_weights_lst(topics, nth_topic, n_top_words):
     Returns:
         [type]: [description]
     """   
-    top_ten_topics = []
+    top_n_topics = []
     for topic in topics:
-        top_ten_topics.append(topic[:10])
+        top_n_topics.append(topic[:10])
 
     top_10_topics = []
-    # for i in range(n_topics):
-    #     for j in range(n_top_words):
-    #         top_10_topics.append(top_ten_topics[i][j][0])
-    #         top_10_topics.append(float(top_ten_topics[i][j][1]))
-
-    # weights_dictionary = dict(zip(top_10_topics[::2], top_10_topics[1::2]))
-    # return weights_dictionary
-
     i = nth_topic
     for j in range(n_top_words):
-        top_10_topics.append(top_ten_topics[i][j][0])
-        top_10_topics.append(float(top_ten_topics[i][j][1]))
+        top_10_topics.append(top_n_topics[i][j][0])
+        top_10_topics.append(np.sqrt(float(top_n_topics[i][j][1])))
 
     weights_dictionary = dict(zip(top_10_topics[::2], top_10_topics[1::2]))
     return weights_dictionary
 
     
-def viz_top_words( dictionary, color, save = False): 
+def viz_top_words(dictionary, color, n, save = False): 
     wordcloud = WordCloud(width=800,height=800, 
-                        max_words=20,relative_scaling=1,normalize_plurals=True,
+                        relative_scaling=.5, normalize_plurals=True,
                         background_color =None, mode = 'RGBA', 
                         colormap = color, collocations=False, 
                         min_font_size = 10)
@@ -166,10 +170,14 @@ def viz_top_words( dictionary, color, save = False):
     plt.tight_layout(pad = 0) 
 
     if save:
-        plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
+        plt.savefig(f'../images/{n}topic_model_Wordcloud.png')
     else:
         plt.show()
 
+def show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= False):
+    for nth_topic in range(n_topics):
+        dictionary = make_weights_dict(topics, nth_topic, n_top_words)
+        viz_top_words(dictionary, n = nth_topic, color = 'plasma', save = True)
 
 
 if __name__ == "__main__":
@@ -181,39 +189,40 @@ if __name__ == "__main__":
     regular_episodes_reindexed = regular_episodes.set_index('J-Category')
 
     # Use the model 
-    stopwords = preprocessing.make_stopwords(None) #need to adjust
-    df = regular_episode_sub_reindexed
+    stopwords = preprocessing.make_stopwords(None) #
+    df = regular_episodes_reindexed
     col = 'Question and Answer'
 
     #adjust these hyperparameters
-    n_topics = 10
+    n_topics = 13
     n_top_words = 10
     tot_features = 1000
 
     #Adjust the vectorizer and nmf model hyperparameters 
-    vectorizer = TfidfVectorizer(min_df=1, max_df=1.0,
-                    ngram_range=(1,2), 
-                    lowercase = True, 
-                    analyzer = 'word', stop_words=stopwords,
-                    max_features = tot_features)
+
 
     nmf = NMF(n_components=n_topics, random_state=43,  
                     alpha=0.1, l1_ratio=0.5)
 
+    vectorizer = TfidfVectorizer(
+                    ngram_range=(1,2), strip_accents = 'ascii',
+                    lowercase = True, tokenizer = preprocessing.tokenize,
+                    analyzer = 'word', stop_words= stopwords,
+                    max_features = tot_features)
 
-    feature_names, weights =  get_names_weights(df, col, vectorizer, n_topics, nmf)
+    feature_names, weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
     topics, sorted_weights = get_topics_terms_weights(feature_names, weights)
 
-    words, topic_indices, recon_err = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
-
-    nth_topic = 5
-    dictionary = make_weights_lst(topics, nth_topic, n_top_words)
-    # viz_top_words(dictionary, 'plasma', save = False)
-    
+    words, topic_indices = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
 
     for i in range(n_topics):
         print (f'Topic {i+1}')
         for l in topics[i][:10]:
             print (l)
         print ('\n')
-    print(f"reconstruction error: {recon_err}")
+    print (f'Reconstruction Error: {recon_err}')
+
+
+    # plot_ks(df, col, vectorizer, n_topics, nmf)
+
+    show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= False)

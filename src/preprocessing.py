@@ -114,7 +114,13 @@ def make_stopwords(col):
 						'always', 'never', 'd', 's', 'abov', 'alway', 'ani', 'becaus', 'befor', 
 						'could', 'doe', 'dure', 'ha', 'might', 'must', "n't", 'need', 'onc', 'onli', 
 						'ourselv', 'peopl', 'sha', 'sometim', 'themselv', 'veri', 'wa', 'whi', 'wo', 'would', 'yourselv' 
-						}
+						'word', 'named', 'part', 'often', 'meaning', 'called', 'call', 'name', 'like', 'say', 'says'
+						'mean', 'means', 'contain', 'contains', 'someone', 'some', 'two', 'three', 'four', 'five'
+						'day', 'night', 'great', 'became', 'day', 'around', 'sometimes', 'used', 'use', 'made', 'country'
+						'term', '1st', 'got', 'time', 'times', 'tell', 'tells', 'may', 'war', 'film', 'de', 'john', 'state', 'new', 
+						'title', 'city', 'type', 'first', 'go', 'years', 'last', 'make', 'country', 'us', 'new', 'book', 'president', 
+						'world', 'wrote', 'd', "\'ll", "\'re", "s", "ve", "u", "river", "come", "get", 'novel', 'largest', 'old', 'played', 
+						'islands', 'whose', 'comes', 'age', 'thats'}
 		stopwords_set = (set(stopwords.words('english'))).union(remove_words)
 	return list(stopwords_set)
 
@@ -154,7 +160,7 @@ def clean_text(df, col):
 	table = str.maketrans('', '', string.punctuation)
 	stripped = [w.translate(table) for w in tokens]
 
-	words = [word for word in stripped if word.isalnum()]
+	words = [word for word in stripped if word.isalpha()]
 	
 	# filter out stop words
 	if col == 'notes':
