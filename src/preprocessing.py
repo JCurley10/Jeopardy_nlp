@@ -38,7 +38,7 @@ def stringify(df, col):
 	return ' '.join(df[col])
 
 def lowercase(df, cols):
-"""
+	"""
 	turns the column (col) into one string,
 	whose letters are all lowercase
 	to be able to make a wordcloud
@@ -50,6 +50,7 @@ def lowercase(df, cols):
 		a dataframe with all lowercase text
 		in the given column lowercase
 	"""   
+
 	for col in cols: 
 		df[col] = df[col].str.lower()
 	return df

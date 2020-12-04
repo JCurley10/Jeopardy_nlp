@@ -47,8 +47,7 @@ def make_word_cloud(df, col, color, save = False):
     if save:
         plt.savefig(f'../images/eda_images/{col}_wordcloud.png')
     else:
-        plt.show()
-        
+        plt.show();
 
 def get_wrd_cts(df):
     """
@@ -56,7 +55,8 @@ def get_wrd_cts(df):
 
     Args:
         df (Pandas DataFrame): must have the columns "clue_difficulty", "answer", "question"
-    """    
+    """
+
     total_wrds_questions = [len(x.split()) for x in df['Question'].tolist()]
     total_wrds_answers = [len(x.split()) for x in df['Answer'].tolist()]
 
@@ -126,8 +126,8 @@ def top_categories(df, n):
 
 def graph_top_categories(df, color, save = False):
     """
-    make a bargraph to show the top n categories from the 
-    top_categories function 
+    make a bargraph to show the top n categories from the
+    top_categories function
 
     Args:
         Pandas DataFrame: DataFrame with the top categories 
@@ -151,14 +151,14 @@ if __name__ == "__main__":
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
-    make_word_cloud(regular_episodes, 'J-Category',  color = 'ocean', save = False ) 
-    make_word_cloud(regular_episodes, 'Question and Answer', color = 'plasma', save = False )
+    # make_word_cloud(regular_episodes, 'J-Category',  color = 'cividis', save = True ) 
+    # make_word_cloud(regular_episodes, 'Question and Answer', color = 'plasma', save = False )
 
     df = get_wrd_cts(regular_episodes)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     graph_wrd_cts(avgs, 'Answer Word Count', color = 'purple', save = False)
 
     common_cats = top_categories(regular_episodes, 10)
-    graph_top_categories(common_cats, color = "steelblue", save = True)
+    graph_top_categories(common_cats, color = "slategray", save = False)
     
 
