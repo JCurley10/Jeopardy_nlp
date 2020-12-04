@@ -1,5 +1,5 @@
 
-# What Is... an Investigation of the Words in Jeopardy!
+# What are... the Most Important Topics to Study for Jeopardy!
 
 ## Table of Contents
 - [The Goal](#The-Goal)
@@ -78,9 +78,8 @@ The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle
 - The "category" column was renamed to "J-Category"
 - The 'Question' and 'Answer' columns combined in a 'Question and Answer' column for convenient analysis, as the important words I want to capture within a clue could appear in the answer or question
 - A new column called "Question Difficulty"  defines a question as easy, average, or hard<sup>1</sup>
-- Punctuation has been removed from the "Question", "Answer", "Question and Answer" columns, but not from the J-category column since there were more than 10 categories over time that had a puncuation mark as the category
+- Punctuation has been removed from the "Question", "Answer", "Question and Answer" columns, but not from the J-category column since there were more than 10 categories over time that had a single puncuation mark as the category
 - I left the capitalization as-is, and did not remove stop words so I could adjust these settings while tuning my model
--
 
 |    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
@@ -147,12 +146,12 @@ I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vector
 
 
 #### Model Selection
-- **Deciding on the Number of Topics** : I chose to use my domain knowledge to choose the number of topics, as well as testing how well my model ran with different topics, judging against the reconstruction error of the matrix. Each *Jeopardy1* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them. 
-- **Top Words per *meta-category***: I chose top 10 words per category because that seemed like a manageable start for someone studying
+- **Deciding on the Number of Topics** : I chose to use my domain knowledge to choose the number of topics, as well as testing how well my model ran with different topics, judging against the reconstruction error of the matrix. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.)
+- **Top Words per *meta-category***: I chose top 10 words per category because is a manageable start for someone planning on studying for *Jeopardy!*
 - **Handling Stopwords, Tokenization and N-grams** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
-    - Common stopwords are "the", "or", "and", and I added more stopwords including "one", "word", and "name", 'war', 'film', john', 'state', 'country', 'us', 'new' because they appeared so often and are not specific enough to help someone study.
+    - Common stopwords are "the", "or", "and", which were already in my first stopwords set. I added more stopwords including "one", "word", and "name", 'war', 'film', john', 'state', 'country', 'us', 'new' because they appeared so often and are not specific enough to help someone study specific words.
     - I chose to tokenize the words using NLTK's WordNetLemmatizer, although it still produced some messy words I had to handle within my stopwords
-    - I did set the option of including n-grams = 2, so words like "New York" would appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
+    - I did set the option of including n-grams = 2, to allow words like "North Dakoda" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 
 ## Conclusion and Further Analysis
@@ -163,7 +162,7 @@ If you are studying to be a *Jeopardy!* contestant, you should focus your attent
 |-|-|-|-|-|-|-|-|-|-|
 | slang words, synonyms, medical terms, and sounds | Famous kings and queens, specifically in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David | Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries | years, and specifically when someone died (This one might not be very informative, but it is well clustered) | Paris, cuisine, the French Revolution | Islands!! and oceans, coastlines, and places with Central in their name.. And Carolina! | hit songs, rock songs, band names, musicals, and theme songs | car and oil companies, the brand, when the companies were founded and what products they have | French, Latin, Greek, and Roman | specifically Shakespeare, plays, characters names, which actor plays in which character role |
 
-As I expected, geography, literature, and pop culture are very important. Busines and Industry, which is not a topic that I think of when I think of *Jeopardy!* categories, was also a clear cluster. I am interested in why science and history terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for history and science that they weren't included due to the nature of tf-idf vectorization. Or, because NMF is a soft-clustering model, the common words in history and science categories can be found within other clusters. 
+As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of tf-idf vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
 
 
 **Next Steps**: 
@@ -171,7 +170,6 @@ As I expected, geography, literature, and pop culture are very important. Busine
 - Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
 - Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
 - Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
-
 
 
 ### Notes, Sources and Thanks
@@ -188,5 +186,5 @@ This varied slightly than my own "viewer assumptions", which are:
 - hard clues: over $1200 in round 2, a daily double in round 2, or final jeopardy
 
 **Thanks**<p>
-A special thank you to Galvanize instructors and residents Kayla, Chris, Rosie, Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon
-This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons and my friend Laura whose love of Jeopardy inspired this investigation. 
+A special thank you to Galvanize instructors and residents Kayla, Chris, Rosie, Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon. <p>
+This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons, and to my friend Laura whose love of Jeopardy inspired this investigation. 

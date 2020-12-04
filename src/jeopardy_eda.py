@@ -16,7 +16,18 @@ import preprocessing
     # the Jupyter Notebook has both options 
 
     
-def make_word_cloud(df, col, color, save = False, eda = False):
+def make_word_cloud(df, col, color, save = False):
+    """
+    make a wordcloud and either save or show it
+
+    Args:
+        df Pandas DataFrame: The dataframe with the columns whose 
+            words will be used in the wordcloud
+        col (str): column name in df whose words will be 
+            used in a wordcloud 
+        color (str): matplotlib color name
+        save (bool, optional): [description]. Defaults to False.
+    """    
 
     #generate word list
     word_lst = preprocessing.clean_text(df, col) # a category was eliminated by removing punctuation 
