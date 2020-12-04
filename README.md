@@ -131,23 +131,23 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 #### Visual
 | Misc. Words | Grammar | Geography |
 |-|-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
 
 | Royalty | Geography pt. 2| Numbers and Dates |
 |-|-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
 
 | Business and Industry | Languages | Books, Movies, Theater | 
 |-|-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/8topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/8topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
 
 | Music | Business and Industry | Languages | 
 |-|-|-|
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300">| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="275">| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
 
 |Books, Movies, Theater|
 |-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
 <sub>figure5</sub>
 
 #### Model Selection
