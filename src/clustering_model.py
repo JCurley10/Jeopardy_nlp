@@ -16,14 +16,19 @@ import preprocessing
 #TODO: write docstring
 
 def kmeans_cluster(df, col, n, stopwords):
-    """[summary]
+    """
+    hard cluster of the topics in a given
+    column of a dataframe using k-means
 
     Args:
-        df ([type]): [description]
-        n ([type]): [description]
+        df (Pandas DataFrame): DataFrame with the top categories 
+        col (str): column name to get the clusters 
+        n (int): latent topic count
 
-    Returns:
-        [type]: [description]
+    Returns: 
+        tuple that classifies the number of clusters, n
+        and the top n words in the cluster
+    
     """
     count_vect = CountVectorizer(ngram_range = (1, 1), 
                             lowercase=True,  tokenizer=None, 
@@ -32,7 +37,7 @@ def kmeans_cluster(df, col, n, stopwords):
 
     x = count_vect.fit_transform(df[col])
     # features = count_vect.get_feature_names()
-    kmeans = KMeans(n_clusters = 10, random_state = 123).fit(x)
+    kmeans = KMeans(n_clusters = n, random_state = 123).fit(x)
     centroids = kmeans.cluster_centers_
     top_n = np.argsort(centroids)[:, :-n+1:-1]
     names = count_vect.get_feature_names()
@@ -43,20 +48,15 @@ def kmeans_cluster(df, col, n, stopwords):
 
 
 
-#TODO: change the hyperparameters in the tfidf vectorizer or have the option
-#TODO: write the docstring
-
-
 def get_names_weights(df, col, vectorizer, n_topics, nmf):
-    """
-    words and weight from the get_names_weights function
-    return an array of the words, or feature_names
+    """[summary]
 
     Args:
         df ([type]): [description]
         col ([type]): [description]
         vectorizer ([type]): [description]
-        components (int): number of topics to seaprate it into
+        n_topics ([type]): [description]
+        nmf ([type]): [description]
 
     Returns:
         [type]: [description]
@@ -175,9 +175,18 @@ def viz_top_words(dictionary, color, n, save = False):
         plt.show()
 
 def show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= False):
+    """[summary]
+
+    Args:
+        n_topics ([type]): [description]
+        topics ([type]): [description]
+        n_top_words ([type]): [description]
+        color (str, optional): [description]. Defaults to 'plasma'.
+        save (bool, optional): [description]. Defaults to False.
+    """    
     for nth_topic in range(n_topics):
         dictionary = make_weights_dict(topics, nth_topic, n_top_words)
-        viz_top_words(dictionary, n = nth_topic, color = 'plasma', save = True)
+        viz_top_words(dictionary, n = nth_topic, color = 'plasma', save = save)
 
 
 if __name__ == "__main__":
@@ -200,7 +209,6 @@ if __name__ == "__main__":
 
     #Adjust the vectorizer and nmf model hyperparameters 
 
-
     nmf = NMF(n_components=n_topics, random_state=43,  
                     alpha=0.1, l1_ratio=0.5)
 
@@ -215,14 +223,11 @@ if __name__ == "__main__":
 
     words, topic_indices = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
 
-    for i in range(n_topics):
-        print (f'Topic {i+1}')
-        for l in topics[i][:10]:
-            print (l)
-        print ('\n')
-    print (f'Reconstruction Error: {recon_err}')
+    # for i in range(n_topics):
+    #     print (f'Topic {i+1}')
+    #     for l in topics[i][:10]:
+    #         print (l)
+    #     print ('\n')
+    # print (f'Reconstruction Error: {recon_err}')
 
-
-    # plot_ks(df, col, vectorizer, n_topics, nmf)
-
-    show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= False)
+    show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= True)

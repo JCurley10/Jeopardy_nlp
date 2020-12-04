@@ -40,7 +40,8 @@ def make_word_cloud(df, col, color, save = False, eda = False):
         
 
 def get_wrd_cts(df):
-    """[summary]
+    """
+    Make a graph with wordcounts 
 
     Args:
         df (Pandas DataFrame): must have the columns "clue_difficulty", "answer", "question"
@@ -89,14 +90,19 @@ def graph_wrd_cts(df, col, color, save = False):
         plt.savefig(f'../images/eda_images/{col}_counts_bar.png')
 
 def top_categories(df, n):
-    """[summary]
+    """
+    get the top J-Categories of all time
+    by summing the total appearances of a category 
+    and dividing by 5 (since each category appears 5 time unless its final jeopardy, 
+    which isn't super important to figure out with this analysis)
 
     Args:
-        df ([type]): [description]
-        n ([type]): [description]
+        df Pandas DataFrame: The dataframe with the categories 
+        n (int): number of top categories 
 
     Returns:
-        [type]: [description]
+        Pandas DataFrame: DataFrame with the top categories 
+        counts of how many episodes they appear in
     """    
     common_topics = df['J-Category'].value_counts()[:n]
     common_topics
@@ -108,11 +114,14 @@ def top_categories(df, n):
     return common_cats
 
 def graph_top_categories(df, color, save = False):
-    """[summary]
+    """
+    make a bargraph to show the top n categories from the 
+    top_categories function 
 
     Args:
-        df ([type]): [description]
-        save (bool, optional): [description]. Defaults to False.
+        Pandas DataFrame: DataFrame with the top categories 
+        save (bool, optional): whether to save or show the function.
+        save defaults to False and shows the bargraph.
     """    
     fig, ax = plt.subplots(1, 1, figsize = (6, 4), dpi = 140)
     ax.bar(common_cats.index, common_cats['Counts'], color = color)
@@ -131,20 +140,14 @@ if __name__ == "__main__":
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
-    make_word_cloud(regular_episodes, 'J-Category',  color = 'ocean', save = True ) #handle how removing punctution affected this 
-    # make_word_cloud(regular_episodes, 'Question',  color = 'plasma', save = False)
-    # make_word_cloud(regular_episodes, 'Answer',  color = 'plasma', save = False)
-    make_word_cloud(regular_episodes, 'Question and Answer', color = 'plasma', save = True )
+    make_word_cloud(regular_episodes, 'J-Category',  color = 'ocean', save = False ) 
+    make_word_cloud(regular_episodes, 'Question and Answer', color = 'plasma', save = False )
 
     df = get_wrd_cts(regular_episodes)
     avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
-    maxes = df.groupby('Clue Difficulty').max().sort_values('Answer Word Count').round(2)
-    # graph_wrd_cts(avgs, 'Answer Word Count', color = 'purple', save = False)
-    # graph_wrd_cts(avgs, 'Question Word Count', color = 'darkorange', save = False)
+    graph_wrd_cts(avgs, 'Answer Word Count', color = 'purple', save = False)
 
-    # top_categories(jeopardy_df, 10)
     common_cats = top_categories(regular_episodes, 10)
-    # print(common_cats)
     graph_top_categories(common_cats, color = "steelblue", save = True)
     
 

@@ -36,9 +36,8 @@ def stringify(df, col):
 	Args:
 		df (Pandas dataFrame): The dataframe in use
 		col (str): the column name to turn into a string
-
 	Returns:
-		a string
+		a string that connects all the words in the column
 	"""        
 	return ' '.join(df[col])
 
@@ -51,9 +50,9 @@ def lowercase(df, cols):
 	Args:
 		df (Pandas dataFrame): The dataframe in use
 		col (str): the column name to turn into a string
-
 	Returns:
-		a string of lowercase letters 
+		a dataframe with all lowercase text 
+		in the given column lowercase
 	"""   
 	for col in cols: 
 		df[col] = df[col].str.lower()
@@ -61,12 +60,12 @@ def lowercase(df, cols):
 
 
 def remove_punc(df, cols):
-	"""[summary]
+	"""
+	remove punctuation from a column
 
 	Args:
-		df ([type]): [description]
-		cols (list of str): list of columns to be cleaned, as strings
-
+		df (Pandas dataFrame): The dataframe in use
+		col (str): the column name to turn into a string
 	Returns:
 		Pandas DataFrame: with removed punctuation
 	"""    
@@ -92,12 +91,21 @@ def tokenize_by_col(df, cols):
 
 
 def tokenize(text):
+	"""[summary]
+
+	Args:
+		text (string): a string to be tokenized
+
+	Returns:
+		a list of strings: tokenized words 
+	"""	
 	lemmatizer = WordNetLemmatizer()
 	# stemmer = SnowballStemmer('english')
 	word_list = word_tokenize(text)
 
 	lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
 	# stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
+	# return stemmed_wrds
 	return lemmatized_wrds
 
 
@@ -120,18 +128,19 @@ def make_stopwords(col):
 						'term', '1st', 'got', 'time', 'times', 'tell', 'tells', 'may', 'war', 'film', 'de', 'john', 'state', 'new', 
 						'title', 'city', 'type', 'first', 'go', 'years', 'last', 'make', 'country', 'us', 'new', 'book', 'president', 
 						'world', 'wrote', 'd', "\'ll", "\'re", "s", "ve", "u", "river", "come", "get", 'novel', 'largest', 'old', 'played', 
-						'islands', 'whose', 'comes', 'age', 'thats'}
+						'islands', 'whose', 'comes', 'age', 'thats', 'theyre', 'life', '2word', '_', '1', '2', '3', '4', '5', '20', '10', '30', 'every'}
 		stopwords_set = (set(stopwords.words('english'))).union(remove_words)
 	return list(stopwords_set)
 
-#TODO: clean up this function - it's not working properly
+
 def remove_stopwords(df, col, stopwords):
-	"""[summary]
+	"""
+	remove stopwords from a set
 	Args:
-		df ([type]): [description]
-		col ([type]): [description]
+		df (Pandas DataFrame)
+		cols (list of str): list of columns to be cleaned, as strings
 	Returns:
-		[type]: [description]
+		Pandas Dataframe: the original dataframe with the column without stopwords
 	"""
 	
 	df[col] = df[col].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords)]))
@@ -186,8 +195,18 @@ def make_q_and_a_col(df):
 	df['question_and_answer'] = df["question"] + ' ' + df['answer']
 	return df
 
-#TODO: make another condition using "view assummptions" 
 def make_clue_difficulty_col(df, viewer_assumptions = False):
+	"""
+	make a column of clue difficulty according to 
+	either viewer assumption or another analysis
+	Args:
+		df (Pandas DataFrame): 
+		viewer_assumptions (bool, optional): The jeopardy viewer assumption
+			of what clues are hard. Defaults to False.
+
+	Returns:
+		Pandas DataFrame with question_diff column
+	"""	
 	if viewer_assumptions:
 		conditions = [((df['daily_double']=='no') & (df['value']<= 800)), #easy
 					((df['daily_double']=='no') & (df['round']== 1) & (df['value'] >= 800)), #average
@@ -214,15 +233,16 @@ def make_clue_difficulty_col(df, viewer_assumptions = False):
 	df['clue_difficulty'] = np.select(conditions, difficulties)
 	return df
 
-#TODO: write docstring
 def update_df_columns(df):
-	"""[summary]
+	"""
+	update the dataframe with the columns 
+	made from the functions make_q_and_a_col 
+	and male_clue_difficulty_col
 
 	Args:
-		df ([type]): [description]
-
+		df (Pandas DataFrame): 
 	Returns:
-		[type]: [description]
+		df (Pandas DataFrame) udpated with new columns
 	"""    
 	df_new = make_q_and_a_col(df)
 	df_new = make_clue_difficulty_col(df_new)
@@ -231,15 +251,17 @@ def update_df_columns(df):
 
 #TODO: write docstring
 def make_sub_df(df, fraction = .05, state = 123):
-	"""[summary]
+	"""
+	make a subsample of a dataframe for
+	modeling purposes
 
-	Args:s
+	Args:
 		df ([type]): [description]
 		fraction (float, optional): [description]. Defaults to .05.
 		state (int, optional): [description]. Defaults to 123.
 
 	Returns:
-		[type]: [description]
+		Pandas Dataframe: A fraction of the Pandas DataFrame 
 	"""
 	return df.sample(frac = fraction, axis = 0, random_state = state)
 
@@ -252,10 +274,8 @@ if __name__ == "__main__":
 	jeopardy_df = jeopardy_df.rename(columns={"round": "Round", "value": "Value", "category": "J-Category", "answer": "Answer", 'question':
 										   'Question', 'question_and_answer': 'Question and Answer', 'daily_double': 'Daily Double', 'air_date': 'Air Date', 'clue_difficulty': 'Clue Difficulty'})
 
-
 	regular_episodes = jeopardy_df[jeopardy_df['notes']=='-']
 	special_tournaments = jeopardy_df.drop(regular_episodes.index)
-
 	regular_episodes = regular_episodes.drop(['notes', 'comments'], axis =1)
 	regular_episodes_sub = make_sub_df(regular_episodes)
 
