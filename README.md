@@ -124,14 +124,10 @@ Taking a deeper dive into the words of each clue, (questions and answers combine
 ## Analysis 
 I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw questions and answers text into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. Within each cluster, I chose the top 10 words to define the category. Let's see what we have!
 
-<<<<<<< HEAD
 #### Visual
 | Misc. Words | Grammar | Geography |
 |-|-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |
-=======
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
->>>>>>> d06b11a0e0b32c26386d8f4f4c916fdcdc60e3ea
 
 | Royalty | Geography pt. 2| Numbers and Dates |
 |-|-|-|
@@ -149,10 +145,6 @@ I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vector
 |-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
 
-
-|Books, Movies, Theater|
-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
 
 #### Model Selection
 - **Deciding on the Number of Topics** : I chose to use my domain knowledge to choose the number of topics, as well as testing how well my model ran with different topics, judging against the reconstruction error of the matrix. Each *Jeopardy1* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them. 
@@ -179,8 +171,6 @@ As I expected, geography, literature, and pop culture are very important. Busine
 - Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
 - Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
 - Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
-
-
 
 
 
