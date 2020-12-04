@@ -9,7 +9,8 @@
 - [The Data](#The-Data)
 - [EDA](#Exploring-the-Data)
 - [Analysis](#Analysis)
-- [Conclusion and Futher Analysis](#Conclusion-and-Further-Analysis)
+- [Conclusion and Recommendation](#Conclusion-and-Recommendation)
+- [Next Steps](#Next-Steps)
 - [Notes, Sources, and Thanks](#Notes,-Sources,-and-Thanks)
 
 
@@ -156,9 +157,9 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
     - I did set the option of including n-grams = 2, to allow words like "North Dakoda" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 
-## Conclusion and Further Analysis
+## Conclusion and Recommendation
 The 13 categories aren't super distinct, but they capture about 10 *meta-categories* and the associated words. So, without further ado....
-#### If you are studying to be a *Jeopardy!* contestant, you should focus your attention on...
+#### If you are studying to be a *Jeopardy!* contestant, you should focus your attention on the following:
 
 | **Meta-Category**| Grammar | Royalty | States and Countries | Numbers | French | Geography | Music | Business and Industry | Languages | Books, Movies, Theater |
 |-|-|-|-|-|-|-|-|-|-|-|
@@ -167,7 +168,7 @@ The 13 categories aren't super distinct, but they capture about 10 *meta-categor
 As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of tf-idf vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
 
 
-**Next Steps**: 
+## Next Steps
 - Continue to adjust the hyperparameters of my model such as stopwords and n-grams, and address parts of speech tagging
 - Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
 - Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
