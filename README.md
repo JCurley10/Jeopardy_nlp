@@ -153,7 +153,7 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 
 <sub>figure5</sub>
 
-### Hyperparameter Decisions
+### Model Settings (Hyperparameters)
 - **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. 
 - **Top Words per *meta-category***: I chose top 10 words per category because is a manageable start for someone planning on studying for *Jeopardy!*
 - **Handling Stopwords, Tokenization and N-grams** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
@@ -178,7 +178,7 @@ As I expected, Geography, Literature, and Pop Culture are very important. Busine
 - Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
 - Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
 - Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
-
+- Use these clusters as a feature in a supervised learning model for classifying questions as easy, medium or hard
 
 ### Notes, Sources and Thanks
 
