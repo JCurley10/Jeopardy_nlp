@@ -124,42 +124,59 @@ Taking a deeper dive into the words of each clue, (questions and answers combine
 ## Analysis 
 I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw questions and answers text into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. Within each cluster, I chose the top 10 words to define the category. Let's see what we have!
 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
+#### Visual
+| Misc. Words | Grammar | Geography |
+|-|-|-|
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |
 
+| Royalty | Geography pt. 2| Numbers and Dates |
+|-|-|-|
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |
+
+| Business and Industry | Languages | Books, Movies, Theater | 
+|-|-|-|
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/8topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+
+| Music | Business and Industry | Languages | 
+|-|-|-|
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300">| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+
+|Books, Movies, Theater|
+|-|
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+
+
+|Books, Movies, Theater|
+|-|
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
+
+#### Model Selection
 - **Deciding on the Number of Topics** : I chose to use my domain knowledge to choose the number of topics, as well as testing how well my model ran with different topics, judging against the reconstruction error of the matrix. Each *Jeopardy1* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them. 
 - **Top Words per *meta-category***: I chose top 10 words per category because that seemed like a manageable start for someone studying
-- **Handling Stopwords and Tokenization** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
+- **Handling Stopwords, Tokenization and N-grams** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
     - Common stopwords are "the", "or", "and", and I added more stopwords including "one", "word", and "name", 'war', 'film', john', 'state', 'country', 'us', 'new' because they appeared so often and are not specific enough to help someone study.
     - I chose to tokenize the words using NLTK's WordNetLemmatizer, although it still produced some messy words I had to handle within my stopwords
+    - I did set the option of including n-grams = 2, so words like "New York" would appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 
 ## Conclusion and Further Analysis
 The 13 categories aren't super distinct, but they capture about 10 *meta-categories* and the associated words
 If you are studying to be a *Jeopardy!* contestant, you should focus your attention on...
-- Grammar: slang words, synonyms, medical terms, and sounds
-- Royalty: Famous kings and queens, speficially in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David
-- States and Countries: Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries 
-- Numbers - years, and specifically when someone died (This one might not be very informative, but it is well clustered)
-- French! - Paris, cuisine, the French Revolution
-- Geography - Islands!!!! and oceans, coastlines, and places with Central in their name.. And Carolina!
-- Music - hit songs, rock songs, band names, musicals, and theme songs
-- Business and Industry -  car and oil companies,  when they were founded and what products they have
-- Langauges -  French, Latin, Greek, and Roman
-- Books, Movies, and Theater - specifically Shakespeare, plays, characters names, which actor plays in which character role
 
-As expected, geography and pop culture are very important, as well as Busines and Industry which is not a topic that I think of when I think of *Jeopardy!* categories. I am also interested why Science terms are not so common in these clusters, given it was the most common category on the show. 
+| Grammar | Royalty | States and Countries | Numbers | French | Geography | Music | Business and Industry | Languages | Books, Movies, Theater |
+|-|-|-|-|-|-|-|-|-|-|
+| slang words, synonyms, medical terms, and sounds | Famous kings and queens, specifically in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David | Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries | years, and specifically when someone died (This one might not be very informative, but it is well clustered) | Paris, cuisine, the French Revolution | Islands!! and oceans, coastlines, and places with Central in their name.. And Carolina! | hit songs, rock songs, band names, musicals, and theme songs | car and oil companies, the brand, when the companies were founded and what products they have | French, Latin, Greek, and Roman | specifically Shakespeare, plays, characters names, which actor plays in which character role |
+
+As I expected, geography, literature, and pop culture are very important. Busines and Industry, which is not a topic that I think of when I think of *Jeopardy!* categories, was also a clear cluster. I am interested in why science and history terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for history and science that they weren't included due to the nature of tf-idf vectorization. Or, because NMF is a soft-clustering model, the common words in history and science categories can be found
 
 
-**Next Steps**: Make a better model that better meets the goal! 
-- Check the reconstruction error of my NMF model against multiple adjustments to my model to pick the best combination 
-- Continue to adjust the hyperparameters of my model such as stopwords, n-grams, and address parts of speech tagging
+**Next Steps**: 
+- Continue to adjust the hyperparameters of my model such as stopwords and n-grams, and address parts of speech tagging
+- Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
 - Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
-- Use a latent Dirichlet allocation (LDA) model to generate clusters and try to get a bette
+- Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
+
+
 
 
 
@@ -171,14 +188,11 @@ As expected, geography and pop culture are very important, as well as Busines an
 - average clues: a daily double in category 1, or a value equal to 800 in either category
 - hard clues: a daily double in category 2, a value equal to $1,000 in either category 1 or 2, a value greater than or equal to $1600, , or Final Jeopardy
 
-This varied slightly than my own assumptions, which are:
+This varied slightly than my own "viewer assumptions", which are:
 - easy clues: Less than $800 in either round, and not a dailty double
 - average clues: over $800 in round 1, $1200 in round 2, or a daily double in round 1
 - hard clues: over $1200 in round 2, a daily double in round 2, or final jeopardy
 
 **Thanks**<p>
 A special thank you to Galvanize instructors and residents Kayla, Chris, Rosie, Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon
-
 This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons and my friend Laura whose love of Jeopardy inspired this investigation. 
-
-
