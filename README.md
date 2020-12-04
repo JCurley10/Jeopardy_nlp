@@ -124,12 +124,7 @@ Taking a deeper dive into the words of each clue, (questions and answers combine
 ## Analysis 
 I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw questions and answers text into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. Within each cluster, I chose the top 10 words to define the category. Let's see what we have!
 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
-<img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | <img src="" alt="categories" width="30" height="300"> | 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="300"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="300"> | 
 
 - **Deciding on the Number of Topics** : I chose to use my domain knowledge to choose the number of topics, as well as testing how well my model ran with different topics, judging against the reconstruction error of the matrix. Each *Jeopardy1* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them. 
 - **Top Words per *meta-category***: I chose top 10 words per category because that seemed like a manageable start for someone studying
@@ -141,16 +136,10 @@ I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vector
 ## Conclusion and Further Analysis
 The 13 categories aren't super distinct, but they capture about 10 *meta-categories* and the associated words
 If you are studying to be a *Jeopardy!* contestant, you should focus your attention on...
-- Grammar: slang words, synonyms, medical terms, and sounds
-- Royalty: Famous kings and queens, speficially in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David
-- States and Countries: Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries 
-- Numbers - years, and specifically when someone died (This one might not be very informative, but it is well clustered)
-- French! - Paris, cuisine, the French Revolution
-- Geography - Islands!!!! and oceans, coastlines, and places with Central in their name.. And Carolina!
-- Music - hit songs, rock songs, band names, musicals, and theme songs
-- Business and Industry -  car and oil companies,  when they were founded and what products they have
-- Langauges -  French, Latin, Greek, and Roman
-- Books, Movies, and Theater - specifically Shakespeare, plays, characters names, which actor plays in which character role
+
+| Grammar | Royalty | States and Countries | Numbers | French | Geography | Music | Business and Industry | Languages | Books, Movies, Theater |
+|-|-|-|-|-|-|-|-|-|-|
+| slang words, synonyms, medical terms, and sounds | Famous kings and queens, specifically in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David | Capitals!! And America, Africa, India, museums, europe, and speficially founding dates related to states and countries | years, and specifically when someone died (This one might not be very informative, but it is well clustered) | Paris, cuisine, the French Revolution | Islands!! and oceans, coastlines, and places with Central in their name.. And Carolina! | hit songs, rock songs, band names, musicals, and theme songs | car and oil companies, the brand, when the companies were founded and what products they have | French, Latin, Greek, and Roman | specifically Shakespeare, plays, characters names, which actor plays in which character role |
 
 As expected, geography and pop culture are very important, as well as Busines and Industry which is not a topic that I think of when I think of *Jeopardy!* categories. I am also interested why Science terms are not so common in these clusters, given it was the most common category on the show. 
 
