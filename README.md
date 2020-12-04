@@ -49,7 +49,7 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 - **Clue**: What I will be calling a category-question-answer combination, which is one instance or observation.
 - **J-Category**: The *Jeopardy!* defined category. In the image above, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
 - **Answer**: The clue read by the host and shown on the screen
-- **Question:**: The response to the clue, and it must be in the form of a question like "What is..."
+- **Question**: The response to the clue, and it must be in the form of a question like "What is..."
 - **Meta-category**: An overarching topic that can describe each clue's context. For example, the J-Category "EDIBLE RHYME TIME" seen above might belong to the meta-category "Literature" or "Food". In data-science, we can also think of a meta-category as a *latent topic*
 
 
@@ -63,7 +63,7 @@ Previous contestants and avid fans like myself have intuitions about which theme
 ## The Data
 The original dataset is a .txt file, downloaded from [kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of *Jeopardy!*, from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
 
-#### The original Dataset, read in to a Pandas DataFrame:
+#### The original raw dataset, read in to a Pandas DataFrame:
 
 
 |    |   round |   value | daily_double   | category       | comments   | answer                                                    | question     | air_date   | notes   | question_and_answer                                                    | clue_difficulty   |
@@ -139,7 +139,7 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 |-|-|-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
 
-| French! | States and Countries | Books, Movies, Theater | 
+| French? | States and Countries | Books, Movies, Theater | 
 |-|-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/8topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
 
@@ -154,9 +154,10 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 <sub>figure5</sub>
 
 ### Model Settings (Hyperparameters)
+
 - **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. 13 ended up having the most meaningful clusters when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. The above result came from a NMF model with a reconstruction error of around 500, which isn't great, but was better than above 13 and while worse than below 13 categories, it was only slightly worse and the clusters weren't very informative.
 - **Top Words per *meta-category***: I chose top 10 words per category because is a manageable start for someone planning on studying for *Jeopardy!*
-- **Handling Stopwords, Tokenization and N-grams** Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
+- **Handling Stopwords, Tokenization, and N-grams** : Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
     - Common stopwords are "the", "or", "and", which were already in my original stopwords set taken from NLTK. I added more stopwords including "one", "word", and "name", 'war', 'film', john', 'state', 'country', 'us', 'new' because they appeared so often and are not specific enough to help someone study specific words.
     - I chose to tokenize the words using NLTK's WordNetLemmatizer, although it still produced some messy words I had to handle within my stopwords set
     - I did set the option of including n-grams = 2, to allow words like "North Dakoda" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 

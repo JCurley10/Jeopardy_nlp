@@ -18,23 +18,19 @@ import re
 
 
 def read_tsv(filepath):
-	"""Reads in a tsv file
-
-	Args:
-		filepath (string): filepath and file name of the 
-			tsv file to be read into as a pandas dataframe
-	Returns:
-		Pandas DataFrame
+	"""
+	Reads in a tsv file
 	"""    
-	return pd.read_csv(filepath, sep = "\t")
+	return pd.read_csv(filepath, sep="\t")
+
 
 def stringify(df, col):
 	"""
-	Turns the column (col) into one string, 
-	to be able to make a wordcloud 
+	Turns the column (col) into one string,
+	to be able to make a wordcloud
 
 	Args:
-		df (Pandas dataFrame): The dataframe in use
+		df (Pandas dataFrame): The dataframesin use
 		col (str): the column name to turn into a string
 	Returns:
 		a string that connects all the words in the column
@@ -42,8 +38,8 @@ def stringify(df, col):
 	return ' '.join(df[col])
 
 def lowercase(df, cols):
-	"""
-	turns the column (col) into one string, 
+"""
+	turns the column (col) into one string,
 	whose letters are all lowercase
 	to be able to make a wordcloud
 
@@ -51,7 +47,7 @@ def lowercase(df, cols):
 		df (Pandas dataFrame): The dataframe in use
 		col (str): the column name to turn into a string
 	Returns:
-		a dataframe with all lowercase text 
+		a dataframe with all lowercase text
 		in the given column lowercase
 	"""   
 	for col in cols: 
@@ -82,7 +78,8 @@ def tokenize_by_col(df, cols):
 		df (Pandas dataFrame): The dataframe in use
 		col (str): the column name to turn into a string
 	Returns:
-		a string
+		a dataframe with each column containing 
+		tokenized words
 	"""        
 	for col in cols:
 		df[col] = df[col].apply(word_tokenize)
