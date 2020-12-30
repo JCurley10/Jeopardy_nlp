@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
 from wordcloud import WordCloud
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
