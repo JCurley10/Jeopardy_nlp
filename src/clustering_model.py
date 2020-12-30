@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import nltk
 nltk.download('stopwords')
 nltk.download('punkt')
+nltk.download('wordnet')
 from wordcloud import WordCloud
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
