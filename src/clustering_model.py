@@ -76,8 +76,9 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
     return nmf_feature_names, nmf_weights, recon_err
 
 
-#TODO: get this function to work on large df without it timing out. 
-#TODO: use a different function to get recon_err since it has to unpack the get_names_weights and doens't use two variables. 
+# TODO: get this function to work on large df without it timing out.
+# TODO: use a different function to get recon_err since it has to unpack the
+#  get_names_weights and doens't use two variables.
 def plot_ks(df, col, vectorizer, n_topics, nmf):
     """
     plot the number of topics vs the reconstruction error
@@ -85,17 +86,17 @@ def plot_ks(df, col, vectorizer, n_topics, nmf):
     of topics is best
 
     Args:
-        df (Pandas DataFrame): DataFrame with the top categories 
-        col (str): column name to get the clusters 
+        df (Pandas DataFrame): DataFrame with the top categories
+        col (str): column name to get the clusters
         vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
-        n_topics (int): total number of topics to get clusters of 
+        n_topics (int): total number of topics to get clusters of
         nmf (type sklearn NMF decomposer): initialized NMF instance
     Returns:
-        None: 
-    """    
+        None:
+    """
     errs = []
-    for _ in range(n_topics):
-        nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
+    for k in range(n_topics):
+        nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, k, nmf)
         errs.append(recon_err)
     plt.plot(range(1, n_topics), errs)
     plt.xlabel('k')
@@ -122,15 +123,15 @@ def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, 
     Returns:
         a tuple of lists of a list of list of strings of n_top_words (feature_names) 
         and the topic indices in a list equal to the length of n_topics
-    """    
-    
+    """
+
     words = []
     topic_indices = []
     for topic_idx, topic in enumerate(weights):
         words.append(list(feature_names[i]
                     for i in topic.argsort()[:-n_top_words - 1:-1]))
         topic_indices.append(topic_idx)
-    
+
     return words, topic_indices
 
 
