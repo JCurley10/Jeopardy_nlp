@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import nltk
+nltk.download('stopwords')
 from wordcloud import WordCloud
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -46,28 +48,31 @@ def kmeans_cluster(df, col, n, stopwords):
     return f'n = {n}', name_arr[top_n]
 
 
-
-
 def get_names_weights(df, col, vectorizer, n_topics, nmf):
-    """[summary]
+    """
+    get the feature names, weights, and reconstruction
+    error of the nmf model
 
     Args:
-        df (Pandas DataFrame): DataFrame with the top categories 
-        col (str): column name to get the clusters 
-        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
-        n_topics (int): total number of topics to get clusters of 
+        df (Pandas DataFrame): DataFrame with the top categories
+        col (str): column name to get the clusters
+        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize
+                    the text
+        n_topics (int): total number of topics to get clusters
         nmf (type sklearn NMF decomposer): initialized NMF instance
 
     Returns:
-        tuple: feature names, weights, and reconstruction error of the nmf model
-    """    
+        tuple: feature names, weights, and reconstruction
+        error of the nmf model
+    """
     tfidf = vectorizer.fit_transform(df[col])
 
     nmf.fit_transform(tfidf) # W matrix 
-    nmf_feature_names = vectorizer.get_feature_names()  #Feature names 
-    nmf_weights = nmf.components_ #H
+    nmf_feature_names = vectorizer.get_feature_names()  # Feature names 
+    nmf_weights = nmf.components_ # H
     recon_err = nmf.reconstruction_err_
     return nmf_feature_names, nmf_weights, recon_err
+
 
 #TODO: get this function to work on large df without it timing out. 
 #TODO: use a different function to get recon_err since it has to unpack the get_names_weights and doens't use two variables. 
@@ -90,7 +95,7 @@ def plot_ks(df, col, vectorizer, n_topics, nmf):
     for _ in range(n_topics):
         nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
         errs.append(recon_err)
-    plt.plot(range(1,n_topics), errs)
+    plt.plot(range(1, n_topics), errs)
     plt.xlabel('k')
     plt.ylabel('Reconstruction Error')
     plt.show()
@@ -100,16 +105,17 @@ def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, 
     """
     Takes an input of feature names, or words, and their weights
     and returns the top n words, the latent topic index
-    and the reconstruction error of the nmf model 
+    and the reconstruction error of the nmf model
     
     Args:
         feature_names (Series of str): the feature_names (words),
              the result[0] from the get_names_weights function
         weights (Series of floats): the weights of each feature (word)
-            from feature_names. THe result[1] from the get_names_weights function
-        n_topics (int): total number of topics to get clusters of 
+            from feature_names. Result[1] from the get_names_weights function
+        n_topics (int): total number of topics to get clusters of
         n_top_words (int): number of words per cluster
-        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
+        vectorizer (type TfidfVectorizer() vectorizer): method to vectorize
+                    the text
 
     Returns:
         a tuple of lists of a list of list of strings of n_top_words (feature_names) 
@@ -141,9 +147,9 @@ def get_topics_terms_weights(feature_names, weights):
         topics: list of lists  of strings
              the feature_names (or words) with their weights as strings
         sorted_weights: Numpy Array of weights, in descending order,
-            associated with each vector associated with its corresponding 
-            list index in feature_names 
-    """    
+            associated with each vector associated with its corresponding
+            list index in feature_names
+    """
     feature_names = np.array(feature_names)
     sorted_indices = np.array([list(row[::-1]) for row in np.argsort(np.abs(weights))])
     sorted_weights = np.array([list(wt[index]) for wt, index in zip(weights, sorted_indices)])
@@ -151,6 +157,7 @@ def get_topics_terms_weights(feature_names, weights):
 
     topics = [np.vstack((terms.T, term_weights.T)).T for terms, term_weights in zip(sorted_terms, sorted_weights)]
     return topics, sorted_weights
+
 
 def make_weights_dict(topics, nth_topic, n_top_words):
     """
@@ -171,7 +178,7 @@ def make_weights_dict(topics, nth_topic, n_top_words):
     Returns:
         Dictionary: the feature_names or words are the keys and the 
         values are the associated weights 
-    """   
+    """
     top_n_topics = []
     for topic in topics:
         top_n_topics.append(topic[:10])
@@ -185,8 +192,8 @@ def make_weights_dict(topics, nth_topic, n_top_words):
     weights_dictionary = dict(zip(top_10_topics[::2], top_10_topics[1::2]))
     return weights_dictionary
 
-    
-def viz_top_words(dictionary, color, n, save = False): 
+
+def viz_top_words(dictionary, color, n, save=False): 
     """
     Make a wordcloud of the feature_names (words) 
     from a single cluster or topic
@@ -202,17 +209,17 @@ def viz_top_words(dictionary, color, n, save = False):
     """    
     wordcloud = WordCloud(width=800,height=800, 
                         relative_scaling=.5, normalize_plurals=True,
-                        background_color =None, mode = 'RGBA', 
-                        colormap = color, collocations=False, 
-                        min_font_size = 10)
+                        background_color=None, mode='RGBA', 
+                        colormap=color, collocations=False, 
+                        min_font_size=10)
     
     wordcloud.generate_from_frequencies(dictionary)
 
-    # plot the WordCloud image                        
-    plt.figure(figsize = (8, 8), facecolor = None) 
-    plt.imshow(wordcloud) 
-    plt.axis("off") 
-    plt.tight_layout(pad = 0) 
+    # plot the WordCloud image
+    plt.figure(figsize=(8, 8), facecolor=None) 
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.tight_layout(pad=0)
 
     if save:
         plt.savefig(f'../images/{n}topic_model_Wordcloud.png')
@@ -244,7 +251,7 @@ if __name__ == "__main__":
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     regular_episodes_sub = make_sub_df(regular_episodes)
 
-    #to look at W and H with respect to the original J-categories
+    # To look at W and H with respect to the original J-categories
     regular_episode_sub_reindexed = regular_episodes_sub.set_index('J-Category')
     regular_episodes_reindexed = regular_episodes.set_index('J-Category') # get a smaller samplle 
 
@@ -252,12 +259,12 @@ if __name__ == "__main__":
     df = regular_episodes_reindexed
     col = 'Question and Answer'
 
-    #adjust these hyperparameters
+    # Adjust these hyperparameters
     n_topics = 13
     n_top_words = 10
     tot_features = 1000
 
-    #Adjust the vectorizer and nmf model hyperparameters 
+    # Adjust the vectorizer and nmf model hyperparameters 
     nmf = NMF(n_components=n_topics, random_state=43,  
                     alpha=0.1, l1_ratio=0.5)
 
@@ -271,10 +278,4 @@ if __name__ == "__main__":
     topics, sorted_weights = get_topics_terms_weights(feature_names, weights)
     words, topic_indices = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
 
-    # for i in range(n_topics):
-    #     print (f'Topic {i+1}')
-    #     for l in topics[i][:10]:
-    #         print (l)
-    #     print ('\n')
-    # print (f'Reconstruction Error: {recon_err}')
-
+    print(plot_ks(regular_episodes, col, vectorizer, 25, nmf))
