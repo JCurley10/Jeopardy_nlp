@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud, STOPWORDS 
+from wordcloud import WordCloud, STOPWORDS
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -15,12 +15,13 @@ from sklearn.metrics.pairwise import linear_kernel
 from sklearn.decomposition import NMF as NMF_sklearn
 import string
 import re
+import spacy
 
 
 def read_tsv(filepath):
 	"""
 	Reads in a tsv file
-	"""    
+	"""
 	return pd.read_csv(filepath, sep="\t")
 
 
@@ -79,7 +80,7 @@ def tokenize_by_col(df, cols):
 		df (Pandas dataFrame): The dataframe in use
 		col (str): the column name to turn into a string
 	Returns:
-		a dataframe with each column containing 
+		a dataframe with each column containing
 		tokenized words
 	"""        
 	for col in cols:
@@ -87,47 +88,32 @@ def tokenize_by_col(df, cols):
 	return df
 
 
-
-def tokenize(text):
+def lemmatize(text):
 	"""[summary]
 
 	Args:
 		text (string): a string to be tokenized
 
 	Returns:
-		a list of strings: tokenized words 
-	"""	
+		a list of strings: tokenized words
+	"""
 	lemmatizer = WordNetLemmatizer()
-	# stemmer = SnowballStemmer('english')
 	word_list = word_tokenize(text)
-
 	lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
-	# stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
-	# return stemmed_wrds
 	return lemmatized_wrds
 
-
 def make_stopwords(col):
-
 	if col == 'notes':
 		remove_words = {'final', 'quarterfinal', 'game', 'jeopardy!', 'semifinal', 'round', 'tournament', 'week', 'reunion', 'ultimate'}
-		stopwords_set = (set(stopwords.words('english'))).union(remove_words)
 	else:
-		remove_words = {'man', 'men', 'woman', 'person', 'he', 'she', 'they', 'people', 'with', 
-						'also', '000', 'girl', 'boy', 'know', 'mean', 'name', 'word', 'use', 
-						'big', 'small', 'one', 'iii', 'two', 'three', 'i', 'ii', 'said', 'say',
-						'know', 'known', 'name', 'say', 'good', 'bad', 'group', 'sometime',
-						'always', 'never', 'd', 's', 'abov', 'alway', 'ani', 'becaus', 'befor', 
-						'could', 'doe', 'dure', 'ha', 'might', 'must', "n't", 'need', 'onc', 'onli', 
-						'ourselv', 'peopl', 'sha', 'sometim', 'themselv', 'veri', 'wa', 'whi', 'wo', 'would', 'yourselv' 
-						'word', 'named', 'part', 'often', 'meaning', 'called', 'call', 'name', 'like', 'say', 'says'
-						'mean', 'means', 'contain', 'contains', 'someone', 'some', 'two', 'three', 'four', 'five'
-						'day', 'night', 'great', 'became', 'day', 'around', 'sometimes', 'used', 'use', 'made', 'country'
-						'term', '1st', 'got', 'time', 'times', 'tell', 'tells', 'may', 'war', 'film', 'de', 'john', 'state', 'new', 
-						'title', 'city', 'type', 'first', 'go', 'years', 'last', 'make', 'country', 'us', 'new', 'book', 'president', 
-						'world', 'wrote', 'd', "\'ll", "\'re", "s", "ve", "u", "river", "come", "get", 'novel', 'largest', 'old', 'played', 
-						'islands', 'whose', 'comes', 'age', 'thats', 'theyre', 'life', '2word', '_', '1', '2', '3', '4', '5', '20', '10', '30', 'every'}
-		stopwords_set = (set(stopwords.words('english'))).union(remove_words)
+		sw = open("stopwords.txt", "r")
+		my_stopwords = sw.read()
+		my_stopwords = my_stopwords.split(", ")
+		sw.close()
+		remove_words = stopwords.words('english')
+		remove_words.extend(my_stopwords)
+
+	stopwords_set = (set(stopwords.words('english'))).union(remove_words)
 	return list(stopwords_set)
 
 
@@ -147,18 +133,6 @@ def remove_stopwords(df, col, stopwords):
 
 # This function doesn't need anything from the above
 def clean_text(df, col):
-	'''
-	"""    
-	taking in a column from a dataframe,
-	return a list of tokenized words, stripped of stopwords 
-	Args
-			df (Pandas DataFrame)
-			cols (list of str): list of columns to be cleaned, as strings
-	Returns:
-		[list of str]: a list of strings
-			to be used for an EDA wordcloud from a given column
-	"""
-	'''
 	text = ' '.join(df[col])
 	tokens = word_tokenize(text)
 	# converts the tokens to lower case
@@ -278,10 +252,3 @@ if __name__ == "__main__":
 	regular_episodes_sub = make_sub_df(regular_episodes)
 
 	regular_episodes.to_csv('../data/jeopardy_regular_episodes.csv')
-
-	
-
-
-
-
-

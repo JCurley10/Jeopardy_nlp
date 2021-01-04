@@ -1,3 +1,7 @@
+# NMF MODEL FUNCTIONS
+# REPLACING THE DF, COL PARAMETERS WITH CLUE = A LIST 
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,45 +17,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF
 from sklearn.cluster import KMeans
-from preprocessing import tokenize, make_sub_df
-from preprocessing_1 import make_stopwords
+from preprocessing_1 import lemmatization, make_stopwords, convert_col_to_list
+
+# TODO: hyperparameter tuning with the Count Vectorizer
 
 
-#TODO: hyperparameter tuning with the Count Vectorizer
-#TODO: write docstring
-
-def kmeans_cluster(df, col, n, stopwords):
-    """
-    hard cluster of the topics in a given
-    column of a dataframe using k-means
-
-    Args:
-        df (Pandas DataFrame): DataFrame with the top categories
-        col (str): column name to get the clusters
-        n (int): latent topic count
-
-    Returns: 
-        tuple that classifies the number of clusters, n
-        and the top n words in the cluster
-    
-    """
-    count_vect = CountVectorizer(ngram_range = (1, 1), 
-                            lowercase=True,  tokenizer=None, 
-                            stop_words= stopwords, analyzer='word',  
-                            max_features=None)
-
-    x = count_vect.fit_transform(df[col])
-    # features = count_vect.get_feature_names()
-    kmeans = KMeans(n_clusters = n, random_state = 123).fit(x)
-    centroids = kmeans.cluster_centers_
-    top_n = np.argsort(centroids)[:, :-n+1:-1]
-    names = count_vect.get_feature_names()
-
-    name_arr = np.array(names)
-    return f'n = {n}', name_arr[top_n]
-
-
-def get_names_weights(df, col, vectorizer, n_topics, nmf):
+def get_names_weights(text, vectorizer, n_topics, nmf):
     """
     get the feature names, weights, and reconstruction
     error of the nmf model
@@ -68,7 +39,7 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
         tuple: feature names, weights, and reconstruction
         error of the nmf model
     """
-    tfidf = vectorizer.fit_transform(df[col])
+    tfidf = vectorizer.fit_transform(text)
 
     nmf.fit_transform(tfidf) # W matrix 
     nmf_feature_names = vectorizer.get_feature_names()  # Feature names 
@@ -80,7 +51,7 @@ def get_names_weights(df, col, vectorizer, n_topics, nmf):
 # TODO: get this function to work on large df without it timing out.
 # TODO: use a different function to get recon_err since it has to unpack the
 #  get_names_weights and doens't use two variables.
-def plot_ks(df, col, vectorizer, n_topics, nmf):
+def plot_ks(text, vectorizer, n_topics, nmf):
     """
     plot the number of topics vs the reconstruction error
     to look at the elbow and decide on which number
@@ -97,12 +68,14 @@ def plot_ks(df, col, vectorizer, n_topics, nmf):
     """
     errs = []
     for k in range(n_topics):
-        nmf_feature_names, nmf_weights, recon_err = get_names_weights(df, col, vectorizer, k, nmf)
+        nmf_feature_names, nmf_weights, recon_err = get_names_weights(
+                                                    text, vectorizer, k, nmf)
         errs.append(recon_err)
-    plt.plot(range(1, n_topics), errs)
+
+    plt.plot(range(n_topics), errs)
     plt.xlabel('k')
     plt.ylabel('Reconstruction Error')
-    plt.show()
+    # plt.show()
 
 
 def make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf):
@@ -171,17 +144,17 @@ def make_weights_dict(topics, nth_topic, n_top_words):
     and the weights will be the frequencies 
 
     Args:
-        topics (list of lists  of strings): the feature_names 
+        topics (list of lists  of strings): the feature_names
             (or words) with their weights as strings
-        n_topics (int): total number of topics to get clusters of 
+        n_topics (int): total number of topics to get clusters of
         n_top_words (int): number of words per cluster
         sorted_weights: Numpy Array of weights, in descending order,
-            associated with each vector associated with its corresponding 
-            list index in feature_names 
+            associated with each vector associated with its corresponding
+            list index in feature_names
 
     Returns:
-        Dictionary: the feature_names or words are the keys and the 
-        values are the associated weights 
+        Dictionary: the feature_names or words are the keys and the
+        values are the associated weights
     """
     top_n_topics = []
     for topic in topics:
@@ -197,9 +170,9 @@ def make_weights_dict(topics, nth_topic, n_top_words):
     return weights_dictionary
 
 
-def viz_top_words(dictionary, color, n, save=False): 
+def viz_top_words(dictionary, color, n, save=False):
     """
-    Make a wordcloud of the feature_names (words) 
+    Make a wordcloud of the feature_names (words)
     from a single cluster or topic
 
     Args:
@@ -210,13 +183,13 @@ def viz_top_words(dictionary, color, n, save=False):
             If False, shows figure. Defaults to False.
     Returns:
         None. Generates a wordcloud, and either saves or shows it
-    """    
-    wordcloud = WordCloud(width=800,height=800, 
-                        relative_scaling=.5, normalize_plurals=True,
-                        background_color=None, mode='RGBA', 
-                        colormap=color, collocations=False, 
-                        min_font_size=10)
-    
+    """
+    wordcloud = WordCloud(width=800, height=800,
+                          relative_scaling=.5, normalize_plurals=True,
+                          background_color=None, mode='RGBA',
+                          colormap=color, collocations=False,
+                          min_font_size=10)
+
     wordcloud.generate_from_frequencies(dictionary)
 
     # plot the WordCloud image
@@ -254,7 +227,7 @@ def show_word_clouds(n_topics, topics, n_top_words, color='plasma', save=False):
 if __name__ == "__main__":
 
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
-    regular_episodes_sub = make_sub_df(regular_episodes)
+    regular_episodes_sub = regular_episodes.sample(frac=.02)
 
     # To look at W and H with respect to the original J-categories
     regular_episode_sub_reindexed = regular_episodes_sub.set_index('J-Category')
@@ -262,8 +235,13 @@ if __name__ == "__main__":
 
     # handle tokenizing and stopwords
     stopwords = make_stopwords("stopwords.txt") # Get the stopwords from the preprocessing file
-    df = regular_episode_sub_reindexed
-    col = 'Question and Answer'
+    clues = convert_col_to_list(regular_episode_sub_reindexed, "Question and Answer")
+    
+
+    # TODO:
+    # Remove stopwords, tokenize, etc in the right order
+    # and don't use the associated parameters in the tfidf vectorizer
+
 
     # Adjust these hyperparameters
     n_topics = 13
@@ -280,9 +258,10 @@ if __name__ == "__main__":
                     analyzer='word', stop_words=stopwords,
                     max_features=tot_features)
 
-    feature_names, weights, recon_err = get_names_weights(df, col, vectorizer, n_topics, nmf)
-    print(feature_names, weights, recon_err)
-    # topics, sorted_weights = get_topics_terms_weights(feature_names, weights)
-    # words, topic_indices = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
+    feature_names, weights, recon_err = get_names_weights(clues, vectorizer, n_topics, nmf)
+    topics, sorted_weights = get_topics_terms_weights(feature_names, weights)
+    words, topic_indices = make_wrds_topics(feature_names, weights, n_topics, n_top_words, vectorizer, nmf)
 
-    # print(plot_ks(regular_episodes, col, vectorizer, 25, nmf))
+    show_word_clouds(n_topics, topics, n_top_words, color='plasma', save=False)
+
+    
