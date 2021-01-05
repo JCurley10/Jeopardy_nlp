@@ -1,5 +1,5 @@
 
-# What are... the Most Important Topics to Study for Jeopardy!
+# What are... The Most Important Topics to Study for Jeopardy!
 
 ## Table of Contents
 - [The Goal](#The-Goal)
