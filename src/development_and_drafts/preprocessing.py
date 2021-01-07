@@ -38,6 +38,7 @@ def stringify(df, col):
 	"""        
 	return ' '.join(df[col])
 
+
 def lowercase(df, cols):
 	"""
 	turns the column (col) into one string,

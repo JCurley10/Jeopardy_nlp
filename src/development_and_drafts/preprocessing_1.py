@@ -1,11 +1,18 @@
+    """[summary]
+    THIS FILE IS A CLEANER FOR TEXT. IT IS ONE OF MANY FILES THAT DO THIS IN A DIFFERENT WAY USING DIFFERENT METHODS
+    """
+
 import re
 import nltk
 import spacy
+import string
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pprint import pprint
 from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 
 # Gensim
 import gensim
@@ -33,26 +40,24 @@ def make_q_and_a_col(df):
     return df
 
 
-def convert_col_to_list(df, col='Question and Answer'):
-    """
-    takes in a column from a dataframe and
-    returns a list of text
-    Args:
-        df (Pandas DataFrame):
-        col (str): column name. Default to "Question and Answer"
-    Returns:
-        a list of strings, where each column entry is one string
-        to be tokenized later
-    """
-    text = df[col].values.tolist()
-    return text
+def remove_punc2(texts):
+    x = [''.join(c for c in s if c not in string.punctuation) for s in texts]
+    x = [s for s in x if s]
+    return x
 
 
 def remove_punc(texts):
-    cleaned_text = [re.sub('\S*@\S*\s?', '', sent) for sent in texts]
-    cleaned_text = [re.sub('\s+', ' ', sent) for sent in cleaned_text]
-    cleaned_text = [re.sub("\'", "", sent) for sent in cleaned_text]
-    return cleaned_text
+    '''
+    texts are a list of a string where each string is a row of text from the df
+    '''
+    clues = [re.sub('\S*@\S*\s?', '', sent) for sent in texts]
+
+    # Remove new line characters
+    clues = [re.sub('\s+', ' ', sent) for sent in clues]
+
+    # Remove distracting single quotes
+    clues = [re.sub("\'", "", sent) for sent in clues]
+    return clues
 
 
 # TODO:
@@ -63,13 +68,15 @@ def tokenize(texts):
 
 
 def make_bigrams(texts):
-    bigram = gensim.models.Phrases(clue_words, min_count=5, threshold=100)
+    words = list(tokenize(texts))
+    bigram = gensim.models.Phrases(words, min_count=5, threshold=100)
     bigram_mod = gensim.models.phrases.Phraser(bigram)
     return [bigram_mod[doc] for doc in texts]
 
 
 def make_trigrams(texts):
-    trigram = gensim.models.Phrases(bigram[clue_words], threshold=100)
+    words = list(tokenize(texts))
+    trigram = gensim.models.Phrases(bigram[words], threshold=100)
     trigram_mod = gensim.models.phrases.Phraser(trigram)
     return [trigram_mod[bigram_mod[doc]] for doc in texts]
 
@@ -77,6 +84,7 @@ def make_trigrams(texts):
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """
     """
+    nlp = spacy.load('en', disable=['parser', 'ner'])
     texts_out = []
     for sent in texts:
         doc = nlp(" ".join(sent)) 
@@ -84,7 +92,24 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     return texts_out
 
 
-def make_stopwords(filepath):
+def tokenize(text):
+    """[summary]
+    Args:
+    text (string): a string to be tokenized
+    Returns:
+    a list of strings: tokenized words
+    """
+    lemmatizer = WordNetLemmatizer()
+    # stemmer = SnowballStemmer('english')
+    word_list = word_tokenize(text)
+
+    lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
+    # stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
+    # return stemmed_wrds
+    return lemmatized_wrds
+
+
+def make_stopwords(filepath='stopwords.txt'):
     """
     read in a list of stopwords from a .txt file
     and extend the nltk stopwords by this list.
@@ -101,11 +126,15 @@ def make_stopwords(filepath):
     return all_stopwords
 
 
-def remove_stopwords(texts):
+def remove_stopwords(texts, stop_words):
+    '''
+    texts need to be tokenized
+    '''
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
 
 
-def remove_stopwords_to_df(df, col, stopwords):
+# TODO: maybe I don't need this one anymore
+def remove_stopwords_to_df(df, col, stop_words):
     """
     remove stopwords from a set
     Args:
@@ -117,34 +146,26 @@ def remove_stopwords_to_df(df, col, stopwords):
         column without stopwords
     """
     df[col] = df[col].apply(lambda x: ' '.join(
-        [word for word in simple_preprocess(str(x)) if word not in stopwords]))
+        [word for word in simple_preprocess(str(x)) if word not in stop_words]))
     return df
 
 
-def remove_punc(df, col):
-    """
-    remove punctuation from a column
-    Args:
-        df (Pandas dataFrame): The dataframe in use
-        col (str): the column name to turn into a string
-    Returns:
-        Pandas DataFrame: with removed punctuation
-    """
-    for col in cols:
-        p = re.compile(r'[^\w\s]+')
-        df[col] = [p.sub('', x) for x in df[col].tolist()]
-    return df
-
-
-def make_bigrams(texts):
-    bigram = gensim.models.Phrases(clue_words, min_count=5, threshold=100) # higher threshold fewer phrases.
-    bigram_mod = gensim.models.phrases.Phraser(bigram)
-    return [bigram_mod[doc] for doc in texts]
+def preprocess_columns(text, stop_words):
+    '''
+    text = the tolist() from column value
+    '''
+    clues = remove_punc(text)
+    clues = remove_stopwords(clues, stop_words)
+    clues = make_bigrams(clues)
+    clues = lemmatization(clues)
+    clues = remove_stopwords(clues, stop_words)
+    return clues
 
 
 if __name__ == "__main__":
 
     regular_episodes = pd.read_csv('../data/regular_episodes.csv')
     # # Create stopwords list
-    stopwords_txt = "stopwords.txt"
-    stopwords_list = make_stopwords(stopwords_txt)
+
+    text = convert_col_to_list(regular_episodes)
+

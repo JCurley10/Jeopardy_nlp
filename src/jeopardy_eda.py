@@ -151,7 +151,7 @@ def graph_top_categories(df, color, save=False):
     plt.tight_layout()
 
     if save:
-        plt.savefig('../images/eda_images/top_10_categories.png')
+        plt.savefig('../images/eda_images/top_10_categories_blue.png')
     else:
         plt.show()
 
@@ -170,4 +170,4 @@ if __name__ == "__main__":
     graph_wrd_cts(avgs, 'Answer Word Count', color='purple', save=False)
 
     common_cats = top_categories(regular_episodes, 10)
-    graph_top_categories(common_cats, color="slategray", save=False)
+    graph_top_categories(common_cats, color="darkblue", save=True)
