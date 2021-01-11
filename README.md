@@ -44,36 +44,33 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 
 ## Key Terms
 
-- **Clue**: What I will be calling a category-question-answer combination, which is one instance or observation.
+- **Clue**: What I will be calling a question-answer combination. A single clue instance can be considered as a text document 
 - **J-Category**: The "Jeopardy!" defined category. In the image above, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
-- **Answer**: The clue read by the host and shown on the screen
-- **Question**: The response to the clue, and it must be in the form of a question like "What is..."
-- **Meta-category**: An overarching topic that can describe each clue's context. For example, the J-Category "EDIBLE RHYME TIME" seen above might belong to the meta-category "Literature" or "Food". In data-science, we can also think of a meta-category as a *latent topic*
-
+- **Answer**: A description of  is read by the host and shown on the screen. 
+- **Question**: The response to the answer given by the host, and it must be in the form of a question like "What is..."
+- **Meta-category**: An overarching topic that can describe each clue's context, also referred to as a **hidden theme**. For example, the J-Category "EDIBLE RHYME TIME" seen above might belong to potential meta-categories "Literature" and "Food". In data-science, we can also think of a meta-category as a **latent topic**
 
 ## Motivation
 
 The J-Categories in each episode fall under greater themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many truly unique topics! 
 
-Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to participate at home, or to be a real contestant on the show. For example many "Jeopardy!" fans will say that you need to know about the US presidents, world geography, literature, state capitals, and names of celebrities. 
-
 It is straightforward to identify the most common words or categories that have appeared in the show, but that is not enough information for focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar categories. Within these groupings, I also seek to idenfity which words are most important in order for a contestant to focus their study. 
 
 
 ## The Data
-The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of "Jeopardy!", from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
+The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue per episode over 35 seasons of "Jeopardy!", from 9/10/1984 to 7/26/2019. The dataset contains information in the 'notes' about whether it was an special tournament or a regular episode.
 
-#### The original raw dataset, read in to a Pandas DataFrame:
+#### The Original, Raw Dataset
 |Round|Value|Daily Double|J-Category    |Answer                                                   |Question    |Air Date|
 |-----|-----|------------|--------------|---------------------------------------------------------|------------|--------|
 |1    |100  |no          |LAKES & RIVERS|River mentioned most often in the Bible                  |the Jordan  |9/10/84 |
 |1    |200  |no          |LAKES & RIVERS|Scottish word for lake                                   |loch        |9/10/84 |
 |1    |400  |no          |LAKES & RIVERS|American river only 33 miles shorter than the Mississippi|the Missouri|9/10/84 |
 
-
 <sub>table1</sub>
 
 #### The Dataset Used for This Project
+The episodes considered in this analysis only consider the episode that are not special tournamnets (I refer to these to as "Regular Episodes"). There are 278,730 total episodes included in this dataset.
 
 |    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
@@ -82,7 +79,7 @@ The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle
 |  2 |       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  
 <sub>table2</sub> 
 
-In the above dataset:
+In the above table:
 - Each row can be considered a *clue* instance
 - The only shows the regular episodes (not a special tournament or championship), so the "notes" column was removed
 - The column for "comments" is removed, which were additional hints that the host gave to contestants after reading a category
@@ -90,7 +87,7 @@ In the above dataset:
 - The "Question" and "Answer" columns combined in a "Question and Answer" column for convenient analysis, as the important words I want to capture within a clue could appear in the answer or question
 - A new column called "Question Difficulty" is added, that defines a question as easy, average, or hard<sup>1</sup>
 - Punctuation has been removed from the "Question", "Answer", "Question and Answer" columns, but not from the J-category column since there were more than 10 categories over time that had a single puncuation mark as the category
-- Capitalization is left as-is, and did not remove stopwords so I could adjust these settings while tuning my model. 
+- Capitalization is left as-is for now, and did not remove stopwords so I could adjust these settings while tuning my model. 
 
 ## Exploring the Data
 <p align="center">
@@ -127,8 +124,12 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 ## Analysis 
 
 ### Model Selection 
-I used TF-IDF vectorizer (Term Frequency * Inverse Document Frequency) to vectorize the documents - in other words, I turned the raw text from the questions and answers into a matrix of the numerical TF-IDF features. I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category*, which is one of the goals of this analysis. NMF is a *soft clustering* model, which in this context means that any clue (a document comprised of the question and answer text) could belong to multiple clusters. This is advantageous because it better informs the studier of the most important speficic topics to study. That is, if a word from a single document appears in multiple clusters, you get more "bang for your buck" by studying information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. Another benefit of using NMF for the topic modeling is that the loading or weights of each word in a cluster is positive, so their importance is more easily interpreted. 
-Then, within each cluster, I chose the top 10 words to define the meta-category. Let's see what we have!
+
+* I used a tf-idf (Term Frequency * Inverse Document Frequency) to vectorize the text from each clue. In other words, I turned the raw text from the "Jeopardy!" questions and answers into a matrix whose entries are the numerical TF-IDF features of each word in the text. 
+* I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category* or latent topic, which is one of the goals of this analysis.
+
+NMF is a *soft clustering* model, which in this context means that any clue could belong to multiple clusters. This is advantageous because the nature of "Jeopardy!" is that clues often touch on multiple topics. This is also advantageous for studying purposes: if a word from a single document appears in multiple clusters, you get more "bang for your buck" by studying the information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. Another benefit of using NMF for the topic modeling is that the loading or weights of each word in a cluster is positive, so their importance is more easily interpreted. 
+Then, within each cluster, I chose the top 15 words to define the meta-category. Let's see what we have!
 
 ### Visual
 | Misc. Words | Grammar | Geography |
@@ -155,7 +156,14 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 
 ### Model Settings (Hyperparameters)
 
-- **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each "Jeopardy!" episode has 13 categories, so 13 seemed like a reasonable number when considering. It looked like 13 clusters ended up showing the most meaningful separations when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. The above result came from a NMF model with a reconstruction error of around 500, which isn't great, but was better than above 13 and while worse than below 13 categories, it was only slightly worse and the clusters weren't very informative.
+- **Number of Topics** : I compared the reconstruction error of the matrices formed by the Non-Negative Matrix Factorization to the number of topics. In essence, this is a metric that measures how different the values in the reconstructed matrix of tf-idf value are from the original matrix. 
+
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/reconerr_vs_k.png" alt="categories" width="500" height="475">
+
+* Since my goal is to help a user focus their attention on important topics, I chose to only consider between 7 and 15 topics or clusters. In the end, the trend of the reconstruction matrix was close to linear, as seen above and not very meaningful: the greater the number of clusters, the lower the reconstruction error. This means that I could very easily decide on 100 clusters beause it had a low reconstruction error, but would lose the cohesiveness within the clusters, or have too many topics to focus on! 
+* After checking the cohesiveness of the topics manually, I found that 13 clusters produced the most meaningful groupings of words! 
+* An added coincidence  here is that each episode of "Jeopardy!" has 13 categories, so 13 was my lucky number. 
+
 - **Top Words per *meta-category***: I chose top 10 words per category because it is a manageable start for someone planning on studying for "Jeopardy!"
 - **Handling Stopwords, Tokenization, and N-grams** : Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
     - Common stopwords are "the", "or", "and", which were already in my original stopwords set taken from NLTK. I added more stopwords including "one", "word", and "name", "war", "film", "state', "country", "us", and "new" because they appeared so often and are not specific enough to help someone study specific words.
