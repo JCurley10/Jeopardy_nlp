@@ -168,8 +168,4 @@ def clean_text_clues(texts):
 
 
 if __name__ == "__main__":
-    regular_episodes = pd.read_csv('../data/regular_episodes.csv')
-    subsample = regular_episodes.sample(frac=0.02)
-    text = subsample['Question and Answer'].values.tolist()
-
-    clean_clues_text = clean_text_clues(text)
+    pass

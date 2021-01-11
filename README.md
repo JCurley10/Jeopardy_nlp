@@ -76,7 +76,7 @@ The episodes considered in this analysis only consider the episode that are not 
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
 |       1 |     100 | no             | LAKES & RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
 |       1 |     200 | no             | LAKES & RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
-|       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  
+|       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  |
 <sub>table2</sub> 
 
 In the above table:
@@ -126,7 +126,7 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=500 height=500>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=900 height=600><sub>figure5</sub>
 </p>
 
 ### Model Selection 
@@ -154,7 +154,7 @@ NMF is a *soft clustering* model, which in this context means that any clue coul
     - I did set the option of including n-grams = 2, to allow words like "North Dakota" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 ### Visual
-Below are wordclouds that show the top 15 words that appear within each of the 13 clusters. The size of the word relates to the weight of the word as it appears in the Words vs. Hidden Topics matrix (example shown in figure)
+Below are wordclouds that show the top 15 words that appear within each of the 13 clusters. The size of the word relates to the weight of the word as it appears in the Words vs. Hidden Topics matrix (example shown in figure 5)
 
 | TOPIC | TOPIC | TOPIC |
 |-|-|-|
@@ -178,7 +178,8 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 
 <sub>figure5</sub>
 
-## Conclusion and Recommendation IN PROGRESS
+## Conclusion and Recommendation 
+**IN PROGRESS**
 
 #### If you are studying to be a "Jeopardy!" contestant, you should focus your attention on the following:
 
@@ -194,6 +195,8 @@ As I expected, Geography, Literature, and Pop Culture are very important. Busine
 - Implement Word2Vec as a suggestion, which can do a better job of learning word embeddings by taking into account surrounding words 
 - Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
 - Use these clusters as a feature in a supervised learning model for classifying questions as easy, medium or hard
+<p>
+<p>
 
 ### Notes, Sources and Thanks
 

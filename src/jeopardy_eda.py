@@ -14,7 +14,7 @@ import preprocessor
 
 # TODO: fix up what is happening with the stemming of words in the answers df
 
-def make_word_cloud(df, col, color, save=False):
+def make_word_cloud(df, col, color='cividis', save=False):
     """
     make a wordcloud and either save or show it
 
@@ -23,7 +23,7 @@ def make_word_cloud(df, col, color, save=False):
             words will be used in the wordcloud
         col (str): column name in df whose words will be
             used in a wordcloud
-        color (str): matplotlib color name
+        color (str): matplotlib color name. Default to 'cividis'
         save (bool, optional): [description]. Defaults to False.
     """
 
@@ -159,16 +159,15 @@ def graph_top_categories(df, color, save=False):
 
 
 if __name__ == "__main__":
+    # Read in the jeopardy_regular_episodes.csv file
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
 
-    # make_word_cloud(regular_episodes, 'J-Category',  color='cividis',
-    #                 save=True)
-    # make_word_cloud(regular_episodes, 'Question and Answer', color='plasma',
-    #                 save=False )
+    # Make wordclouds of the most common words in "J-Category"
+    # and "Question and Answer"
+    make_word_cloud(regular_episodes, 'J-Category')
+    make_word_cloud(regular_episodes, 'Question and Answer', color='plasma',
+                    save=False)
 
-    df = get_wrd_cts(regular_episodes)
-    # avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
-    # graph_wrd_cts(avgs, 'Answer Word Count', color='purple', save=False)
-
-    # common_cats = top_categories(regular_episodes, 10)
-    # graph_top_categories(common_cats, color="midnightblue", save=False)
+    # Graph a barchart of the top 10 most common categories by name
+    common_cats = top_categories(regular_episodes, 10)
+    graph_top_categories(common_cats, color="midnightblue", save=False)

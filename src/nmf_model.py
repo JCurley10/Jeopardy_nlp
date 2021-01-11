@@ -23,7 +23,7 @@ class NMF_Model():
     def vec_to_mat(self):
         """
         Fits and transforms the tfidf vectorizer to the text
-        and fit, transforms the nmf model to the tdifd vectorizer.
+        Then fits and transforms the nmf model using the tdidf matrix.
         Must be done before calling other methods in this class.
         """
         tfidf_vectorizer = self.vectorizer
@@ -34,29 +34,26 @@ class NMF_Model():
 
     def get_names_weights(self):
         """
-        Get the 
+        Get a list of tokens (words as strings) that are
+        considered in the model
         """
         tfidf_vectorizer = self.vectorizer
         self.feature_names = tfidf_vectorizer.get_feature_names()
-        return self.feature_names  # Feature names
+        return self.feature_names
 
     def get_factorization_matrix(self):
+        """
+        Get the factorized matrix, an ndarray
+        of shape (n_components, n_features)
+        """
         return self.factorizer.components_  # H matrix
 
     def get_reconstruction_error(self):
+        """
+        Get the reconstruction error of the factored matrices
+        with the associated n_topics
+        """
         return self.factorizer.reconstruction_err_
-
-    def plot_ks(vectorizer, lower_k, upper_k):
-        fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
-        x = range(lower_k, upper_k)
-        y = find_best_k(vectorizer, lower_k, upper_k)
-        ax.plot(x, y, color='darkmagenta')
-        ax.set_ylabel("Reconstruction Error", fontsize=14)
-        ax.set_xlabel("Number of Clusters", fontsize=14)
-        ax.set_title("Number of Clusters vs. Reconstruction Error",
-                     fontsize=16)
-        plt.tight_layout()
-        plt.savefig("../images/reconerr_vs_k.png")
 
     def cluster_words(self, n_top_words):
         """
@@ -161,7 +158,7 @@ class NMF_Model():
     def show_word_clouds(self, n_top_words, color='magma', save=False):
         """
         Show or save the wordclouds for all topics
-
+        -------
         Args:
             n_topics (int): total number of topics to get clusters of
             topics: list of lists  of strings
@@ -181,7 +178,8 @@ class NMF_Model():
 def find_best_k(vectorizer, lower_k, upper_k, text):
     """
     Find the reconstruction errors for the number of clusters given the same
-    model, but chancing the number of clusters, n_components
+    model, but chancing the number of clusters, 
+    -------
     Args:
         vectorizer (sklearn's TfidfVectorizer): instantiated with the
             appropriate hyperparameters used to build the model settled on.
@@ -231,20 +229,19 @@ def plot_ks(vectorizer, lower_k, upper_k):
 
 
 if __name__ == "__main__":
-    # Read in the .csv file
+    # Read in the jeopardy_regular_episodes.csv file
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
-    regular_episodes_sub = regular_episodes.sample(frac=.02)
 
     # To look at W and H with respect to the original J-categories
-    regular_episode_sub_reindexed = regular_episodes_sub.set_index('J-Category')
     regular_episodes_reindexed = regular_episodes.set_index('J-Category')
 
-    rough_clues_sub = convert_col_to_list(regular_episode_sub_reindexed,
-                                          "Question and Answer")
+    # convert a column of text to a list to run through the cleaning pipeline
     rough_clues = convert_col_to_list(regular_episodes_reindexed,
                                       'Question and Answer')
+    # Clean the text from  rough_clues
     clues = clean_text_clues(rough_clues)
 
+    # Instantiate hyperparameters
     stop_words = make_stopwords("stopwords.txt")
     tot_features = 1000
     n_topics = 13
@@ -260,6 +257,6 @@ if __name__ == "__main__":
                     analyzer='word', stop_words=stop_words,
                     max_features=1000)
 
-    # # instantiate the class NMF_model
-    model = NMF_Model(text=clues, factorizer=nmf, vectorizer=vectorizer, n_topics=n_topics)
-    model.vec_to_mat()
+    # Instantiate the class NMF_model
+    model = NMF_Model(text=clues, factorizer=nmf, vectorizer=vectorizer,
+                      n_topics=n_topics)

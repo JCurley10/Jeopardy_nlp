@@ -15,6 +15,10 @@ def read_tsv(filepath):
 
 
 def rename_columns(df):
+    """
+    Fix up the capitalization and underscores in the
+    column names of the dataframe
+    """
     new_df = df.rename(columns={"round": "Round",
                                 "value": "Value",
                                 "category": "J-Category",
@@ -29,6 +33,7 @@ def make_q_and_a_col(df):
     """
     Makes a column that concatenates the strings
     from the question and answer columns
+    -------
     Args:
         df (Pandas DataFrame):
     Returns:
@@ -37,13 +42,13 @@ def make_q_and_a_col(df):
     df['Question And Answer'] = df["Question"] + ' ' + df['Answer']
     return df
 
-# TODO: get this to work. Key
+
 def make_clue_difficulty_col(df, viewer_assumptions=False):
     """
-    make a column of clue difficulty according to 
+    make a column of clue difficulty according to
     either viewer assumption or another analysis
     Args:
-        df (Pandas DataFrame): 
+        df (Pandas DataFrame):
             viewer_assumptions (bool, optional): The jeopardy viewer assumption
             of what clues are hard. Defaults to False.
     Returns:
@@ -72,8 +77,11 @@ def make_clue_difficulty_col(df, viewer_assumptions=False):
     df['Clue Difficulty'] = np.select(conditions, difficulties)
     return df
 
-# TODO: add back in the clue difficulty column 
+
 def make_regular_episides_df(df):
+    """
+    Make a dataframe with just the regular Jeopardy! episodes
+    """
     regular_episodes_df = df[df['notes'] == '-']
     regular_episodes_df = regular_episodes_df.drop(['notes', 'comments'], axis=1)
     regular_episodes_df = rename_columns(regular_episodes_df)
@@ -83,6 +91,9 @@ def make_regular_episides_df(df):
 
 
 def make_special_tournaments_df(df):
+    """
+    Make a dataframe with just the special tournament Jeopardy! episodes
+    """
     special_tournaments_df = df[df['notes'] != '-']
     special_tournaments_df = rename_columns(special_tournaments_df)
     special_tournaments_df = make_q_and_a_col(special_tournaments_df)
@@ -91,10 +102,13 @@ def make_special_tournaments_df(df):
 
 
 if __name__ == "__main__":
+    # Read in the jeopardy.tsv file
     jeopardy_df = read_tsv('../data/master_season1-35.tsv')
 
+    # make dataframes according to special episodes or regular tournaments
     regular_episodes = make_regular_episides_df(jeopardy_df)
     special_tournaments = make_special_tournaments_df(jeopardy_df)
 
-    # regular_episodes.to_csv("../data/regular_episodes.csv")
-    # special_tournaments.to_csv("../data/special_tournaments.csv")
+    # Create .csv files of regular_episodes.csv and special_tournaments.csv
+    regular_episodes.to_csv("../data/regular_episodes.csv")
+    special_tournaments.to_csv("../data/special_tournaments.csv")
