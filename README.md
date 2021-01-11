@@ -104,7 +104,7 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500"> <sub>figure3</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="700" height="550"> <sub>figure3</sub>
 </p>
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my "Jeopardy!" skills...
 </p>
@@ -126,7 +126,7 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/workflow.png", alt="workflow" width=500 height=500>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/workflow.png", alt="workflow" width=800 height=500>
 </p>
 
 ### Model Selection 
