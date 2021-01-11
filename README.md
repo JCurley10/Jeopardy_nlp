@@ -17,11 +17,9 @@
 ## The Goal
 **The goal of this analysis is to help *Jeopardy!* home viewers and aspiring contestants study the most common or important subjects that appear in *Jeopardy!*.**
 
-It is straightforward to identify the most common words or categories that have appeared in the show, but that is not enough information for focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar categories. Within these groupings, I also seek to idenfity which words are most important in order for a contestant to focus their study. 
-
 
 ## Background 
-*Jeopardy!* is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique feature of *Jeopardy!* is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is" or "Who is", etc.
+*Jeopardy!* is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of *Jeopardy!* is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
 <p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
 </p>
@@ -56,8 +54,10 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 ## Motivation
 
 The J-Categories in each episode fall under greater themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many truly unique topics! 
- 
+
 Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to participate at home, or to be a real contestant on the show. For example many *Jeopardy!* fans will say that you need to know about the US presidents, world geography, literature, state capitals, and names of celebrities. 
+
+It is straightforward to identify the most common words or categories that have appeared in the show, but that is not enough information for focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar categories. Within these groupings, I also seek to idenfity which words are most important in order for a contestant to focus their study. 
 
 
 ## The Data
@@ -66,14 +66,14 @@ The original dataset is a .txt file, downloaded from [Kaggle](https://www.kaggle
 #### The original raw dataset, read in to a Pandas DataFrame:
 
 
-|    |   round |   value | daily_double   | category       | comments   | answer                                                    | question     | air_date   | notes   | question_and_answer                                                    | clue_difficulty   |
+|    |   Round |   Value | Daily Double   | Category       | Comments   | answer                                                    | Question     | Air Date  | Notes   | Question and Answer                                                    | 
 |---:|--------:|--------:|:---------------|:---------------|:-----------|:----------------------------------------------------------|:-------------|:-----------|:--------|:-----------------------------------------------------------------------|:------------------|
 |  0 |       1 |     100 | no             | LAKES & RIVERS | -          | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | -       | the Jordan River mentioned most often in the Bible                     | easy              |
 |  1 |       1 |     200 | no             | LAKES & RIVERS | -          | Scottish word for lake                                    | loch         | 1984-09-10 | -       | loch Scottish word for lake                                            | easy              |
-|  2 |       1 |     400 | no             | LAKES & RIVERS | -          | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | -       | the Missouri American river only 33 miles shorter than the Mississippi | easy              |
+|  2 |       1 |     400 | no             | LAKES & RIVERS | -          | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | -       | the Missouri American river only 33 miles shorter than the Mississippi            |
 <sub>table1</sub>
 
-#### The Updated Dataset
+#### The Dataset Used for This Project
 
 |    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|

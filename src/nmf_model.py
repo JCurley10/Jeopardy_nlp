@@ -13,8 +13,9 @@ from sklearn.decomposition import NMF
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
+from sklearn.model_selection import GridSearchCV
 
-from text_cleaner import clean_text_clues, convert_col_to_list, make_stopwords
+from text_cleaner import clean_text_clues, convert_col_to_list, make_stopwords, token_by_lemma
 
 
 class NMF_Model():
@@ -26,6 +27,11 @@ class NMF_Model():
         self.n_topics = n_topics
 
     def vec_to_mat(self):
+        """
+        Fits and transforms the tfidf vectorizer to the text
+        and fit, transforms the nmf model to the tdifd vectorizer
+        Must be done before calling other methods in this class
+        """
         tfidf_vectorizer = self.vectorizer
         self.tfidf = tfidf_vectorizer.fit_transform(self.text)
 
@@ -35,11 +41,6 @@ class NMF_Model():
     def get_names_weights(self):
         """
         """
-        #Put these following functions to vec_to_mat 
-        # tfidf_vectorizer = self.vectorizer
-        # self.tfidf = tfidf_vectorizer.fit_transform(self.text)
-        # nmf = self.factorizer
-        # nmf.fit_transform(tfidf)  # W matrix
         tfidf_vectorizer = self.vectorizer
         self.feature_names = tfidf_vectorizer.get_feature_names()
         return self.feature_names  # Feature names
@@ -50,43 +51,23 @@ class NMF_Model():
     def get_reconstruction_error(self):
         return self.factorizer.reconstruction_err_
 
-    # def find_best_k(self, testing_topics):
-    #     '''
-    #     plot the number of topics vs the reconstruction error
-    #     to look at the elbow and decide on which number
-    #     of topics is best
-
-    #     Args:
-    #         df (Pandas DataFrame): DataFrame with the top categories
-    #         col (str): column name to get the clusters
-    #         vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
-    #         testing_topics (int): total number of topics to get clusters of
-    #         nmf (type sklearn NMF decomposer): initialized NMF instance
-    #     Returns:
-    #         None:
-    #     '''
-    #     errs = []
-    #     for k in range(testing_topics):
-    #         self.n_topics
-    #         errs.append(self.factorizer.reconstruction_err_)
-    #         plt.plot(range(testing_topics), errs)
-    #     plt.xlabel('k')
-    #     plt.ylabel('Reconstruction Error')
-    #     # plt.show()
-
     def cluster_words(self, n_top_words):
         """
+        Generates clusters of words
+        Args:
+            n_top_words (int): number of words to see in each cluster
+        Returns:
+            self.words (list of list of strings): each string is a token in
+                a cluster, and each inner list is a cluster of tokens
         """
-
         self.words = []
         self.topic_indices = []
         for topic_idx, topic in enumerate(self.get_factorization_matrix()):
             self.words.append(list(self.get_names_weights()[i]
-                        for i in topic.argsort()[:-n_top_words - 1:-1]))
+                                   for i in topic.argsort()[:-n_top_words - 1:-1]))
             self.topic_indices.append(topic_idx)
 
         return self.words
-
 
     def make_words_and_weights_lists(self):
         """
@@ -101,7 +82,6 @@ class NMF_Model():
 
         self.words_weights_lst = [np.vstack((terms.T, term_weights.T)).T for terms, term_weights in zip(sorted_terms, sorted_weights)]
         return self.words_weights_lst
-
 
     def make_words_and_weights_dict(self, nth_topic, n_top_words):
         """
@@ -125,7 +105,7 @@ class NMF_Model():
         """
         top_topics = []
         for topic in self.make_words_and_weights_lists():
-            top_topics.append(topic[:10])
+            top_topics.append(topic[:n_top_words])
 
         top_n_topics = []
         i = nth_topic
@@ -136,7 +116,7 @@ class NMF_Model():
         self.words_weights_dictionary = dict(zip(top_n_topics[::2], top_n_topics[1::2]))
         return self.words_weights_dictionary
 
-    def make_word_cloud(self, nth_topic, n_top_words, color='plasma', save=False):
+    def make_word_cloud(self, nth_topic, n_top_words, color='magma', save=False):
         """
         Make a wordcloud of the feature_names (words)
         from a single cluster or topic
@@ -165,11 +145,11 @@ class NMF_Model():
         plt.tight_layout(pad=0)
 
         if save:
-            plt.savefig(f'../images/{nth_topic}_topic_model_Wordcloud.png')
+            plt.savefig(f'../images/_ppt_{nth_topic}_topic_model_Wordcloud.png')
         else:
             plt.show()
 
-    def show_word_clouds(self, n_top_words, color='plasma', save=False):
+    def show_word_clouds(self, n_top_words, color='magma', save=False):
         """
         Show or save the wordclouds for all topics
 
@@ -188,6 +168,33 @@ class NMF_Model():
             self.make_word_cloud(nth_topic, n_top_words, color=color, save=save)
 
 
+def find_best_k(vectorizer, testing_topics):
+    '''
+    plot the number of topics vs the reconstruction error
+    to look at the elbow and decide on which number
+    of topics is best
+    Args:
+    df (Pandas DataFrame): DataFrame with the top categories
+    col (str): column name to get the clusters
+    vectorizer (type TfidfVectorizer() vectorizer): method to vectorize the text
+    testing_topics (int): total number of topics to get clusters of
+    nmf (type sklearn NMF decomposer): initialized NMF instance
+    Returns:
+    None:
+    '''
+    errs = []
+    for n_topics in range(testing_topics):
+        nmf = NMF(n_components=n_topics, random_state=143,
+                alpha=0.1, l1_ratio=0.5, max_iter=1000)
+        nmf.fit_transform(vectorizer)
+        errs.append(nmf.reconstruction_err_)
+
+    plt.plot(range(testing_topics), errs)
+    plt.xlabel('k')
+    plt.ylabel('Reconstruction Error')
+    plt.show()
+
+
 if __name__ == "__main__":
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
     regular_episodes_sub = regular_episodes.sample(frac=.02)
@@ -203,18 +210,18 @@ if __name__ == "__main__":
     stop_words = make_stopwords("stopwords.txt")
     tot_features = 1000
     n_topics = 13
+    n_features=None
 
     # Adjust the vectorizer and nmf model hyperparameters
-    nmf = NMF(n_components=n_topics, random_state=123,
-              alpha=0.1, l1_ratio=0.5, max_iter=1000)
+    nmf = NMF(n_components=n_topics, init='nndsvd', random_state=43, max_iter=1000)
 
     vectorizer = TfidfVectorizer(
                     ngram_range=(1, 2), strip_accents='ascii',
-                    lowercase=True, tokenizer=None,
+                    lowercase=True, tokenizer=None,  # put back to token_by_lemma for better
                     analyzer='word', stop_words=stop_words,
-                    max_features=tot_features)
+                    max_features=1000)
 
-    # instantiate the class NMF_model
+
+    # # instantiate the class NMF_model
     model = NMF_Model(text=clues, factorizer=nmf, vectorizer=vectorizer, n_topics=n_topics)
     model.vec_to_mat()
-    model.make_words_and_weights_dict(5, 10)

@@ -96,6 +96,23 @@ def apply_lemmatize(tokens, wnl=WordNetLemmatizer()):
     return [wnl.lemmatize(token) for token in tokens]
 
 
+def token_by_lemma(text):
+    """[summary]
+    Args:
+    text (string): a string to be tokenized
+    Returns:
+        a list of strings: tokenized words 
+    """	
+    lemmatizer = WordNetLemmatizer()
+    # stemmer = SnowballStemmer('english')
+    word_list = word_tokenize(text)
+
+    lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
+    # stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
+    # return stemmed_wrds
+    return lemmatized_wrds
+
+
 def clean_text_clues(texts):
     # text = uncleaned text from list of string 
     # get the text output from convert_col_to_list function from preprocessing_1

@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.model_selection import train_test_split
 import string
-import preprocessing
+import preprocessor
 
 
 # TODO: fix up what is happening with the stemming of words in the answers df
@@ -141,13 +141,15 @@ def graph_top_categories(df, color, save=False):
         save (bool, optional): whether to save or show the function.
         save defaults to False and shows the bargraph.
     """
-    fig, ax = plt.subplots(1, 1, figsize=(6, 4), dpi=150)
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4), dpi=200)
     ax.bar(common_cats.index, common_cats['Counts'], color=color)
     ax.set_ylabel("Number of Episodes", fontsize=14)
-    ax.set_title("Top 10 J-Categories", fontsize=14)
-    ax.set_xlabel("J-Categories", fontsize=16)
-    plt.xticks(rotation=70, ha='center', fontstretch='semi-condensed',
-               fontsize=8)
+    # ax.set_title("Top 10 J-Categories", fontsize=14)
+    ax.set_xlabel("J-Categories", fontsize=14)
+    ax.spines["right"].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    plt.xticks(rotation=60, ha='right', fontstretch='semi-condensed',
+               fontsize=10)
     plt.tight_layout()
 
     if save:
@@ -158,7 +160,6 @@ def graph_top_categories(df, color, save=False):
 
 if __name__ == "__main__":
     regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
-    regular_episodes_sub = preprocessing.make_sub_df(regular_episodes)
 
     # make_word_cloud(regular_episodes, 'J-Category',  color='cividis',
     #                 save=True)
@@ -166,8 +167,8 @@ if __name__ == "__main__":
     #                 save=False )
 
     df = get_wrd_cts(regular_episodes)
-    avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
-    graph_wrd_cts(avgs, 'Answer Word Count', color='purple', save=False)
+    # avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
+    # graph_wrd_cts(avgs, 'Answer Word Count', color='purple', save=False)
 
     common_cats = top_categories(regular_episodes, 10)
-    graph_top_categories(common_cats, color="darkblue", save=True)
+    graph_top_categories(common_cats, color="darkblue", save=False)
