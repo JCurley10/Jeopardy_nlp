@@ -1,5 +1,5 @@
 
-# What are... The Most Important Topics to Study for Jeopardy!
+# What are... The Most Important Topics to Study for "Jeopardy!"
 
 ## Table of Contents
 - [The Goal](#The-Goal)
@@ -15,21 +15,21 @@
 
 
 ## The Goal
-**The goal of this analysis is to help *Jeopardy!* home viewers and aspiring contestants study the most common or important subjects that appear in *Jeopardy!*.**
+**The goal of this analysis is to help "Jeopardy!" home viewers and aspiring contestants study the most common or important subjects that appear in "Jeopardy!".**
 
 
 ## Background 
-*Jeopardy!* is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of *Jeopardy!* is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
+"Jeopardy!" is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of "Jeopardy!" is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
 <p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
 </p>
 <p>
 <sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
 
-Each episode of *Jeopardy!* has 61 clues over three rounds, with the following details:
+Each episode of "Jeopardy!" has 61 clues over three rounds, with the following details:
 
 - Round 1: Jeopardy!
-    - six *Jeopardy!*-defined categories (referred to as **J-Categories** from here on) with 5 clues each
+    - six "Jeopardy!"-defined categories (referred to as **J-Categories** from here on) with 5 clues each
     - clue values: $200, $400, $600, $800, $1000
     - 1 Daily Double
 - Round 2: Double Jeopardy!
@@ -45,7 +45,7 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 ## Key Terms
 
 - **Clue**: What I will be calling a category-question-answer combination, which is one instance or observation.
-- **J-Category**: The *Jeopardy!* defined category. In the image above, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
+- **J-Category**: The "Jeopardy!" defined category. In the image above, 'EDIBLE RHYME TIME', 'BOOKS IN GERMAN', etc are the J-Categories of one round
 - **Answer**: The clue read by the host and shown on the screen
 - **Question**: The response to the clue, and it must be in the form of a question like "What is..."
 - **Meta-category**: An overarching topic that can describe each clue's context. For example, the J-Category "EDIBLE RHYME TIME" seen above might belong to the meta-category "Literature" or "Food". In data-science, we can also think of a meta-category as a *latent topic*
@@ -55,13 +55,13 @@ With Daily Doubles and Final Jeopardy, contestants can wager a minimum of $5, th
 
 The J-Categories in each episode fall under greater themes like pop-culture, history, and literature. But, with 13 J-Categories per episode, and over 8,000 episodes, there can't be *that* many truly unique topics! 
 
-Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to participate at home, or to be a real contestant on the show. For example many *Jeopardy!* fans will say that you need to know about the US presidents, world geography, literature, state capitals, and names of celebrities. 
+Previous contestants and avid fans like myself have intuitions about which themes or topics you should study up if you want to participate at home, or to be a real contestant on the show. For example many "Jeopardy!" fans will say that you need to know about the US presidents, world geography, literature, state capitals, and names of celebrities. 
 
 It is straightforward to identify the most common words or categories that have appeared in the show, but that is not enough information for focused study. Instead, I seek to identify the different *meta-categories* that describe groups of similar categories. Within these groupings, I also seek to idenfity which words are most important in order for a contestant to focus their study. 
 
 
 ## The Data
-The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of *Jeopardy!*, from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
+The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of "Jeopardy!", from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
 
 #### The original raw dataset, read in to a Pandas DataFrame:
 |Round|Value|Daily Double|J-Category    |Answer                                                   |Question    |Air Date|
@@ -109,7 +109,7 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 <p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="600" height="400"> <sub>figure3</sub>
 </p>
-Look at all that History! But I wish I knew specifically what History I should study for the most impact on my *Jeopardy!* skills...
+Look at all that History! But I wish I knew specifically what History I should study for the most impact on my "Jeopardy!" skills...
 </p>
 
 <p align="center">
@@ -155,8 +155,8 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 
 ### Model Settings (Hyperparameters)
 
-- **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each *Jeopardy!* episode has 13 categories, so 13 seemed like a reasonable number when considering. It looked like 13 clusters ended up showing the most meaningful separations when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. The above result came from a NMF model with a reconstruction error of around 500, which isn't great, but was better than above 13 and while worse than below 13 categories, it was only slightly worse and the clusters weren't very informative.
-- **Top Words per *meta-category***: I chose top 10 words per category because it is a manageable start for someone planning on studying for *Jeopardy!*
+- **Number of Topics** : I used domain knowledge to choose the number of topics or clusters. Each "Jeopardy!" episode has 13 categories, so 13 seemed like a reasonable number when considering. It looked like 13 clusters ended up showing the most meaningful separations when looking at them (even though a few of them could still be clumped together. See below.) I also tested how well my model ran with different topics, judging against the reconstruction error of the matrix. The above result came from a NMF model with a reconstruction error of around 500, which isn't great, but was better than above 13 and while worse than below 13 categories, it was only slightly worse and the clusters weren't very informative.
+- **Top Words per *meta-category***: I chose top 10 words per category because it is a manageable start for someone planning on studying for "Jeopardy!"
 - **Handling Stopwords, Tokenization, and N-grams** : Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
     - Common stopwords are "the", "or", "and", which were already in my original stopwords set taken from NLTK. I added more stopwords including "one", "word", and "name", "war", "film", "state', "country", "us", and "new" because they appeared so often and are not specific enough to help someone study specific words.
     - I chose to tokenize the words using NLTK's WordNetLemmatizer, although it still produced some messy words I had to handle within my stopwords set
@@ -165,7 +165,7 @@ Then, within each cluster, I chose the top 10 words to define the meta-category.
 
 ## Conclusion and Recommendation
 The 13 categories aren't super distinct, but they capture about 10 *meta-categories* and the associated words. So, without further ado....
-#### If you are studying to be a *Jeopardy!* contestant, you should focus your attention on the following:
+#### If you are studying to be a "Jeopardy!" contestant, you should focus your attention on the following:
 
 | **Meta-Category**| Grammar | Royalty | States and Countries | Numbers | French | Geography | Music | Business and Industry | Languages | Books, Movies, Theater |
 |-|-|-|-|-|-|-|-|-|-|-|
@@ -192,8 +192,8 @@ As I expected, Geography, Literature, and Pop Culture are very important. Busine
 This varied slightly than my own assumptions, which are:
 - easy clues: Less than $800 in either round, and not a dailty double
 - average clues: over $800 in round 1, $1200 in round 2, or a daily double in round 1
-- hard clues: over $1200 in round 2, a daily double in round 2, or final jeopardy
+- hard clues: over $1200 in round 2, a daily double in round 2, or final Jeopardy
 
 **Thanks**<p>
 - A special thank you to Galvanize instructors and residents Kayla, Chris, Rosie, Martha, Alex, and Jenny, and to my scrum group of fellow NLP investigators: Pedro, Ian, Jeff and Devon. <p>
-- This project is dedicated to the late Alex Trebec, the beloved host of *Jeopardy!* for 37 seasons, and to my friend Laura whose love of Jeopardy inspired this investigation. 
+- This project is dedicated to the late Alex Trebec, the beloved host of "Jeopardy!" for 37 seasons, and to my friend Laura whose love of "Jeopardy!" inspired this investigation. 
