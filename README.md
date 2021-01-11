@@ -61,16 +61,16 @@ It is straightforward to identify the most common words or categories that have 
 
 
 ## The Data
-The original dataset is a .txt file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of *Jeopardy!*, from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
+The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle.com/prondeau/350000-jeopardy-questions) and has 349,641 rows and 9 columns. Each row contains the information pertaining to a single clue over 35 seasons of *Jeopardy!*, from 9/10/1984 to 7/26/2019. They dataset contains information in the 'notes' about whether it was an special tournament or a regular episode. 
 
 #### The original raw dataset, read in to a Pandas DataFrame:
+|Round|Value|Daily Double|J-Category    |Answer                                                   |Question    |Air Date|
+|-----|-----|------------|--------------|---------------------------------------------------------|------------|--------|
+|1    |100  |no          |LAKES & RIVERS|River mentioned most often in the Bible                  |the Jordan  |9/10/84 |
+|1    |200  |no          |LAKES & RIVERS|Scottish word for lake                                   |loch        |9/10/84 |
+|1    |400  |no          |LAKES & RIVERS|American river only 33 miles shorter than the Mississippi|the Missouri|9/10/84 |
 
 
-|    |   Round |   Value | Daily Double   | Category       | Comments   | answer                                                    | Question     | Air Date  | Notes   | Question and Answer                                                    | 
-|---:|--------:|--------:|:---------------|:---------------|:-----------|:----------------------------------------------------------|:-------------|:-----------|:--------|:-----------------------------------------------------------------------|:------------------|
-|  0 |       1 |     100 | no             | LAKES & RIVERS | -          | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | -       | the Jordan River mentioned most often in the Bible                     | easy              |
-|  1 |       1 |     200 | no             | LAKES & RIVERS | -          | Scottish word for lake                                    | loch         | 1984-09-10 | -       | loch Scottish word for lake                                            | easy              |
-|  2 |       1 |     400 | no             | LAKES & RIVERS | -          | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | -       | the Missouri American river only 33 miles shorter than the Mississippi            |
 <sub>table1</sub>
 
 #### The Dataset Used for This Project
@@ -107,7 +107,7 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories.png" alt="length_of_answers" width="600" height="400"> <sub>figure3</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="600" height="400"> <sub>figure3</sub>
 </p>
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my *Jeopardy!* skills...
 </p>
