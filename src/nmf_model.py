@@ -230,7 +230,7 @@ def plot_ks(vectorizer, lower_k, upper_k):
 
 if __name__ == "__main__":
     # Read in the jeopardy_regular_episodes.csv file
-    regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
+    regular_episodes = pd.read_csv("../data/regular_episodes.csv")
 
     # To look at W and H with respect to the original J-categories
     regular_episodes_reindexed = regular_episodes.set_index('J-Category')

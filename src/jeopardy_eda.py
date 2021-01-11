@@ -160,7 +160,7 @@ def graph_top_categories(df, color, save=False):
 
 if __name__ == "__main__":
     # Read in the jeopardy_regular_episodes.csv file
-    regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
+    regular_episodes = pd.read_csv("../data/regular_episodes.csv")
 
     # Make wordclouds of the most common words in "J-Category"
     # and "Question and Answer"
