@@ -72,11 +72,13 @@ The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle
 #### The Dataset Used for This Project
 The episodes considered in this analysis only consider the episode that are not special tournamnets (I refer to these to as "Regular Episodes"). There are 278,730 total episodes included in this dataset.
 
-|   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
-|---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
-|       1 |     100 | no             | LAKES & RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
-|       1 |     200 | no             | LAKES & RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
-|       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  |
+|Round|Value|Daily Double|J-Category    |Answer                                                   |Question    |Air Date|Question and Answer                                                   |Clue Difficulty|
+|-----|-----|------------|--------------|---------------------------------------------------------|------------|--------|----------------------------------------------------------------------|---------------|
+|1    |100  |no          |LAKES & RIVERS|River mentioned most often in the Bible                  |the Jordan  |9/10/84 |the Jordan River mentioned most often in the Bible                    |easy           |
+|1    |200  |no          |LAKES & RIVERS|Scottish word for lake                                   |loch        |9/10/84 |loch Scottish word for lake                                           |easy           |
+|1    |400  |no          |LAKES & RIVERS|American river only 33 miles shorter than the Mississippi|the Missouri|9/10/84 |the Missouri American river only 33 miles shorter than the Mississippi|easy           |
+
+
 <sub>table2</sub> 
 
 In the above table:
