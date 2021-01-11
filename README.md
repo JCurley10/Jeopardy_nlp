@@ -72,11 +72,11 @@ The original dataset is a .tsv file, downloaded from [Kaggle](https://www.kaggle
 #### The Dataset Used for This Project
 The episodes considered in this analysis only consider the episode that are not special tournamnets (I refer to these to as "Regular Episodes"). There are 278,730 total episodes included in this dataset.
 
-|    |   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
+|   Round |   Value | Daily Double   | J-Category    | Answer                                                    | Question     | Air Date   | Question and Answer                                                    | Clue Difficulty   |
 |---:|--------:|--------:|:---------------|:--------------|:----------------------------------------------------------|:-------------|:-----------|:-----------------------------------------------------------------------|:------------------|
-|  0 |       1 |     100 | no             | LAKES & RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
-|  1 |       1 |     200 | no             | LAKES & RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
-|  2 |       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  
+|       1 |     100 | no             | LAKES & RIVERS | River mentioned most often in the Bible                   | the Jordan   | 1984-09-10 | the Jordan River mentioned most often in the Bible                     | easy              |
+|       1 |     200 | no             | LAKES & RIVERS | Scottish word for lake                                    | loch         | 1984-09-10 | loch Scottish word for lake                                            | easy              |
+|       1 |     400 | no             | LAKES & RIVERS | American river only 33 miles shorter than the Mississippi | the Missouri | 1984-09-10 | the Missouri American river only 33 miles shorter than the Mississippi | easy  
 <sub>table2</sub> 
 
 In the above table:
@@ -104,7 +104,7 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="600" height="400"> <sub>figure3</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500"> <sub>figure3</sub>
 </p>
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my "Jeopardy!" skills...
 </p>
@@ -123,46 +123,29 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 
 ## Analysis 
 
+#### Workflow
+<p>
+<p align="center">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/workflow.png", alt="workflow" width=500 height=500>
+</p>
+
 ### Model Selection 
 
 * I used a tf-idf (Term Frequency * Inverse Document Frequency) to vectorize the text from each clue. In other words, I turned the raw text from the "Jeopardy!" questions and answers into a matrix whose entries are the numerical TF-IDF features of each word in the text. 
 * I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category* or latent topic, which is one of the goals of this analysis.
 
 NMF is a *soft clustering* model, which in this context means that any clue could belong to multiple clusters. This is advantageous because the nature of "Jeopardy!" is that clues often touch on multiple topics. This is also advantageous for studying purposes: if a word from a single document appears in multiple clusters, you get more "bang for your buck" by studying the information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. Another benefit of using NMF for the topic modeling is that the loading or weights of each word in a cluster is positive, so their importance is more easily interpreted. 
-Then, within each cluster, I chose the top 15 words to define the meta-category. Let's see what we have!
-
-### Visual
-| Misc. Words | Grammar | Geography |
-|-|-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/0topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/1topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/2topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
-
-| Royalty | Geography pt. 2| Numbers and Dates |
-|-|-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/3topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/4topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/5topic_model_Wordcloud.png" alt="categories" width="300" height="275"> |
-
-| French? | States and Countries | Books, Movies, Theater | 
-|-|-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/6topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/7topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/8topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
-
-| Music | Business and Industry | Languages | 
-|-|-|-|
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/9topic_model_Wordcloud.png" alt="categories" width="300" height="275">| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/10topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/11topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
-
-|Books, Movies, Theater|
-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/12topic_model_Wordcloud.png" alt="categories" width="300" height="275"> | 
-
-<sub>figure5</sub>
 
 ### Model Settings (Hyperparameters)
 
 - **Number of Topics** : I compared the reconstruction error of the matrices formed by the Non-Negative Matrix Factorization to the number of topics. In essence, this is a metric that measures how different the values in the reconstructed matrix of tf-idf value are from the original matrix. 
-
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/reconerr_vs_k.png" alt="categories" width="500" height="475">
-
+<p>
+<p align="center">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/reconerr_vs_k.png" alt="recon_vs_k" width="700" height="550">
+</p>
 * Since my goal is to help a user focus their attention on important topics, I chose to only consider between 7 and 15 topics or clusters. In the end, the trend of the reconstruction matrix was close to linear, as seen above and not very meaningful: the greater the number of clusters, the lower the reconstruction error. This means that I could very easily decide on 100 clusters beause it had a low reconstruction error, but would lose the cohesiveness within the clusters, or have too many topics to focus on! 
 * After checking the cohesiveness of the topics manually, I found that 13 clusters produced the most meaningful groupings of words! 
-* An added coincidence  here is that each episode of "Jeopardy!" has 13 categories, so 13 was my lucky number. 
+* An added coincidence here is that each episode of "Jeopardy!" has 13 categories, so 13 was my lucky number. 
 
 - **Top Words per *meta-category***: I chose top 10 words per category because it is a manageable start for someone planning on studying for "Jeopardy!"
 - **Handling Stopwords, Tokenization, and N-grams** : Stopwords are a set of words that do not add significant value to a text, and are often so commonly used that removing them let's an analysis focus on the more important and differentiating words.
@@ -170,28 +153,51 @@ Then, within each cluster, I chose the top 15 words to define the meta-category.
     - I chose to tokenize the words using NLTK's WordNetLemmatizer, although it still produced some messy words I had to handle within my stopwords set
     - I did set the option of including n-grams = 2, to allow words like "North Dakota" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
+### Visual
+Below are wordclouds that show the top 15 words that appear within each of the 13 clusters. The size of the word relates to the weight of the word as it appears in the Words vs. Hidden Topics matrix (example shown in figure)
 
-## Conclusion and Recommendation
-The 13 categories aren't super distinct, but they capture about 10 *meta-categories* and the associated words. So, without further ado....
+| TOPIC | TOPIC | TOPIC |
+|-|-|-|
+| <img src="" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
+
+| TOPIC | TOPIC | TOPIC |
+|-|-|-|
+|<img src="" alt="categories" width="300" height="275"> |<img src="" alt="categories" width="300" height="275"> |<img src="" alt="categories" width="300" height="275"> |
+
+| TOPIC | TOPIC | TOPIC |
+|-|-|-|
+| <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | 
+
+| TOPIC | TOPIC | TOPIC |
+|-|-|-|
+| <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
+
+|TOPIC|
+|-|
+|<img src="" alt="categories" width="300" height="275"> | 
+
+<sub>figure5</sub>
+
+## Conclusion and Recommendation IN PROGRESS
+
 #### If you are studying to be a "Jeopardy!" contestant, you should focus your attention on the following:
 
-| **Meta-Category**| Grammar | Royalty | States and Countries | Numbers | French | Geography | Music | Business and Industry | Languages | Books, Movies, Theater |
+| **Meta-Category**| TOPIC | TOPIC |  |  |  |  |  |   |  |  |
 |-|-|-|-|-|-|-|-|-|-|-|
-| **Specific Words/Topics**| slang words, synonyms, medical terms, and sounds | Famous kings and queens, specifically in England, more speficically people named Henry, James, Stephen, James, Louis, Arthur, David | Capitals!! And America, Africa, India, museums, Europe, and speficially founding dates related to states and countries | years, and specifically when someone died (This one might not be very informative, but it is well clustered) | Paris, cuisine, the French Revolution | Islands!! and oceans, coastlines, and places with Central in their name.. And Carolina! | hit songs, rock songs, band names, musicals, and theme songs | car and oil companies, the brand, when the companies were founded and what products they have | French, Latin, Greek, and Roman | specifically Shakespeare, plays, characters names, which actor plays in which character role |
+| **Specific Words/Topics**| |  |  |  |  | |  | |  |
 
 As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of TF-IDF vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
 <sub>table3</sub>
 
 ## Next Steps
-- Continue to adjust the hyperparameters of my model such as stopwords and n-grams, and address parts of speech tagging
-- Systematically compare the reconstruction error of my NMF model against multiple adjustments to the model's parameters
-- Use a different vectorizer, such as word2vec, which can do a better job of learning word embeddings by taking into account surrounding words 
+- Keep the model updated to account for newer episodes
+- Implement Word2Vec as a suggestion, which can do a better job of learning word embeddings by taking into account surrounding words 
 - Use a latent Dirichlet allocation (LDA) model to perform a similar analysis and compare with this NMF model 
 - Use these clusters as a feature in a supervised learning model for classifying questions as easy, medium or hard
 
 ### Notes, Sources and Thanks
 
-<sup>1</sup> I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a clue easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided an average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "easy". The following types of clues were classified as such:
+<sup>1</sup> While note used in this particular iteration of the project, I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a clue easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided an average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "easy". The following types of clues were classified as such:
 
 - easy clues: value less than or equal to $600, and not a daily double, in either category 1 or 2
 - average clues: a daily double in category 1, or a value equal to $800 in either category
