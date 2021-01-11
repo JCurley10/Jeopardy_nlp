@@ -119,7 +119,7 @@ def top_categories(df, n):
     Returns:
         Pandas DataFrame: DataFrame with the top categories
         counts of how many episodes they appear in
-    """    
+    """
     common_topics = df['J-Category'].value_counts()[:n]
     common_topics
     common_cats = pd.DataFrame(common_topics).reset_index().rename(
@@ -170,5 +170,5 @@ if __name__ == "__main__":
     # avgs = df.groupby('Clue Difficulty').mean().sort_values('Answer Word Count').round(2)
     # graph_wrd_cts(avgs, 'Answer Word Count', color='purple', save=False)
 
-    common_cats = top_categories(regular_episodes, 10)
-    graph_top_categories(common_cats, color="darkblue", save=False)
+    # common_cats = top_categories(regular_episodes, 10)
+    # graph_top_categories(common_cats, color="midnightblue", save=False)

@@ -9,8 +9,24 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 from sklearn.cluster import KMeans
-from og_preprocessing import tokenize, make_sub_df, make_stopwords
+from og_preprocessing import make_sub_df, make_stopwords
 
+
+def tokenize(text):
+    """[summary]
+    Args:
+        text (string): a string to be tokenized
+        Returns:
+    a list of strings: tokenized words
+    """	
+    lemmatizer = WordNetLemmatizer()
+    # stemmer = SnowballStemmer('english')
+    word_list = word_tokenize(text)
+
+    lemmatized_wrds = [lemmatizer.lemmatize(w) for w in word_list]
+    # stemmed_wrds = [stemmer.stem(w) for w in lemmatized_wrds]
+    # return stemmed_wrds
+    return lemmatized_wrds
 
 #TODO: hyperparameter tuning with the Count Vectorizer 
 #TODO: write docstring
@@ -229,7 +245,7 @@ def show_word_clouds(n_topics, topics, n_top_words, color = 'plasma', save= Fals
 
 if __name__ == "__main__":
 
-    regular_episodes = pd.read_csv("../data/jeopardy_regular_episodes.csv")
+    regular_episodes = pd.read_csv("jeopardy_regular_episodes.csv")
     regular_episodes_sub = make_sub_df(regular_episodes)
 
     #to look at W and H with respect to the original J-categories

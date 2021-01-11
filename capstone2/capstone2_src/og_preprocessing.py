@@ -84,14 +84,18 @@ def tokenize_by_col(df, cols):
 		df[col] = df[col].apply(word_tokenize)
 	return df
 
-
+def tokenize(text):
+	lemmatizer = WordNetLemmatizer()
+	word_list = word_tokenize(text)
+	lemmatized_words = [lemmatizer.lemmatize(w) for w in word_list]
+	return lemmatized_words
 
 def tokenize(text):
 	"""[summary]
 	Args:
-		text (string): a string to be tokenized
-	Returns:
-		a list of strings: tokenized words 
+		text (string): a string to be tokenized	
+		Returns:
+	a list of strings: tokenized words 
 	"""	
 	lemmatizer = WordNetLemmatizer()
 	# stemmer = SnowballStemmer('english')
