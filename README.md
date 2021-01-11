@@ -21,7 +21,7 @@
 ## Background 
 *Jeopardy!* is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of *Jeopardy!* is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/capstone3_final_images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
 </p>
 <p>
 <sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
