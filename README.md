@@ -161,32 +161,24 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 
 | GENERAL ENTERTAINMENT 1| GENERAL ENTERTAINMENT 2 | MOVIES |
 |-|-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_0_topic_model_Wordcloud.png" alt="entertainment" width="300" height="275"> | 
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_8_topic_model_Wordcloud.png" alt="entertainment2" width="300" height="275"> | 
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_3_topic_model_Wordcloud.png" alt="movies" width="300" height="275"> |
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_0_topic_model_Wordcloud.png" alt="entertainment" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_8_topic_model_Wordcloud.png" alt="entertainment2" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_3_topic_model_Wordcloud.png" alt="movies" width="300" height="275"> |
 
 
 | FAMOUS PEOPLE | ROYALTY | US PRESIDENTS |
 |-|-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_1_topic_model_Wordcloud.png" alt="famous_ppl" width="300" height="275">
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_4_topic_model_Wordcloud.png" alt="royalty" width="300" height="275">  |
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_10_topic_model_Wordcloud.png" alt="presidents" width="300" height="275"> |
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_1_topic_model_Wordcloud.png" alt="famous_ppl" width="300" height="275"> |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_4_topic_model_Wordcloud.png" alt="royalty" width="300" height="275">  | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_10_topic_model_Wordcloud.png" alt="presidents" width="300" height="275"> |
 
 | FRENCH & OTHER LANGUAGES | NATIONAL PLACES | GEOGRAPHY |
 |-|-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_6_topic_model_Wordcloud.png" alt="French" width="300" height="275"> |
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="places" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | 
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_2_topic_model_Wordcloud.png" alt="geography" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_6_topic_model_Wordcloud.png" alt="French" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="places" width="300" height="275"> | <img src = "https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_2_topic_model_Wordcloud.png" alt="geography" width="300" height="275"> |
 
 | MUSIC | LITERATURE & PLAYS |
 |-|-|
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_7_topic_model_Wordcloud.png" alt="music" width="300" height="275"> |
-|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_11_topic_model_Wordcloud.png" alt="plays_lit" width="300" height="275"> | 
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_7_topic_model_Wordcloud.png" alt="music" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_11_topic_model_Wordcloud.png" alt="plays_lit" width="300" height="275"> | 
 
 | INSTITUTIONS| BUSINESS & INDUSTRY |
 |-|-|
-| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | 
- <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
 
 
 <sub>figure5</sub>
@@ -198,7 +190,7 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 
 
 | **Meta-Category**| US PRESIDENTS | ROYALTY | OTHER FAMOUS PEOPLE |  FRENCH & OTHER LANGUAGES | GEOGRAPHY & PLACES |
-|-|-|-|-|-|-|-|-|-|-|
+|-|-|-|-|-|-|
 | **Specific Words/Topics** | Vice Presidents <p> -Washington, Jefferson, Bush, Johnson, Lincoln <p> -Year born <p> -Years in office <p>-Generals <p> -Affiliated political parties | - English Royalty <p> - Which century certain kingdoms reigned <p> - Kings and queens named: Edward, Stephen, George, Louis, Martin, Arthur, David, Henry, Charles | <p> - Kennedy <p> - Poets <p> - Authors <p> - Births and Deaths <p> - British People <p> - Brothers and fathers  <p> - People named Paul, John, Adam, Henry | <p> - Vocabulary and phrases <p> - Official languages <p> - The French Revolution <p> - Paris facts <p> - Food and dishe <p> - Other: German, Latin, English |<p> - Islands <p> - Pacific ocean <p> - Hawaii <p> - Spain  <p> - Coastlines <p> - Orientation / Directions <p> - National birds <p> - Africa, America <p> - Places with “Great” | 
 
 
