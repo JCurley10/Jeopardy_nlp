@@ -136,7 +136,11 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
+<<<<<<< HEAD
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=700>
+=======
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=600><sub>figure5</sub>
+>>>>>>> 6c4ace40386c36147c7131f3f7217a5a1881324c
 </p>
 <sub>figure5</sub>
 
