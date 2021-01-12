@@ -128,7 +128,7 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=900 height=650><sub>figure5</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=600><sub>figure5</sub>
 </p>
 
 ### Model Selection 
