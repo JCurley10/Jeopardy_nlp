@@ -4,8 +4,8 @@
 ## Table of Contents
 - [The Goal](#The-Goal)
 - [Background](#Background)
-- [Motivation](#Motivation)
 - [Key Terms](#Key-Terms)
+- [Motivation](#Motivation)
 - [The Data](#The-Data)
 - [EDA](#Exploring-the-Data)
 - [Analysis](#Analysis)
@@ -21,10 +21,12 @@
 ## Background 
 "Jeopardy!" is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of "Jeopardy!" is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> 
+
+<sub>figure1</sub>
 </p>
-<p>
-<sub>image source:https://en.wikipedia.org/wiki/Jeopardy!<sub>
+
+[image source](https://en.wikipedia.org/wiki/Jeopardy!)
 
 Each episode of "Jeopardy!" has 61 clues over three rounds, with the following details:
 
@@ -98,16 +100,20 @@ In the above table:
 <p>
 <p align="center">
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500"><sub>figure2</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500">
 </p>
+<sub>figure2</sub>
+
 I only removed basic stopwords from NLTK's stopwords set for this visual. Even after that, these words don't look very helpful for focused studying...
 <p align="center">
 
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500"> <sub>figure3</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500">
 </p>
+<sub>figure3</sub>
+
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my "Jeopardy!" skills...
 </p>
 
@@ -116,8 +122,10 @@ Look at all that History! But I wish I knew specifically what History I should s
 ### Most Common Words in Questions and Answers
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500"><sub>figure4</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500">
 </p>
+<sub>figure4</sub>
+
 <p>
 Taking a deeper dive into the words within each clue, (questions and answers combined). Even after removing NLTK's basic stopwords, these words also don't look super helpful for targeted study either... 
 <p align="center">
@@ -128,8 +136,9 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=900 height=650><sub>figure5</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=700>
 </p>
+<sub>figure5</sub>
 
 ### Model Selection 
 
@@ -145,6 +154,8 @@ NMF is a *soft clustering* model, which in this context means that any clue coul
 <p align="center">
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/reconerr_vs_k.png" alt="recon_vs_k" width="700" height="550">
 </p>
+<sub>figure6</sub>
+
 * Since my goal is to help a user focus their attention on important topics, I chose to only consider between 7 and 15 topics or clusters. In the end, the trend of the reconstruction matrix was close to linear, as seen above and not very meaningful: the greater the number of clusters, the lower the reconstruction error. This means that I could very easily decide on 100 clusters beause it had a low reconstruction error, but would lose the cohesiveness within the clusters, or have too many topics to focus on! 
 * After checking the cohesiveness of the topics manually, I found that 13 clusters produced the most meaningful groupings of words! 
 * An added coincidence here is that each episode of "Jeopardy!" has 13 categories, so 13 was my lucky number. 
@@ -179,7 +190,7 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 | INSTITUTIONS| BUSINESS & INDUSTRY |
 |-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
-<sub>figure5</sub>
+<sub>Table 3</sub>
 
 ## Conclusion and Recommendation 
 
@@ -190,13 +201,13 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 |--------|--------|----|----------|--------------|-----------------|
  **Specific Words/Topics** | Vice Presidents <p> -Washington, Jefferson, Bush, Johnson, Lincoln <p> -Year born <p> -Years in office <p>-Generals <p> -Affiliated political parties |  - English Royalty <p> - Which century certain kingdoms reigned <p> - Kings and queens named: Edward, Stephen, George, Louis, Martin, Arthur, David, Henry, Charles | <p> - Kennedy <p> - Poets <p> - Authors <p> - Births and Deaths <p> - British People <p> - Brothers and fathers  <p> - People named Paul, John, Adam, Henry | <p> - Vocabulary and phrases <p> - Official languages <p> - The French Revolution <p> - Paris facts <p> - Food and dishe <p> - Other: German, Latin, English |<p> - Islands <p> - Pacific ocean <p> - Hawaii <p> - Spain  <p> - Coastlines <p> - Orientation / Directions <p> - National birds <p> - Africa, America <p> - Places with “Great”|
 
-<sub>table3.1</sub>
+<sub>table4.1</sub>
 
 | **Meta-Category**| BUSINESS, INDUSTRIES & INSTITUTIONS  | MUSIC | PLAYS & LITERATURE  | MOVIES & TV |
 |-|-|-|-|-|
 | **Specific Words/Topics** |<p> - Company’s products <p> - Brand names <p> - Stock symbols <p> - British Companies  <p> - Founder information <p> - Companies that introduced products <p> - Colleges and Universities  <p> - Magazines  <p> - National Institutions <p> - Founding dates | <p> - Love songs <p> - Rock songs <p> - Blues songs <p> - Musicals <p> - Songs featured in movies <p> - Names of singers and bands | <p> - Shakespeare <p> - Broadway Plays and Musicals <p> - Authors and their work <p> - Greek and Latin works <p> - Famous stories and tales <p> - Publishing information | <p> - Films that won oscars <p> -Characters within films <p> - Directors <p> - Roles actors play <p> - Disney movies <p> - Popular TV sitcoms and series <p> - Famous people named  Robert, James, and David <p> - Classic movies |
 
-<sub>table3.2</sub>
+<sub>table4.2</sub>
 
 
 
@@ -211,7 +222,8 @@ As I expected, Geography, Literature, and Pop Culture are very important. Busine
 <p>
 <p>
 
-### Notes, Sources and Thanks
+
+## Notes, Sources and Thanks
 
 <sup>1</sup> While note used in this particular iteration of the project, I decided to classify a clue's difficulty using an analysis done by a fellow data scientist named Colin Pollock, found [here](https://medium.com/@pollockcolin/jeopardy-question-difficulty-1bba47770bc6). I used his "Percent Correct by Round and Value" chart to decide what makes a clue easy, average, or hard. The average percent correct was around 50% according to this graph, so I decided an average success under 50% was classified as "hard", between 50% and 60% "average", and over 60% "easy". The following types of clues were classified as such:
 
