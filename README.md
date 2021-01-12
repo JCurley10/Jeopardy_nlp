@@ -156,7 +156,6 @@ NMF is a *soft clustering* model, which in this context means that any clue coul
     - I did set the option of including n-grams = 2, to allow words like "North Dakota" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 ### Visual
-**IN PROGRESS**
 Below are wordclouds that show the top 15 words that appear within each of the 13 clusters. The size of the word relates to the weight of the word as it appears in the Words vs. Hidden Topics matrix (example shown in figure 5)
 
 | GENERAL ENTERTAINMENT 1| GENERAL ENTERTAINMENT 2 | MOVIES |
@@ -176,14 +175,13 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 |-|-|
 |<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_7_topic_model_Wordcloud.png" alt="music" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_11_topic_model_Wordcloud.png" alt="plays_lit" width="300" height="275"> | 
 
+
 | INSTITUTIONS| BUSINESS & INDUSTRY |
 |-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
-
 <sub>figure5</sub>
 
 ## Conclusion and Recommendation 
-**IN PROGRESS**
 
 #### If you are studying to be a "Jeopardy!" contestant, you should focus your attention on the following:
 
@@ -199,7 +197,6 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 | **Specific Words/Topics** |<p> - Company’s products <p> - Brand names <p> - Stock symbols <p> - British Companies  <p> - Founder information <p> - Companies that introduced products <p> - Colleges and Universities  <p> - Magazines  <p> - National Institutions <p> - Founding dates | <p> - Love songs <p> - Rock songs <p> - Blues songs <p> - Musicals <p> - Songs featured in movies <p> - Names of singers and bands | <p> - Shakespeare <p> - Broadway Plays and Musicals <p> - Authors and their work <p> - Greek and Latin works <p> - Famous stories and tales <p> - Publishing information | <p> - Films that won oscars <p> -Characters within films <p> - Directors <p> - Roles actors play <p> - Disney movies <p> - Popular TV sitcoms and series <p> - Famous people named  Robert, James, and David <p> - Classic movies |
 
 <sub>table3.2</sub>
-
 
 
 
