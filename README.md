@@ -190,20 +190,20 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 
 
 | **Meta-Category**| US PRESIDENTS | ROYALTY | OTHER FAMOUS PEOPLE |  FRENCH & OTHER LANGUAGES | GEOGRAPHY & PLACES |
-|-|-|-|-|-|-|
-| **Specific Words/Topics** | Vice Presidents <p> -Washington, Jefferson, Bush, Johnson, Lincoln <p> -Year born <p> -Years in office <p>-Generals <p> -Affiliated political parties | - English Royalty <p> - Which century certain kingdoms reigned <p> - Kings and queens named: Edward, Stephen, George, Louis, Martin, Arthur, David, Henry, Charles | <p> - Kennedy <p> - Poets <p> - Authors <p> - Births and Deaths <p> - British People <p> - Brothers and fathers  <p> - People named Paul, John, Adam, Henry | <p> - Vocabulary and phrases <p> - Official languages <p> - The French Revolution <p> - Paris facts <p> - Food and dishe <p> - Other: German, Latin, English |<p> - Islands <p> - Pacific ocean <p> - Hawaii <p> - Spain  <p> - Coastlines <p> - Orientation / Directions <p> - National birds <p> - Africa, America <p> - Places with “Great” | 
-
+|--------|--------|--------|----------|--------------|-----------------|
+ **Specific Words/Topics** | Vice Presidents <p> -Washington, Jefferson, Bush, Johnson, Lincoln <p> -Year born <p> -Years in office <p>-Generals <p> -Affiliated political parties |  - English Royalty <p> - Which century certain kingdoms reigned <p> - Kings and queens named: Edward, Stephen, George, Louis, Martin, Arthur, David, Henry, Charles | <p> - Kennedy <p> - Poets <p> - Authors <p> - Births and Deaths <p> - British People <p> - Brothers and fathers  <p> - People named Paul, John, Adam, Henry | <p> - Vocabulary and phrases <p> - Official languages <p> - The French Revolution <p> - Paris facts <p> - Food and dishe <p> - Other: German, Latin, English |<p> - Islands <p> - Pacific ocean <p> - Hawaii <p> - Spain  <p> - Coastlines <p> - Orientation / Directions <p> - National birds <p> - Africa, America <p> - Places with “Great”|
+<sub>table3.1</sub>
 
 | **Meta-Category**| BUSINESS, INDUSTRIES & INSTITUTIONS  | MUSIC | PLAYS & LITERATURE  | MOVIES & TV |
 |-|-|-|-|-|
 | **Specific Words/Topics** |<p> - Company’s products <p> - Brand names <p> - Stock symbols <p> - British Companies  <p> - Founder information <p> - Companies that introduced products <p> - Colleges and Universities  <p> - Magazines  <p> - National Institutions <p> - Founding dates | <p> - Love songs <p> - Rock songs <p> - Blues songs <p> - Musicals <p> - Songs featured in movies <p> - Names of singers and bands | <p> - Shakespeare <p> - Broadway Plays and Musicals <p> - Authors and their work <p> - Greek and Latin works <p> - Famous stories and tales <p> - Publishing information | <p> - Films that won oscars <p> -Characters within films <p> - Directors <p> - Roles actors play <p> - Disney movies <p> - Popular TV sitcoms and series <p> - Famous people named  Robert, James, and David <p> - Classic movies |
-
+<sub>table3.2</sub>
 
 
 
 
 As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of tf-idf vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
-<sub>table3</sub>
+
 
 ## Next Steps
 - Keep the model updated to account for newer episodes
