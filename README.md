@@ -21,9 +21,7 @@
 ## Background 
 "Jeopardy!" is a trivia gameshow that has been on the air since 1964 (the most recent iteration started in 1984), where three contestants compete against each other -and the clock- by responding to clues. A unique Yfeature of "Jeopardy!" is that the host poses the **answer**, and the contestant presses a buzzer to respond to the answer in the form of a **question**, always starting their response with "What is..." or "Who is...", etc.
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> 
-
-<sub>figure1</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/jeopardy_board.png" alt="gameboard" width="700" height="500"> <sub>figure1</sub>
 </p>
 
 [image source](https://en.wikipedia.org/wiki/Jeopardy!)
@@ -100,9 +98,9 @@ In the above table:
 <p>
 <p align="center">
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/J-Category_wordcloud.png" alt="categories" width="500" height="500"><sub>figure2</sub>
 </p>
-<sub>figure2</sub>
+
 
 I only removed basic stopwords from NLTK's stopwords set for this visual. Even after that, these words don't look very helpful for focused studying...
 <p align="center">
@@ -110,9 +108,9 @@ I only removed basic stopwords from NLTK's stopwords set for this visual. Even a
 ### Top 10 Most Common J-Categories 
 </p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/top_10_categories_blue.png" alt="length_of_answers" width="650" height="500"><sub>figure3</sub>
 </p>
-<sub>figure3</sub>
+
 
 Look at all that History! But I wish I knew specifically what History I should study for the most impact on my "Jeopardy!" skills...
 </p>
@@ -122,9 +120,9 @@ Look at all that History! But I wish I knew specifically what History I should s
 ### Most Common Words in Questions and Answers
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/eda_images/Question%20and%20Answer_wordcloud.png" alt="categories" width="500" height="500"><sub>figure4</sub>
 </p>
-<sub>figure4</sub>
+
 
 <p>
 Taking a deeper dive into the words within each clue, (questions and answers combined). Even after removing NLTK's basic stopwords, these words also don't look super helpful for targeted study either... 
@@ -136,13 +134,9 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<<<<<<< HEAD
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=700>
-=======
 <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=950 height=600><sub>figure5</sub>
->>>>>>> 6c4ace40386c36147c7131f3f7217a5a1881324c
 </p>
-<sub>figure5</sub>
+
 
 ### Model Selection 
 
@@ -156,9 +150,9 @@ NMF is a *soft clustering* model, which in this context means that any clue coul
 - **Number of Topics** : I compared the reconstruction error of the matrices formed by the Non-Negative Matrix Factorization to the number of topics. In essence, this is a metric that measures how different the values in the reconstructed matrix of tf-idf value are from the original matrix. 
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/reconerr_vs_k.png" alt="recon_vs_k" width="700" height="550">
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/reconerr_vs_k.png" alt="recon_vs_k" width="700" height="550"><sub>figure6</sub>
 </p>
-<sub>figure6</sub>
+
 
 * Since my goal is to help a user focus their attention on important topics, I chose to only consider between 7 and 15 topics or clusters. In the end, the trend of the reconstruction matrix was close to linear, as seen above and not very meaningful: the greater the number of clusters, the lower the reconstruction error. This means that I could very easily decide on 100 clusters beause it had a low reconstruction error, but would lose the cohesiveness within the clusters, or have too many topics to focus on! 
 * After checking the cohesiveness of the topics manually, I found that 13 clusters produced the most meaningful groupings of words! 
@@ -194,6 +188,7 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 | INSTITUTIONS| BUSINESS & INDUSTRY |
 |-|-|
 | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
+
 <sub>Table 3</sub>
 
 ## Conclusion and Recommendation 
