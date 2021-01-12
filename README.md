@@ -128,12 +128,12 @@ Taking a deeper dive into the words within each clue, (questions and answers com
 #### Workflow
 <p>
 <p align="center">
-<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=900 height=600><sub>figure5</sub>
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/workflow.png", alt="workflow" width=900 height=650><sub>figure5</sub>
 </p>
 
 ### Model Selection 
 
-* I used a tf-idf (Term Frequency * Inverse Document Frequency) to vectorize the text from each clue. In other words, I turned the raw text from the "Jeopardy!" questions and answers into a matrix whose entries are the numerical TF-IDF features of each word in the text. 
+* I used a tf-idf (Term Frequency * Inverse Document Frequency) to vectorize the text from each clue. In other words, I turned the raw text from the "Jeopardy!" questions and answers into a matrix whose entries are the numerical tf-idf features of each word in the text. 
 * I then used Non-Negative Matrix Factorization (NMF) to create clusters of words, where each cluster can be thought of as a *meta-category* or latent topic, which is one of the goals of this analysis.
 
 NMF is a *soft clustering* model, which in this context means that any clue could belong to multiple clusters. This is advantageous because the nature of "Jeopardy!" is that clues often touch on multiple topics. This is also advantageous for studying purposes: if a word from a single document appears in multiple clusters, you get more "bang for your buck" by studying the information around that word. This makes sense for my goal, because as said above with the "EDIBLE RHYME TIME"  example, that clue could be a part of mutiple clusters such as Literature or Food. Another benefit of using NMF for the topic modeling is that the loading or weights of each word in a cluster is positive, so their importance is more easily interpreted. 
@@ -156,27 +156,38 @@ NMF is a *soft clustering* model, which in this context means that any clue coul
     - I did set the option of including n-grams = 2, to allow words like "North Dakota" to appear in the analysis, but 2-grams didn't show up as a top 10 words per cluster. 
 
 ### Visual
+**IN PROGRESS**
 Below are wordclouds that show the top 15 words that appear within each of the 13 clusters. The size of the word relates to the weight of the word as it appears in the Words vs. Hidden Topics matrix (example shown in figure 5)
 
-| TOPIC | TOPIC | TOPIC |
+| GENERAL ENTERTAINMENT 1| GENERAL ENTERTAINMENT 2 | MOVIES |
 |-|-|-|
-| <img src="" alt="categories" width="300" height="275"> | <img src="https://github.com/JCurley10/" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_0_topic_model_Wordcloud.png" alt="entertainment" width="300" height="275"> | 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_8_topic_model_Wordcloud.png" alt="entertainment2" width="300" height="275"> | 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_3_topic_model_Wordcloud.png" alt="movies" width="300" height="275"> |
 
-| TOPIC | TOPIC | TOPIC |
+
+| FAMOUS PEOPLE | ROYALTY | US PRESIDENTS |
 |-|-|-|
-|<img src="" alt="categories" width="300" height="275"> |<img src="" alt="categories" width="300" height="275"> |<img src="" alt="categories" width="300" height="275"> |
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_1_topic_model_Wordcloud.png" alt="famous_ppl" width="300" height="275">
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_4_topic_model_Wordcloud.png" alt="royalty" width="300" height="275">  |
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_10_topic_model_Wordcloud.png" alt="presidents" width="300" height="275"> |
 
-| TOPIC | TOPIC | TOPIC |
+| FRENCH & OTHER LANGUAGES | NATIONAL PLACES | GEOGRAPHY |
 |-|-|-|
-| <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | 
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_6_topic_model_Wordcloud.png" alt="French" width="300" height="275"> |
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="places" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | 
+<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_2_topic_model_Wordcloud.png" alt="geography" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
 
-| TOPIC | TOPIC | TOPIC |
-|-|-|-|
-| <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> | <img src="" alt="categories" width="300" height="275"> |
+| MUSIC | LITERATURE & PLAYS |
+|-|-|
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_7_topic_model_Wordcloud.png" alt="music" width="300" height="275"> |
+|<img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_11_topic_model_Wordcloud.png" alt="plays_lit" width="300" height="275"> | 
 
-|TOPIC|
-|-|
-|<img src="" alt="categories" width="300" height="275"> | 
+| INSTITUTIONS| BUSINESS & INDUSTRY |
+|-|-|
+| <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_5_topic_model_Wordcloud.png" alt="INSTITUTIONS" width="300" height="275"> | 
+ <img src="https://github.com/JCurley10/Jeopardy_nlp/blob/main/images/results_images/_ppt_9_topic_model_Wordcloud.png" alt="business" width="300" height="275"> |
+
 
 <sub>figure5</sub>
 
@@ -185,11 +196,21 @@ Below are wordclouds that show the top 15 words that appear within each of the 1
 
 #### If you are studying to be a "Jeopardy!" contestant, you should focus your attention on the following:
 
-| **Meta-Category**| TOPIC | TOPIC |  |  |  |  |  |   |  |  |
-|-|-|-|-|-|-|-|-|-|-|-|
-| **Specific Words/Topics**| |  |  |  |  | |  | |  |
 
-As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of TF-IDF vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
+| **Meta-Category**| US PRESIDENTS | ROYALTY | OTHER FAMOUS PEOPLE |  FRENCH & OTHER LANGUAGES | GEOGRAPHY & PLACES |
+|-|-|-|-|-|-|-|-|-|-|
+| **Specific Words/Topics** | Vice Presidents <p> -Washington, Jefferson, Bush, Johnson, Lincoln <p> -Year born <p> -Years in office <p>-Generals <p> -Affiliated political parties | - English Royalty <p> - Which century certain kingdoms reigned <p> - Kings and queens named: Edward, Stephen, George, Louis, Martin, Arthur, David, Henry, Charles | <p> - Kennedy <p> - Poets <p> - Authors <p> - Births and Deaths <p> - British People <p> - Brothers and fathers  <p> - People named Paul, John, Adam, Henry | <p> - Vocabulary and phrases <p> - Official languages <p> - The French Revolution <p> - Paris facts <p> - Food and dishe <p> - Other: German, Latin, English |<p> - Islands <p> - Pacific ocean <p> - Hawaii <p> - Spain  <p> - Coastlines <p> - Orientation / Directions <p> - National birds <p> - Africa, America <p> - Places with “Great” | 
+
+
+| **Meta-Category**| BUSINESS, INDUSTRIES & INSTITUTIONS  | MUSIC | PLAYS & LITERATURE  | MOVIES & TV |
+|-|-|-|-|-|
+| **Specific Words/Topics** |<p> - Company’s products <p> - Brand names <p> - Stock symbols <p> - British Companies  <p> - Founder information <p> - Companies that introduced products <p> - Colleges and Universities  <p> - Magazines  <p> - National Institutions <p> - Founding dates | <p> - Love songs <p> - Rock songs <p> - Blues songs <p> - Musicals <p> - Songs featured in movies <p> - Names of singers and bands | <p> - Shakespeare <p> - Broadway Plays and Musicals <p> - Authors and their work <p> - Greek and Latin works <p> - Famous stories and tales <p> - Publishing information | <p> - Films that won oscars <p> -Characters within films <p> - Directors <p> - Roles actors play <p> - Disney movies <p> - Popular TV sitcoms and series <p> - Famous people named  Robert, James, and David <p> - Classic movies |
+
+
+
+
+
+As I expected, Geography, Literature, and Pop Culture are very important. Busines and Industry, which is one of the most common categories as seen above, was also a clear cluster. I am interested in why Science and History terms are not so clear in these clusters, given they are such common categories. Maybe, there are *just too many* common words for History and Science that they weren't included due to the nature of tf-idf vectorization. Or, it could be because NMF is a soft-clustering model, the common words in History and Science categories can be found within other clusters. 
 <sub>table3</sub>
 
 ## Next Steps
