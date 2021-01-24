@@ -13,6 +13,13 @@ from text_cleaner import clean_text_clues, convert_col_to_list, make_stopwords, 
 
 
 class NMF_Model():
+    """
+    This class performs vectorization of text
+    and non-negative matrix factorization (NMF)
+    on corpus of text as lists of tokens.
+    It is initialized with the text, type of facttorizer, 
+    type of vectorizer, and number of topics/clusters to consider
+    """
 
     def __init__(self, text, factorizer, vectorizer, n_topics):
         self.text = text
@@ -178,7 +185,7 @@ class NMF_Model():
 def find_best_k(vectorizer, lower_k, upper_k, text):
     """
     Find the reconstruction errors for the number of clusters given the same
-    model, but chancing the number of clusters, 
+    model, but changing the number of clusters
     -------
     Args:
         vectorizer (sklearn's TfidfVectorizer): instantiated with the
@@ -206,7 +213,7 @@ def plot_ks(vectorizer, lower_k, upper_k):
     """
     Plot a line graph that shows the number of clusters along x-axis
     and the reconstruction error along the y axis
-
+    -------
     Args:
         vectorizer (sklearn's TfidfVectorizer): instantiated with the
             appropriate hyperparameters used to build the model settled on.
